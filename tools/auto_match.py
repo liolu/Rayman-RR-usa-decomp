@@ -154,36 +154,49 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path, extra: str = "") -> t
         t = Path(tmp)
         (t / "f.s").write_text(asm + "\n")
         m2c = [sys.executable, str(M2C), "-t", "arm-mwcc-c", "--valid-syntax", str(t / "f.s")]
-        r = subprocess.run(m2c[:-1] + ["--context", str(CONTEXT), m2c[-1]], capture_output=True, text=True)
-        head = header(name)
-        if r.returncode != 0 or "M2C_ERROR" in r.stdout:
-            # The context can make m2c fail (conflicting guesses): retry without it, with plain m2c types only
-            # (its extern declarations would conflict with m2c_protos.h)
-            r = subprocess.run(m2c, capture_output=True, text=True)
-            head = '#include "m2c.h"\n\n'
-        if r.returncode != 0:
-            return name, size, addr, "m2c", ""
-        if "M2C_ERROR" in r.stdout:
-            source = asm_function(name, asm)
-            if source is None:
-                return name, size, addr, "m2c", r.stdout
-        else:
-            source = head + fix_byte_offsets(restore_leading_args(r.stdout, name))
-        status = compile_and_compare(t, source, name, size, addr, mwcc, extra)
-        if status == "compile":
-            fixed = compile_fixes(source)
-            if fixed != source:
-                fixed_status = compile_and_compare(t, fixed, name, size, addr, mwcc, extra)
-                if fixed_status != "compile":
-                    source, status = fixed, fixed_status
-                    if status == "match":
-                        return name, size, addr, status, source
-        if status in ("near", "size"):
-            # Close but not exact: try the known m2c corrections one by one
-            for variant in variants(source, name):
-                if compile_and_compare(t, variant, name, size, addr, mwcc, extra) == "match":
-                    return name, size, addr, "match", variant
-        return name, size, addr, status, source
+        # With the context first, then without it: guessed signatures help most drafts but can also make m2c
+        # fail or produce calls that do not compile. Without context, only plain m2c.h types are used (m2c's own
+        # extern declarations would conflict with m2c_protos.h).
+        best = (name, size, addr, "m2c", "")
+        for cmd, head in ((m2c[:-1] + ["--context", str(CONTEXT), m2c[-1]], header(name)),
+                          (m2c, '#include "m2c.h"\n\n')):
+            result = evaluate(t, subprocess.run(cmd, capture_output=True, text=True), head, asm, f, mwcc, extra)
+            if RANK[result[3]] > RANK[best[3]]:
+                best = result
+            if best[3] == "match":
+                break
+        return best
+
+
+RANK = {"m2c": 0, "compile": 1, "size": 2, "near": 3, "match": 4}
+
+
+def evaluate(t: Path, r: subprocess.CompletedProcess, head: str, asm: str, f: tuple[str, int, int], mwcc: Path,
+             extra: str) -> tuple[str, int, int, str, str]:
+    name, size, addr = f
+    if r.returncode != 0:
+        return name, size, addr, "m2c", ""
+    if "M2C_ERROR" in r.stdout:
+        source = asm_function(name, asm)
+        if source is None:
+            return name, size, addr, "m2c", r.stdout
+    else:
+        source = head + fix_byte_offsets(restore_leading_args(r.stdout, name))
+    status = compile_and_compare(t, source, name, size, addr, mwcc, extra)
+    if status == "compile":
+        fixed = compile_fixes(source)
+        if fixed != source:
+            fixed_status = compile_and_compare(t, fixed, name, size, addr, mwcc, extra)
+            if fixed_status != "compile":
+                source, status = fixed, fixed_status
+                if status == "match":
+                    return name, size, addr, status, source
+    if status in ("near", "size"):
+        # Close but not exact: try the known m2c corrections one by one
+        for variant in variants(source, name):
+            if compile_and_compare(t, variant, name, size, addr, mwcc, extra) == "match":
+                return name, size, addr, "match", variant
+    return name, size, addr, status, source
 
 
 def compile_fixes(source: str) -> str:
@@ -299,13 +312,44 @@ def forward_args(source: str, name: str, k: int) -> str | None:
     return head + body
 
 
+def load_protos() -> dict[str, str]:
+    protos = {}
+    path = ROOT / "include" / "m2c_protos.h"
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"^[^#/].*?\b(\w+)\(.*\);$", line)
+            if m:
+                protos[m.group(1)] = line
+    return protos
+
+
+def freeze(source: str, name: str, protos: dict[str, str]) -> str:
+    """Replaces `#include "m2c_protos.h"` by a copy of the prototypes the function uses, so that the file
+    keeps compiling the same way when m2c_protos.h is regenerated (guessed signatures get replaced)."""
+    head = f'#define M2C_SELF_{name}\n#include "m2c_protos.h"\n'
+    if head not in source:
+        return source
+    marker = ""
+    if source.startswith(MARKER):  # the compiler marker must stay on the first line (read by integrate)
+        marker, source = source.split("\n", 1)
+        marker += "\n"
+    body = source.replace(head, "", 1).lstrip("\n")
+    # Every known function the code names: called, or only taken by address (e.g. a callback)
+    # Top-level declarations start at column 0; calls inside the function are indented
+    declared = set(re.findall(r"^[^\s#/].*?\b(\w+)\([^()]*\);", body, re.M))
+    used = sorted({c for c in re.findall(r"\b(\w+)\b", body) if c in protos and c != name and c not in declared})
+    decls = "".join(protos[c] + "\n" for c in used)
+    return marker + '#include "m2c.h"\n#include "engine.h"\n\n' + decls + ("\n" if decls else "") + body
+
+
 def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:
     AUTO_SRC.mkdir(parents=True, exist_ok=True)
     created = []
     entries = []
+    protos = load_protos()
     for name, size, addr, source in sorted(found, key=lambda x: x[2]):
         path = AUTO_SRC / f"{name}.c"
-        path.write_text(source, encoding="utf-8", newline="\n")
+        path.write_text(freeze(source, name, protos), encoding="utf-8", newline="\n")
         created.append(path)
         entries.append(f"\nsrc/auto/{name}.c:\n    complete\n    .text       start:0x{addr:08x} end:0x{addr + size:08x}\n")
     with DELINKS.open("a", newline="\n") as f:

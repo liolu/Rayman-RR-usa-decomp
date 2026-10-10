@@ -1,5 +1,8 @@
-#define M2C_SELF_func_0205cfb8
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+s32 func_0205703c(s32);
+void func_0205d0ec(s32 *, s32);
 
 s32 *func_0205cfb8(void) {
     s32 *temp_r0;

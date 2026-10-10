@@ -1,6 +1,8 @@
 /* compiler: 1.2/sp2p3  */
-#define M2C_SELF_func_020b5a78
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+void *func_020b5bec(void *, M2C_UNK, s32);
 
 void *func_020b5a78(s32 arg0, s32 arg1, s32 arg2) {
     u32 temp_r0;

@@ -1,5 +1,7 @@
-#define M2C_SELF_func_02087660
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+void func_02041da8(M2C_UNK);
 
 s32 *func_020414ac(M2C_UNK, u16, M2C_UNK);          /* extern */
 

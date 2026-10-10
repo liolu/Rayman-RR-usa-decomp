@@ -1,6 +1,6 @@
 /* compiler: 1.2/sp2p3  */
-#define M2C_SELF_func_02013b20
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
 
 M2C_UNK func_0200cc3c(void *);                      /* extern */
 s32 func_02012ab0(void *, s32);                     /* extern */

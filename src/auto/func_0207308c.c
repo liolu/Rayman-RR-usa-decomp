@@ -1,5 +1,7 @@
-#define M2C_SELF_func_0207308c
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+s32 func_020476b0(void);
 
 u8 func_0207308c(void) {
     return (u8) func_020476b0();

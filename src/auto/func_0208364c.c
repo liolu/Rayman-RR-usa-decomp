@@ -1,5 +1,7 @@
-#define M2C_SELF_func_0208364c
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+s32 func_02048284(s32);
 
 u8 func_0208364c(s32 *arg0, s32 arg1, void *arg2) {
     s32 temp_r0;

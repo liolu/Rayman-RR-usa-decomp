@@ -1,5 +1,12 @@
-#define M2C_SELF_func_0206a74c
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+void func_0201c094(void *, s32);
+void func_0202a144(void *);
+void func_0202a1b8(void *, void *);
+s32 func_02067fb4(void *);
+u8 func_020680f0(u8 *);
+u8 func_02068104(void *);
 
 void func_0206a74c(void *arg0, void *arg1) {
     u8 *temp_r4;

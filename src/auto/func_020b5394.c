@@ -1,6 +1,8 @@
 /* compiler: 1.2/sp2p3  */
-#define M2C_SELF_func_020b5394
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+void func_020b5708(void *, s32, s32);
 
 void func_020b5394(void **arg0, s32 arg1, s32 arg2) {
     void *temp_r3;

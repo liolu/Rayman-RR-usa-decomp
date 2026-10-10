@@ -104,6 +104,11 @@ every function already defined in `src/` to `include/m2c_protos.h`, and gives th
 
 - Drafts include `m2c_protos.h` after `#define M2C_SELF_<function>`, so a file never redeclares its own function.
 - When the context makes m2c fail, the draft is regenerated without it (plain `m2c.h` types).
+- Functions without a real prototype get a **guessed** one from `tools/infer_signatures.py`: the argument count is
+  the highest of `r0`-`r3` read before being written (up to the first call), and a value is returned if a caller
+  reads `r0` right after the call. Types stay `M2C_UNK`. `gen_context.py --no-guess` leaves them out.
+- Each draft is generated twice when needed, with and without the context, and the better result is kept: a wrong
+  guess can make a call fail to compile.
 - **Adding a correct prototype to `engine.h` improves every draft that calls the function**: it is the cheapest way
   to help the automation. First run with the context: +23 functions.
 

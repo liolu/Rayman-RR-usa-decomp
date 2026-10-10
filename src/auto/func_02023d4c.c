@@ -1,5 +1,9 @@
-#define M2C_SELF_func_02023d4c
-#include "m2c_protos.h"
+#include "engine.h"
+#include "m2c.h"
+
+s32 func_0201d264(M2C_UNK, M2C_UNK);
+s32 func_0201d2e8(M2C_UNK, M2C_UNK, M2C_UNK);
+void func_0201d3cc(M2C_UNK, M2C_UNK);
 
 void func_02023d4c(void *arg0, void *arg1) {
     s32 temp_r1;
