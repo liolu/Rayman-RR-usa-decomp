@@ -6260,3 +6260,23 @@ src/auto/func_020b2ae8.c:
 src/auto/func_020b56cc.c:
     complete
     .text       start:0x020b56cc end:0x020b5708
+
+src/auto/func_020146e0.c:
+    complete
+    .text       start:0x020146e0 end:0x02014718
+
+src/auto/func_02014718.c:
+    complete
+    .text       start:0x02014718 end:0x02014744
+
+src/auto/func_02014794.c:
+    complete
+    .text       start:0x02014794 end:0x020147d0
+
+src/auto/func_020147d0.c:
+    complete
+    .text       start:0x020147d0 end:0x0201480c
+
+src/auto/func_0201480c.c:
+    complete
+    .text       start:0x0201480c end:0x02014834
