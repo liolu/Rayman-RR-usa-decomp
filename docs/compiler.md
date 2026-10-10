@@ -36,6 +36,13 @@ About 220 functions (mostly around `0x0200xxxx`-`0x0201xxxx` and `0x020bxxxx`) s
 Files built with another compiler are listed in `config/usa/compilers.txt` (`<source path> <version>`), read by
 `tools/configure.py`. `tools/auto_match.py` tries 2.0/sp1p5 first, then 1.2/sp2p3, and records the files that need 1.2.
 
+## Open lead: ARMv4T-style epilogues
+
+390 functions return with `pop {..., lr}` + `bx lr` instead of `pop {..., pc}` (typical of code built for an ARMv4T
+processor, where `pop {pc}` cannot switch to Thumb). 133 already match with 1.2; **257 remain**, mostly around
+`0x0200xxxx`-`0x0201xxxx` and `0x020bxxxx`. `func_02013f44` gets closer with `-proc arm7tdmi` (size 0x48 instead of
+0x4c) but does not match with any version yet. Next step: try the processor/option combinations on a few of them.
+
 ## Flags (`tools/configure.py`)
 
 `-O4,p -enum int -char signed -str noreuse -proc arm946e -gccext,on -fp soft -inline noauto -lang=c -interworking`
@@ -50,6 +57,8 @@ Files built with another compiler are listed in `config/usa/compilers.txt` (`<so
   function returns it: `return ++x;`.
 - `ldr r0, [r1, r0, lsl #N]` is a plain array access `table[i]` (or `table[i].first_field` for a stride of
   `1 << N` bytes).
+- Hardware registers are `volatile`; a register written as two words at `addr` and `addr + 4` is a 64-bit register
+  (e.g. `REG_SQRT_PARAM` at `0x040002B8`): otherwise the compiler merges the addresses into `base + offset`.
 - No `__swpb` intrinsic: functions using `swp`/`swpb` (and `mrs`/`msr`) were written as `asm` functions.
 - When the first argument of a function is unused, the code still reads the second argument from `r1`: declare the
   unused parameter.
