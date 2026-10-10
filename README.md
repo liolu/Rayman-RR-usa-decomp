@@ -18,9 +18,13 @@ to extract assets from.
 
 ## Progress
 
-| File | Status |
-|---|---|
-| `src/HIE/HieMtStk.c` | ✅ complete (3/3 functions, data matching) |
+<!-- progress:start -->
+**Code:** 0.05% · **Data:** 0.04% · **Functions:** 3/3608
+
+| File | Code | Functions | Status |
+|---|---|---|---|
+| `src/HIE/HieMtStk.c` | 100.0% | 3/3 | ✅ complete |
+<!-- progress:end -->
 
 Run `ninja report` to get detailed numbers in `build/usa/report.json`.
 
@@ -36,6 +40,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). The decompilation workflow is described 
 - [docs/engine.md](docs/engine.md): the OpenSpace engine, naming conventions and reference projects
 - [docs/compiler.md](docs/compiler.md): how the compiler and flags were identified
 - [docs/troubleshooting.md](docs/troubleshooting.md): known errors and their fixes
+- [docs/automation.md](docs/automation.md): the `moulinette` pipeline, m2c drafts and the permuter
 
 ## AI assistance
 Parts of this project are developed with the help of an AI assistant. No code is accepted on trust: every function

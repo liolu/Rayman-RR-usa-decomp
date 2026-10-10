@@ -140,7 +140,7 @@ def main():
             for flags in flag_sets:
                 obj = Path(tmp) / "probe.o"
                 obj.unlink(missing_ok=True)
-                cmd = f'"{cc}" {flags} {BASE_FLAGS} -c "{args.source.resolve()}" -o "{obj}"'
+                cmd = f'"{cc}" {flags} {BASE_FLAGS} -i "{ROOT / 'include'}" -c "{args.source.resolve()}" -o "{obj}"'
                 r = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=tmp)
                 if r.returncode != 0 or not obj.exists():
                     row.append(f"{flags}: compile error")

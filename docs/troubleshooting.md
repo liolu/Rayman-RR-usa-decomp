@@ -57,6 +57,21 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
 - Cause: the package does not add GCC to the `PATH`.
 - Fix: add its `mingw64/bin` directory to the `PATH` of your shell.
 
+## Automation
+
+**The permuter keeps running after its time limit / worker processes stay alive (Windows)**
+- Cause: `taskkill /T` needs WMI; on some Windows installs WMI is broken (`Invalid provider registration` /
+  `Inscription du fournisseur non valide`), so only the parent process was stopped.
+- Fix: `tools/permute.py` kills the process tree with `psutil` (`pip install psutil`).
+
+**The permuter fails to compile anything when started from PowerShell**
+- Cause: `bash` resolves to `C:\Windows\System32\bash.exe` (WSL) instead of Git Bash.
+- Fix: put Git's `bin` directory first in `PATH`.
+
+**`unknown relocation type 'R_ARM_V4BX'` in the permuter**
+- Cause: GNU as targets ARMv4 by default and tags every `bx` with a V4BX relocation.
+- Fix: assemble the target with `-mcpu=arm946e-s` (done by `tools/permute.py`).
+
 ## Notes
 
 **Raw address `.word 0x20bbb2c` in `func_0200b53c`**

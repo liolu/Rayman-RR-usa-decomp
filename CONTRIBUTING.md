@@ -40,6 +40,9 @@
 - `src/`: decompiled C files, one directory per engine module
 - `tools/`: build scripts and helpers
     - `configure.py`: generates `build.ninja`
+    - `moulinette.py`: whole pipeline (build, drafts, verify, publish), see [docs/automation.md](docs/automation.md)
+    - `match.py`: progress, worklist, single-function check and strict verification
+    - `draft.py` / `permute.py`: m2c drafts and decomp-permuter runs
     - `probe_compiler.py`: compiles one function with every compiler version and compares it to the game
     - `probes/`: the C files used to identify the compiler
 

@@ -41,6 +41,9 @@ ninja report                    # compiles src/, progress in build/usa/report.js
    `ninja` → `OK`.
 6. Record any new, reproduced finding in `docs/compiler.md` or `docs/troubleshooting.md`.
 
+Before any commit, `python tools/match.py verify` must print `VERIFY PASSED`. `python tools/moulinette.py` runs
+the whole pipeline (drafts in `build/drafts/`, verification, publication); see `docs/automation.md`.
+
 Full guide: `docs/decompiling.md`. Contribution rules: `CONTRIBUTING.md`.
 
 ## Known patterns
