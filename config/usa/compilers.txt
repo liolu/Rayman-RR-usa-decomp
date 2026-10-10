@@ -168,3 +168,16 @@ src/auto/func_020b2a30.c 1.2/sp2p3
 src/auto/func_020b4dd8.c 1.2/sp2p3
 src/auto/func_020b5394.c 1.2/sp2p3
 src/auto/func_020b5a78.c 1.2/sp2p3
+src/auto/func_02013f90.c 1.2/sp2p3
+src/auto/func_02016178.c 1.2/sp2p3
+src/auto/func_02017204.c 1.2/sp2p3
+src/auto/func_0201726c.c 1.2/sp2p3
+src/auto/func_020172c8.c 1.2/sp2p3
+src/auto/func_02017330.c 1.2/sp2p3
+src/auto/func_02017398.c 1.2/sp2p3
+src/auto/func_02017400.c 1.2/sp2p3
+src/auto/func_0201745c.c 1.2/sp2p3
+src/auto/func_02017570.c 1.2/sp2p3
+src/auto/func_0201906c.c 1.2/sp2p3
+src/auto/func_0201939c.c 1.2/sp2p3
+src/auto/func_020b56cc.c 1.2/sp2p3
