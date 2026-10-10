@@ -95,6 +95,18 @@ Overnight run, permuter included:
 python tools/moulinette.py --permute-near 100 --near-minutes 5
 ```
 
+## Engine context for m2c
+
+`include/engine.h` holds the engine types and the prototypes identified by hand (`fx32`, `VecFx32`,
+`VEC_DotProduct`, the interrupt helpers...). `tools/gen_context.py` (run by `auto_match.py`) adds the prototype of
+every function already defined in `src/` to `include/m2c_protos.h`, and gives the preprocessed result to m2c with
+`--context`. m2c then knows the real arguments and return values of the callees instead of guessing them.
+
+- Drafts include `m2c_protos.h` after `#define M2C_SELF_<function>`, so a file never redeclares its own function.
+- When the context makes m2c fail, the draft is regenerated without it (plain `m2c.h` types).
+- **Adding a correct prototype to `engine.h` improves every draft that calls the function**: it is the cheapest way
+  to help the automation. First run with the context: +23 functions.
+
 ## Daily loop (human part)
 
 1. Run the moulinette once: it refreshes drafts for the functions left to do.

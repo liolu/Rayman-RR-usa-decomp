@@ -27,6 +27,20 @@ The code is organized in modules with a 2-4 letter prefix. Put each module in it
 | `SCT` | Sectors |
 | `SND` | Sound |
 
+## Identified core functions
+
+See `include/engine.h`. The most called functions of the game, identified from their code:
+
+| Address | Calls | Function |
+|---|---|---|
+| `0x02084450` | 566 | calls `table[object->type]` (type byte at `+7`) with the same three arguments |
+| `0x01ff87ec` | 221 | `(a * b - c * d + 0x800) >> 12` on 64 bits (ITCM) |
+| `0x02001588` | 150 | byte copy, returns the destination |
+| `0x0200b5b8` | 140 | `VEC_DotProduct` (assembly) |
+| `0x0200e8f4`... | | interrupt helpers `OS_EnableIrq`, `OS_DisableIrq`, `OS_RestoreIrq`... |
+
+Fixed-point numbers are 20.12 (`fx32`, rounding with `+ 0x800` before `>> 12`).
+
 ## Naming conventions
 Use the engine's own conventions, as seen in the assertion strings and in ACP_Ray2:
 

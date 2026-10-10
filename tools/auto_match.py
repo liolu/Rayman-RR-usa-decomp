@@ -45,7 +45,12 @@ MWCC = MWCC_ROOT / COMPILERS[0][0] / "mwccarm.exe"
 COMPILERS_TXT = ROOT / "config" / "usa" / "compilers.txt"
 MARKER = "/* compiler: "
 MAIN_TEXT = (0x02000000, 0x020b5f14)
-HEADER = '#include "m2c.h"\n\n'
+CONTEXT = ROOT / "build" / "auto" / "m2c_context.c"
+
+
+def header(name: str) -> str:
+    # m2c_protos.h declares every known function except the one defined in this file
+    return f'#define M2C_SELF_{name}\n#include "m2c_protos.h"\n\n'
 
 
 def covered_ranges() -> list[tuple[int, int]]:
@@ -148,8 +153,14 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path, extra: str = "") -> t
     with tempfile.TemporaryDirectory() as tmp:
         t = Path(tmp)
         (t / "f.s").write_text(asm + "\n")
-        r = subprocess.run([sys.executable, str(M2C), "-t", "arm-mwcc-c", "--valid-syntax", str(t / "f.s")],
-                           capture_output=True, text=True)
+        m2c = [sys.executable, str(M2C), "-t", "arm-mwcc-c", "--valid-syntax", str(t / "f.s")]
+        r = subprocess.run(m2c[:-1] + ["--context", str(CONTEXT), m2c[-1]], capture_output=True, text=True)
+        head = header(name)
+        if r.returncode != 0 or "M2C_ERROR" in r.stdout:
+            # The context can make m2c fail (conflicting guesses): retry without it, with plain m2c types only
+            # (its extern declarations would conflict with m2c_protos.h)
+            r = subprocess.run(m2c, capture_output=True, text=True)
+            head = '#include "m2c.h"\n\n'
         if r.returncode != 0:
             return name, size, addr, "m2c", ""
         if "M2C_ERROR" in r.stdout:
@@ -157,7 +168,7 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path, extra: str = "") -> t
             if source is None:
                 return name, size, addr, "m2c", r.stdout
         else:
-            source = HEADER + fix_byte_offsets(restore_leading_args(r.stdout, name))
+            source = head + fix_byte_offsets(restore_leading_args(r.stdout, name))
         status = compile_and_compare(t, source, name, size, addr, mwcc, extra)
         if status == "compile":
             fixed = compile_fixes(source)
@@ -340,6 +351,7 @@ def main():
     # dsd does not delete old files and gap file names change when delinks.txt changes
     shutil.rmtree(ASM_DIR, ignore_errors=True)
     subprocess.run(["ninja", "dis"], cwd=ROOT, check=True, capture_output=True)
+    subprocess.run([sys.executable, str(ROOT / "tools" / "gen_context.py")], cwd=ROOT, check=True)
 
     todo = candidates()
     print(f"Trying {len(todo)} functions not yet in a source file...")
