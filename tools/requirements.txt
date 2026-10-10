@@ -1,0 +1,4 @@
+ndspy
+pre-commit
+pyperclip
+requests
