@@ -66,7 +66,10 @@ When a draft is close but not exact, `auto_match` also tries these rewrites one 
 - **Pointer + constant in bytes.** `arg1 + 8` on an `s32 *` means 8 bytes, not 8 elements.
 - **Table at a fixed address.** `M2C_FIELD(((i * 4) + 0x027FF000), s32 *, 0xDA0)` is `((s32 *)0x027FFDA0)[i]`.
 
-With these rules later runs added 129, 40, then 34 functions (1,197/3,608 in total).
+- **Forwarded arguments.** m2c declares callees without parameters (`func()`), so the compiler feels free to reuse
+  `r0`-`r3`. When the game keeps them intact, the function passes its own first 1-4 arguments to the callee.
+
+With these rules later runs added 129, 40, 34, then 15 functions (1,217/3,608 in total).
 
 `src/auto/` is raw m2c code: it is byte-exact but not clean (`s32`, `M2C_FIELD(...)`, `temp_r2`...). It uses the
 types of `include/m2c.h`. Two rules:

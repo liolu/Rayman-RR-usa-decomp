@@ -100,7 +100,8 @@ def fix_byte_offsets(source: str) -> str:
             return m.group(0)
         return f"(M2C_UNK *)((s8 *)&{m.group(1)} + ({m.group(2)}))"
 
-    return re.sub(r"&(\w+) \+ \(([^()]*)\)", repl, source)
+    # The offset may contain one level of parentheses, e.g. `((arg0 >> 0xC) * 4)`
+    return re.sub(r"&(\w+) \+ \(((?:[^()]|\([^()]*\))*)\)", repl, source)
 
 
 # Instructions the compiler never generates: functions using them were written in assembly
@@ -186,7 +187,31 @@ def variants(source: str, name: str) -> list[str]:
                    r"((\3 *)(\2 + \4))[\1]", source)
     if table != source:
         out.append(table)
+    # 4. Arguments forwarded to callees: m2c declares callees without parameters (`func()`), so the compiler
+    #    reuses r0-r3; in the game the function passes its own first k arguments through.
+    for k in range(1, 5):
+        forwarded = forward_args(source, name, k)
+        if forwarded:
+            out.append(forwarded)
     return out
+
+
+def forward_args(source: str, name: str, k: int) -> str | None:
+    m = re.search(rf"^(.*\b{re.escape(name)}\()([^)]*)(\) \{{)$", source, re.M)
+    if not m or not re.search(r"^    .*\(\);", source[m.end():], re.M):
+        return None
+    params = [p.strip() for p in m.group(2).split(",") if p.strip() not in ("", "void")]
+    names = []
+    for i in range(k):
+        if i < len(params):
+            mm = re.search(r"(\w+)$", params[i])
+            names.append(mm.group(1))
+        else:
+            params.append(f"s32 arg{i}")
+            names.append(f"arg{i}")
+    head = source[:m.start(2)] + ", ".join(params) + source[m.end(2):m.end()]
+    body = re.sub(r"^(    .*)\(\);", lambda mm: f"{mm.group(1)}({', '.join(names)});", source[m.end():], flags=re.M)
+    return head + body
 
 
 def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:

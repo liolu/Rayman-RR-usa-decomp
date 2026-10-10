@@ -35,6 +35,8 @@ python tools/probe_compiler.py <file.c> <function> <address> --flags=-O4,p
 - `-lang=c`: the engine is written in C.
 
 ## Reproduced observations
+- A function that works in `r2`/`r3` and leaves `r0`/`r1` untouched before a call forwards its arguments to the
+  callee: the first scratch register used tells how many (`r3` → three arguments).
 - A value computed into `r0` right before `bx lr` (e.g. `ldr r0, [r1]; add r0, r0, #1; str r0, [r1]`) means the
   function returns it: `return ++x;`.
 - `ldr r0, [r1, r0, lsl #N]` is a plain array access `table[i]` (or `table[i].first_field` for a stride of
