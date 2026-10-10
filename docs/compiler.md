@@ -35,6 +35,8 @@ python tools/probe_compiler.py <file.c> <function> <address> --flags=-O4,p
 - `-lang=c`: the engine is written in C.
 
 ## Reproduced observations
+- `ldr r0, [r1, r0, lsl #N]` is a plain array access `table[i]` (or `table[i].first_field` for a stride of
+  `1 << N` bytes).
 - No `__swpb` intrinsic: functions using `swp`/`swpb` (and `mrs`/`msr`) were written as `asm` functions.
 - When the first argument of a function is unused, the code still reads the second argument from `r1`: declare the
   unused parameter.

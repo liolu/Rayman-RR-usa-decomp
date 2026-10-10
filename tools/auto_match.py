@@ -88,6 +88,21 @@ def restore_leading_args(source: str, name: str) -> str:
     return source[:m.start(2)] + ", ".join(fixed) + source[m.end(2):]
 
 
+def fix_byte_offsets(source: str) -> str:
+    """m2c writes `&data_X + (i * 16)` meaning a byte offset, but `data_X` is an `M2C_UNK` (4 bytes), so C scales
+    the offset a second time. Make the addition explicit in bytes."""
+    unk = set(re.findall(r"^extern M2C_UNK (\w+);", source, re.M))
+    if not unk:
+        return source
+
+    def repl(m: re.Match) -> str:
+        if m.group(1) not in unk:
+            return m.group(0)
+        return f"(M2C_UNK *)((s8 *)&{m.group(1)} + ({m.group(2)}))"
+
+    return re.sub(r"&(\w+) \+ \(([^()]*)\)", repl, source)
+
+
 # Instructions the compiler never generates: functions using them were written in assembly
 ASM_ONLY = re.compile(r"^\s+(swpb?|mrs|msr|mcr|mrc|ldc|stc|cdp)\b", re.M)
 
@@ -122,7 +137,7 @@ def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
             if source is None:
                 return name, size, addr, "m2c", r.stdout
         else:
-            source = HEADER + restore_leading_args(r.stdout, name)
+            source = HEADER + fix_byte_offsets(restore_leading_args(r.stdout, name))
         (t / "f.c").write_text(source)
         cmd = f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
         r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
