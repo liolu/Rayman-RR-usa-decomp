@@ -71,6 +71,39 @@ def function_asm(name: str) -> str | None:
     return m.group(0) if m else None
 
 
+def restore_leading_args(source: str, name: str) -> str:
+    """m2c drops parameters that the function never reads, but names the others after their register
+    (`arg1` = r1). Put the missing ones back so that the remaining arguments land in the right registers."""
+    m = re.search(rf"^(.*\b{re.escape(name)}\()([^)]*)(\) \{{)$", source, re.M)
+    if not m or m.group(2).strip() in ("", "void"):
+        return source
+    params = [p.strip() for p in m.group(2).split(",")]
+    by_index = {}
+    for p in params:
+        idx = re.search(r"\barg(\d+)$", p)
+        if idx is None:
+            return source  # unexpected form (e.g. stack arguments): leave untouched
+        by_index[int(idx.group(1))] = p
+    fixed = [by_index.get(i, f"s32 arg{i}") for i in range(max(by_index) + 1)]
+    return source[:m.start(2)] + ", ".join(fixed) + source[m.end(2):]
+
+
+# Instructions the compiler never generates: functions using them were written in assembly
+ASM_ONLY = re.compile(r"^\s+(swpb?|mrs|msr|mcr|mrc|ldc|stc|cdp)\b", re.M)
+
+
+def asm_function(name: str, asm: str) -> str | None:
+    """Rewrites a straight-line function (no labels, no literal pool) that uses assembly-only instructions
+    as a CodeWarrior `asm` function. Returns None when the function does not qualify."""
+    body = [line.split(";")[0].rstrip() for line in asm.splitlines()[1:-1]]
+    body = [line for line in body if line.strip()]
+    if not ASM_ONLY.search(asm) or any(".L_" in line or ".word" in line or line.endswith(":") for line in body):
+        return None
+    # The clang-format guards keep the formatter from joining the instructions on one line
+    return (f"/* Uses instructions the compiler never generates: written in assembly. */\n"
+            f"// clang-format off\nasm void {name}(void) {{\n" + "\n".join(body) + "\n}\n// clang-format on\n")
+
+
 def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
     """Returns (name, size, addr, status, source). Status: match, near, size, compile, m2c."""
     name, size, addr = f
@@ -84,7 +117,12 @@ def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
                            capture_output=True, text=True)
         if r.returncode != 0:
             return name, size, addr, "m2c", ""
-        source = HEADER + r.stdout
+        if "M2C_ERROR" in r.stdout:
+            source = asm_function(name, asm)
+            if source is None:
+                return name, size, addr, "m2c", r.stdout
+        else:
+            source = HEADER + restore_leading_args(r.stdout, name)
         (t / "f.c").write_text(source)
         cmd = f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
         r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)

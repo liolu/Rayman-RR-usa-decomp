@@ -83,6 +83,15 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
 - Cause: GNU as targets ARMv4 by default and tags every `bx` with a V4BX relocation.
 - Fix: assemble the target with `-mcpu=arm946e-s` (done by `tools/permute.py`).
 
+**Assembly functions no longer compile after `pre-commit` (`add r2, r0, #0x2 swpb r0, r1, [r2] bx lr`)**
+- Cause: clang-format joins the instructions of an `asm` function on one line.
+- Fix: wrap every `asm` function in `// clang-format off` / `// clang-format on`. The moulinette re-verifies the
+  build after formatting, which is how this was caught.
+
+**`func_0200c4f8` tail call uses `r1` instead of `ip` (open)**
+- The game loads the target in `r1` (`ldr r1, =func_0200c61c; bx r1`); every C form tried (8 signatures, every
+  compiler version) uses `ip`. Possibly hand-written assembly.
+
 ## Notes
 
 **Raw address `.word 0x20bbb2c` in `func_0200b53c`**

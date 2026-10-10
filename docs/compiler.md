@@ -35,6 +35,9 @@ python tools/probe_compiler.py <file.c> <function> <address> --flags=-O4,p
 - `-lang=c`: the engine is written in C.
 
 ## Reproduced observations
+- No `__swpb` intrinsic: functions using `swp`/`swpb` (and `mrs`/`msr`) were written as `asm` functions.
+- When the first argument of a function is unused, the code still reads the second argument from `r1`: declare the
+  unused parameter.
 - Functions save `{r3, lr}` to keep the stack 8-byte aligned. This is typical of 2.0; 1.2 uses another sequence.
 - `x > 0` on an `unsigned long` compiles to `subs` + `bne` (a `!= 0` test).
 - A `static char[]` declared inside a function is placed in `.data` **before** the string literals of that function.
