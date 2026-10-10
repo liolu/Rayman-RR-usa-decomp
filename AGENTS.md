@@ -1,57 +1,101 @@
 # Instructions for AI agents
 
-Read this before making any change. This is a **matching** decompilation of Rayman Raving Rabbids (Nintendo DS, USA):
-C code compiled with the original compiler must rebuild a byte-identical ROM.
+Read this whole file before making any change. This is a **matching** decompilation of Rayman Raving Rabbids
+(Nintendo DS, USA, game code `AR5E`): C code compiled with the original compilers must rebuild a byte-identical ROM.
+
+## State (handoff of 2026-10-10)
+- **1569 / 3608 functions matched, 10.49% of the code.** ROM byte-identical. CI (lint) green.
+- `src/HIE/HieMtStk.c`: the only real, clean source file (3 functions + data, complete).
+- `src/auto/`: 1563 files (one or a few functions each), mostly **raw m2c output** that matches byte for byte but is not clean.
+- A backup of this state is on the protected branch `backup/claude-2026-10-10` (tag `claude-handoff-2026-10-10`).
+  Never force-push or delete it.
 
 ## Facts
 - Engine: Ubisoft OpenSpace / CPA (Rayman 2 engine), plain **C**. See `docs/engine.md`.
-- Compiler: Metrowerks `mwccarm` 2.0 (`2.0/sp1p5`), flags in `tools/configure.py` (`-O4,p -char signed ...`).
-  See `docs/compiler.md`.
-- Tooling: `dsd` (split/link/ROM), `objdiff` (diff), `ninja` (build). Config lives in `config/usa/arm9/`.
+- Compilers (see `docs/compiler.md`):
+  - main game: Metrowerks `mwccarm` **2.0/sp1p5** `-O4,p` (flags in `tools/configure.py`);
+  - some libraries: **1.2/sp2p3** `-O4,p` (prologue `push {lr}; sub sp, sp, #4`, epilogue `pop {..., lr}; bx lr`);
+  - one function needs 1.2/sp2p3 `-proc arm7tdmi`.
+  - Per-file compiler: `config/usa/compilers.txt` (`<source> <version> [extra flags]`), read by `configure.py`.
+- Tooling: `dsd` (split/link/ROM), `objdiff` (diff), `ninja` (build), m2c (drafts), decomp-permuter.
+  Config lives in `config/usa/arm9/` (`delinks.txt`, `symbols.txt`, `relocs.txt`).
 
 ## Hard rules
-1. **Only the build decides.** A function is matched only when objdiff reports 100% (`ninja report`, then
-   `build/usa/report.json`). A file is complete only when `ninja` still ends with `rrr_usa.nds: OK` after marking
-   it `complete`. Never claim a match from assembly that "looks the same" or code that is "equivalent".
-2. **Clean room.** Use only the game binary and public projects listed in `docs/engine.md`. Never use, reproduce or
-   recall the leaked Rayman 2 DS source code or the Nintendo SDK source code. If you recognize code from such a
-   source, stop and say so.
-3. **Natural C.** Original-looking types, control flow, macros and declaration order. No inline assembly to force a
-   compiler-generated function, no `#pragma` tricks, no hard-coded addresses where a symbol exists.
-4. **ASCII only** in `src/`, `include/` and `tools/probes/` (Shift-JIS wrapper). Comments in English.
-5. **One hypothesis at a time**, rebuild after each edit. After ~20 unsuccessful variants on a function, stop, write
-   down the diagnosis (first differing instruction + hypothesis) and move to another function.
-6. Do not modify `tools/configure.py`, compiler flags or `delinks.txt` section ranges of other files unless the task
-   asks for it. Never commit the ROM, the BIOS, `extract/` or `build/`.
+1. **Only the build decides.** A function is matched only when objdiff reports 100% (`ninja report` →
+   `build/usa/report.json`). Nothing is committed unless `python tools/match.py verify` prints `VERIFY PASSED`.
+   Gate commits on it in scripts: `python tools/match.py verify | tail -1 | grep -q "VERIFY PASSED" && git commit ...`.
+   (A command chain that ignored a failed verify once pushed a broken build.)
+2. **Clean room.** Only the game binary and the public projects listed in `docs/engine.md`. Never use, reproduce or
+   recall the leaked Rayman 2 DS source code or Nintendo SDK source code. SDK function *names* from public
+   documentation are fine when the code proves what the function does (e.g. `OS_DisableIrq`).
+3. **Natural C** for hand-written code: original-looking types, control flow, declaration order. `asm` functions only
+   for instructions the compiler never generates (`swp`, `swpb`, `mrs`, `msr`, coprocessor).
+4. **ASCII only** in `src/`, `include/`, `tools/probes/` (sjiswrap reads Shift-JIS). Comments in English.
+   `asm` functions must be wrapped in `// clang-format off` / `// clang-format on` (clang-format joins their lines).
+5. **One hypothesis at a time.** After ~20 unsuccessful variants on a function, write the diagnosis in
+   `docs/troubleshooting.md` and move on.
+6. Never commit the ROM, the BIOS, `extract/` or `build/`. Do not change `tools/configure.py` flags without
+   re-verifying the whole build.
 7. Do not contribute AI-generated code to projects that forbid it (e.g. `nitro-decomp/nitro`).
+
+## Setup
+`INSTALL.md`. Optional tools (needed by the automation): m2c and decomp-permuter clones, pointed to by
+`M2C_PATH` and `PERMUTER_PATH`; compilers by `MWCCARM`. On Windows, `bash` must be Git Bash (not WSL's), and
+`psutil` is required (`taskkill /T` relies on WMI, broken on some machines).
 
 ## Workflow
 ```shell
-python tools/configure.py usa   # once, or after editing tools/configure.py
-ninja                           # must end with: rrr_usa.nds: OK
-ninja dis                       # disassembly in build/usa/asm/
-ninja report                    # compiles src/, progress in build/usa/report.json
+python tools/configure.py usa        # once, or after editing configure.py / compilers.txt
+ninja                                # must end with: rrr_usa.nds: OK
+python tools/match.py status         # progress
+python tools/match.py verify         # the gate: ROM OK, complete files at 100%, ASCII sources
+python tools/auto_match.py           # automatic matching of m2c drafts (6-10 min), rolls back on failure
+python tools/moulinette.py           # pull, build, drafts, auto_match, verify, commit + push to main
 ```
-1. Pick a function in a delinked file (`config/usa/arm9/delinks.txt`). Start with small ones.
-2. Read its assembly in `build/usa/asm/`. Write C in `src/<MODULE>/<File>.c`, declarations in `include/<MODULE>/`.
-3. Rename symbols in `config/usa/arm9/symbols.txt` to the OpenSpace names used in the code.
-4. Iterate with `ninja report`. For quick single-function experiments:
-   `python tools/probe_compiler.py <file.c> <function> <address> --only 2.0/sp1p5 --flags=-O4,p --show`
-5. When a whole file matches: exact data sizes in `symbols.txt`, `complete` in `delinks.txt`, `ninja apply`,
-   `ninja` → `OK`.
-6. Record any new, reproduced finding in `docs/compiler.md` or `docs/troubleshooting.md`.
+Single-function work:
+```shell
+python tools/probe_compiler.py <file.c> <function> <address> --only 2.0/sp1p5 --flags=-O4,p --show
+python tools/match.py check <function> --diff
+python tools/permute.py <function> --source <file.c> --minutes 10
+```
+Near misses (same size, a few instructions differ) are in `build/auto/near/`, status of every function in
+`build/auto/status.json`. Ranking them by number of differing instructions finds the quickest wins.
 
-Before any commit, `python tools/match.py verify` must print `VERIFY PASSED`. `python tools/moulinette.py` runs
-the whole pipeline (drafts in `build/drafts/`, verification, publication); see `docs/automation.md`.
+## How `auto_match.py` works (docs/automation.md)
+For every function not covered by `delinks.txt`: m2c draft (with the engine context, then without) → repairs →
+compile with each profile of `COMPILERS` → compare. Matches go to `src/auto/<name>.c`, declared `complete` in
+`delinks.txt` (+ `compilers.txt` if not 2.0). Then `match.py verify`; on failure everything is rolled back.
+- **Context**: `include/engine.h` (hand-written types/prototypes) + `include/m2c_protos.h` (generated by
+  `tools/gen_context.py`: real prototypes from `src/` + signatures guessed by `tools/infer_signatures.py`).
+- **Frozen drafts**: integrated files copy the prototypes they use instead of including `m2c_protos.h`,
+  so regenerating it never changes how matched files compile. Keep it that way.
+- **Repairs/variants** (each one came from hand-matching a few functions, then generalizing): `NULL`, leading unused
+  arguments, byte offsets on `M2C_UNK` globals, returned values, forwarded arguments, tables at fixed addresses,
+  `volatile` fields, interrupt guards, undeclared stack slots, old-style callee declarations.
 
-Full guide: `docs/decompiling.md`. Contribution rules: `CONTRIBUTING.md`.
+## Best way to make progress (in order)
+1. **Prototypes in `include/engine.h`.** A correct prototype for a frequently called function improves every draft
+   that calls it. Find the most called functions (`bl` counts in `build/usa/asm/`), identify them from their code,
+   add the prototype, rerun `auto_match.py`.
+2. **Engine structures.** Reconstruct the real structs (objects, lists, matrices: see raymap `rrr_ds` and ACP_Ray2) in
+   `include/`, add them to the m2c context, so drafts use `p->field` instead of `M2C_FIELD(p, s32 *, 0x1C)`.
+3. **New patterns.** Take the near misses with 1-2 differing instructions, match 5 by hand, find what they share,
+   turn it into a variant/repair in `auto_match.py`, rerun. This pattern loop produced most of the progress.
+4. **Real source files.** Delink files named by assertion strings (`StdGame.c`, `Culling.c`...: list in
+   `docs/decompiling.md`), move their `src/auto/` functions in, clean them up, delete the `src/auto/` entries.
+5. Overnight: `python tools/moulinette.py --permute-near 100 --near-minutes 10`.
 
-## Known patterns
-- `x > 0` compiled as `subs`/`bne` → `x` is unsigned.
-- Assertions: `static char szFunctionName[] = "...";` at the top of the function, then
-  `func_02000f58(expr, file, szFunctionName, line)` (assert handler, not yet named).
-- dsd data sizes include padding: set `kind:data(byte[N])` with the real size.
+## Known traps (all in docs/troubleshooting.md)
+- dsd keeps stale files in `build/usa/asm/`: delete the directory before `ninja dis` (the tools do it).
+- mwldarm dead-strips unreferenced files by default: the build uses `-nodead`.
+- dsd data sizes include padding: set `kind:data(byte[N])`; after `complete`, run `ninja apply`.
+- Renaming a symbol in `symbols.txt` also requires renaming it in `src/` (grep `\bfunc_XXXXXXXX\b`).
+- `match.py progress` reads the last report: run it after `verify`, not before.
+- When writing Python that edits Python, escapes (`\b`, `\1`, `\n`) are easy to corrupt: check generated code with
+  `grep -P "[\x01-\x08]"` and `ast.parse`.
+- `func_0200c4f8` (tail call through `r1`) and `func_0200cbdc` (list search) resist; see troubleshooting.
 
 ## Git
-`main` receives pull requests. Work on a branch named after the task (e.g. `match/StdGame`), one logical change per
-pull request, and fill in the pull request checklist.
+Small logical commits on `main` are fine for automated, verified matches (the moulinette does it). For larger or
+manual changes, use a branch (`match/<file>`) and a pull request with the checklist. End commit messages with a
+`Co-Authored-By:` line for the AI that wrote them.
