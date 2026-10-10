@@ -351,7 +351,16 @@ def main():
     # dsd does not delete old files and gap file names change when delinks.txt changes
     shutil.rmtree(ASM_DIR, ignore_errors=True)
     subprocess.run(["ninja", "dis"], cwd=ROOT, check=True, capture_output=True)
+    protos = ROOT / "include" / "m2c_protos.h"
+    old_protos = protos.read_bytes() if protos.exists() else None
     subprocess.run([sys.executable, str(ROOT / "tools" / "gen_context.py")], cwd=ROOT, check=True)
+    if old_protos is not None and protos.read_bytes() != old_protos:
+        # Files already in src/ include this header: make sure they still build before going on
+        check = subprocess.run([sys.executable, "tools/match.py", "verify"], cwd=ROOT, capture_output=True, text=True)
+        if check.returncode != 0:
+            print(check.stdout[-2000:])
+            protos.write_bytes(old_protos)
+            raise SystemExit("New m2c_protos.h breaks the build: restored the previous one, stopping.")
 
     todo = candidates()
     print(f"Trying {len(todo)} functions not yet in a source file...")

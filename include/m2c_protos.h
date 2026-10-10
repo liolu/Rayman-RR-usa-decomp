@@ -2947,9 +2947,6 @@ s32 func_0206a388(void);
 #ifndef M2C_SELF_func_0206a6e8
 void func_0206a6e8(void *, void *);
 #endif
-#ifndef M2C_SELF_func_0206a74c
-void func_0206a74c(void *, void *);
-#endif
 #ifndef M2C_SELF_func_0206a7a8
 void func_0206a7a8(void *);
 #endif
