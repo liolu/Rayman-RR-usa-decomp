@@ -171,11 +171,20 @@ def cmd_progress(args):
              "",
              "| File | Code | Functions | Status |",
              "|---|---|---|---|"]
-    for u in sorted(source_units(report), key=lambda u: u["metadata"].get("source_path", "")):
+    units = sorted(source_units(report), key=lambda u: u["metadata"].get("source_path", ""))
+    auto = [u for u in units if u["metadata"].get("source_path", "").startswith("src/auto/")]
+    for u in units:
+        if u in auto:
+            continue
         um = u["measures"]
         state = "✅ complete" if u["metadata"].get("complete") else "🚧 in progress"
         lines.append(f"| `{u['metadata'].get('source_path', u['name'])}` | {pct(um, 'matched_code_percent'):.1f}% | "
                      f"{um.get('matched_functions', 0)}/{um.get('total_functions', 0)} | {state} |")
+    if auto:
+        done = sum(int(u["measures"].get("matched_functions", 0)) for u in auto)
+        total = sum(int(u["measures"].get("total_functions", 0)) for u in auto)
+        lines.append(f"| `src/auto/` ({len(auto)} files, raw m2c output) | – | {done}/{total} | "
+                     f"🤖 auto-matched, to clean up |")
     lines.append("<!-- progress:end -->")
     text = README.read_text(encoding="utf-8")
     new = re.sub(r"<!-- progress:start -->.*?<!-- progress:end -->", "\n".join(lines), text, flags=re.S)

@@ -1,0 +1,192 @@
+#!/usr/bin/env python3
+"""Automatic matching: m2c drafts that already compile to the original instructions are added to the project.
+
+    python tools/auto_match.py                       # scan every function that is not in a source file yet
+    python tools/auto_match.py --permute 20 --minutes 5   # also run the permuter on 20 near misses
+
+For every ARM function of the main module that is not covered by delinks.txt:
+  1. m2c generates a draft (`--valid-syntax`, types from include/m2c.h);
+  2. the draft is compiled with the project's compiler and flags;
+  3. if the instructions are identical, the function is written to src/auto/<name>.c and declared `complete`
+     in delinks.txt; drafts of the same size that differ in a few instructions are kept in
+     build/auto/near/ (permuter candidates).
+Finally `tools/match.py verify` runs; if it fails, every change made by this run is rolled back.
+
+src/auto/ holds raw m2c code: it matches, but it is not clean. When a real source file (e.g. StdGame.c) is
+created over the same addresses, move the functions into it and delete their src/auto entries.
+"""
+
+import argparse
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from multiprocessing import Pool
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+import probe_compiler as pc  # noqa: E402
+
+DELINKS = ROOT / "config" / "usa" / "arm9" / "delinks.txt"
+SYMBOLS = ROOT / "config" / "usa" / "arm9" / "symbols.txt"
+ASM_DIR = ROOT / "build" / "usa" / "asm"
+AUTO_SRC = ROOT / "src" / "auto"
+WORK = ROOT / "build" / "auto"
+M2C = Path(os.environ.get("M2C_PATH", ROOT / "tools" / "m2c")) / "m2c.py"
+MWCC = Path(os.environ.get("MWCCARM", ROOT / "tools" / "mwccarm")) / "2.0" / "sp1p5" / "mwccarm.exe"
+MAIN_TEXT = (0x02000000, 0x020b5f14)
+HEADER = '#include "m2c.h"\n\n'
+
+
+def covered_ranges() -> list[tuple[int, int]]:
+    files = DELINKS.read_text().split("\n\n", 1)[1] if "\n\n" in DELINKS.read_text() else ""
+    return [(int(a, 16), int(b, 16)) for a, b in re.findall(r"\.text\s+start:0x([0-9a-f]+) end:0x([0-9a-f]+)", files)]
+
+
+def candidates() -> list[tuple[str, int, int]]:
+    taken = covered_ranges()
+    out = []
+    for line in SYMBOLS.read_text().splitlines():
+        m = re.match(r"(\S+) kind:function\(arm,size=0x([0-9a-f]+)\) addr:0x([0-9a-f]+)", line)
+        if not m:
+            continue
+        name, size, addr = m.group(1), int(m.group(2), 16), int(m.group(3), 16)
+        if MAIN_TEXT[0] <= addr < MAIN_TEXT[1] and not any(a <= addr < b for a, b in taken):
+            out.append((name, size, addr))
+    return out
+
+
+_ASM = None
+
+
+def function_asm(name: str) -> str | None:
+    global _ASM
+    if _ASM is None:
+        _ASM = "\n".join(f.read_text(encoding="utf-8") for f in ASM_DIR.glob("*.s"))
+    m = re.search(rf"^{re.escape(name)}: .*?^\s+arm_func_end {re.escape(name)}$", _ASM, re.S | re.M)
+    return m.group(0) if m else None
+
+
+def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
+    """Returns (name, size, addr, status, source). Status: match, near, size, compile, m2c."""
+    name, size, addr = f
+    asm = function_asm(name)
+    if asm is None:
+        return name, size, addr, "m2c", ""
+    with tempfile.TemporaryDirectory() as tmp:
+        t = Path(tmp)
+        (t / "f.s").write_text(asm + "\n")
+        r = subprocess.run([sys.executable, str(M2C), "-t", "arm-mwcc-c", "--valid-syntax", str(t / "f.s")],
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            return name, size, addr, "m2c", ""
+        source = HEADER + r.stdout
+        (t / "f.c").write_text(source)
+        cmd = f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
+        r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
+        if r.returncode != 0 or not (t / "f.o").exists():
+            return name, size, addr, "compile", source
+        cand = pc.compiled_function(t / "f.o", name)
+        if cand is None:
+            return name, size, addr, "compile", source
+        bad, _ = pc.compare(pc.target_bytes(addr, size), cand)
+        if bad == 0:
+            return name, size, addr, "match", source
+        return name, size, addr, ("near" if len(cand) == size else "size"), source
+
+
+def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:
+    AUTO_SRC.mkdir(parents=True, exist_ok=True)
+    created = []
+    entries = []
+    for name, size, addr, source in sorted(found, key=lambda x: x[2]):
+        path = AUTO_SRC / f"{name}.c"
+        path.write_text(source, encoding="utf-8", newline="\n")
+        created.append(path)
+        entries.append(f"\nsrc/auto/{name}.c:\n    complete\n    .text       start:0x{addr:08x} end:0x{addr + size:08x}\n")
+    with DELINKS.open("a", newline="\n") as f:
+        f.writelines(entries)
+    return created
+
+
+def permute_near(near: list[tuple[str, int, int, str]], count: int, minutes: float) -> list[tuple[str, int, int, str]]:
+    """Runs the permuter on the smallest near misses; returns the ones that reached a match."""
+    won = []
+    for name, size, addr, source in sorted(near, key=lambda x: x[1])[:count]:
+        src = WORK / "near" / f"{name}.c"
+        r = subprocess.run([sys.executable, str(ROOT / "tools" / "permute.py"), name, "--source", str(src),
+                            "--minutes", str(minutes)], cwd=ROOT, capture_output=True, text=True)
+        best = sorted((ROOT / "build" / "permuter" / name).glob("output-0-*"))
+        print(f"  {name}: {'MATCH' if best else 'no match'}")
+        if best:
+            # The permuter output is preprocessed and self-contained
+            won.append((name, size, addr, (best[0] / "source.c").read_text(encoding="utf-8")))
+    return won
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("-j", type=int, default=os.cpu_count() or 4)
+    ap.add_argument("--permute", type=int, default=0, metavar="N", help="Run the permuter on N near misses")
+    ap.add_argument("--minutes", type=float, default=5.0, help="Permuter time per function")
+    ap.add_argument("--dry-run", action="store_true", help="Only report, change nothing")
+    args = ap.parse_args()
+
+    if not M2C.exists():
+        raise SystemExit(f"m2c not found at {M2C} (set M2C_PATH)")
+    # dsd does not delete old files and gap file names change when delinks.txt changes
+    shutil.rmtree(ASM_DIR, ignore_errors=True)
+    subprocess.run(["ninja", "dis"], cwd=ROOT, check=True, capture_output=True)
+
+    todo = candidates()
+    print(f"Trying {len(todo)} functions not yet in a source file...")
+    with Pool(args.j) as pool:
+        results = pool.map(try_function, todo, chunksize=8)
+
+    stats = {}
+    for r in results:
+        stats[r[3]] = stats.get(r[3], 0) + 1
+    print("Results: " + ", ".join(f"{k} {v}" for k, v in sorted(stats.items())))
+
+    found = [(n, s, a, src) for n, s, a, st, src in results if st == "match"]
+    near = [(n, s, a, src) for n, s, a, st, src in results if st == "near"]
+    WORK.mkdir(parents=True, exist_ok=True)
+    if (WORK / "near").exists():
+        shutil.rmtree(WORK / "near")
+    (WORK / "near").mkdir()
+    for n, s, a, src in near:
+        (WORK / "near" / f"{n}.c").write_text(src, encoding="utf-8")
+    (WORK / "status.json").write_text(json.dumps([r[:4] for r in results]))
+    print(f"{len(near)} near misses kept in {(WORK / 'near').relative_to(ROOT)}")
+
+    if args.permute and near:
+        print(f"Permuter on {min(args.permute, len(near))} near misses, {args.minutes} min each:")
+        found += permute_near(near, args.permute, args.minutes)
+
+    if args.dry_run or not found:
+        print("Nothing added." if not found else f"{len(found)} matches (dry run, nothing added).")
+        return
+
+    backup = DELINKS.read_bytes()
+    created = integrate(found)
+    print(f"Added {len(created)} functions to src/auto/, verifying...")
+    subprocess.run([sys.executable, "tools/configure.py", "usa"], cwd=ROOT, check=True, capture_output=True)
+    verify = subprocess.run([sys.executable, "tools/match.py", "verify"], cwd=ROOT, capture_output=True, text=True)
+    print(verify.stdout.strip().splitlines()[-1] if verify.stdout else "")
+    if verify.returncode != 0:
+        print(verify.stdout[-3000:])
+        print("Verification failed: rolling back.")
+        DELINKS.write_bytes(backup)
+        for p in created:
+            p.unlink()
+        subprocess.run([sys.executable, "tools/configure.py", "usa"], cwd=ROOT, capture_output=True)
+        sys.exit(1)
+    print(f"OK: {len(created)} new matching functions.")
+
+
+if __name__ == "__main__":
+    main()

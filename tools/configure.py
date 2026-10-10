@@ -54,7 +54,7 @@ CC_FLAGS = " ".join([
 # Passed to all modules and final arm9.o link
 LD_FLAGS = " ".join([
     "-proc arm946e",        # Target processor
-    "-dead",                # Strip unused code
+    "-nodead",              # Keep unreferenced files (dead-stripping is on by default and drops e.g. AutoloadCallback)
     "-nostdlib",            # No C/C++ standard library
     "-interworking",        # Enable ARM/Thumb interworking
     "-map closure,unused",  # Generate map file

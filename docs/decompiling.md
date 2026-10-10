@@ -22,6 +22,9 @@ This document describes how to split the game into source files and match functi
 4. **Keep the ROM matching.** Run `ninja` after every change to `config/`.
 
 ## Pick a source file
+Functions already matched automatically live in `src/auto/` (raw m2c code, see [automation.md](automation.md)).
+They count as matched, but cleaning them up and moving them into their real source file is still useful work.
+
 The game contains assertion strings that name their source file. They are the best starting points:
 
 `3dData.c`, `Brain.c`, `CollSet.c`, `Culling.c`, `Dynam.c`, `HieMtStk.c` (done), `Inters.c`, `MSSound.c`, `MSWay.c`,

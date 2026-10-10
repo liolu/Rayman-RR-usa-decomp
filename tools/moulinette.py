@@ -4,14 +4,17 @@
     python tools/moulinette.py                 # full run (see steps below)
     python tools/moulinette.py --no-push       # same, but commit locally only
     python tools/moulinette.py --permute FUNC  # also run the permuter on FUNC (10 min, --minutes to change)
+    python tools/moulinette.py --permute-near 50 --near-minutes 5   # overnight: permuter on 50 near misses
 
 Steps:
  1. `git pull --ff-only` (skipped with --offline)
  2. configure + `ninja` (extract, split, link, rebuild the ROM)
  3. `ninja dis` and m2c drafts for every unmatched function of the delinked files (build/drafts/)
- 4. optional: permuter on one function
- 5. strict verification (`tools/match.py verify`): byte-identical ROM, complete files at 100%, ASCII sources
- 6. if the verification passed and src/, include/, config/ or docs/ changed:
+ 4. automatic matching (`tools/auto_match.py`): m2c drafts that already match are added to src/auto/
+    (and, with --permute-near, the permuter tries to finish the near misses)
+ 5. optional: permuter on one function
+ 6. strict verification (`tools/match.py verify`): byte-identical ROM, complete files at 100%, ASCII sources
+ 7. if the verification passed and src/, include/, config/ or docs/ changed:
     update the README progress table, commit (listing newly matched functions) and push to main
 
 Nothing is committed or pushed when the verification fails.
@@ -19,6 +22,7 @@ Nothing is committed or pushed when the verification fails.
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -56,6 +60,9 @@ def main():
     ap.add_argument("--no-drafts", action="store_true", help="Skip m2c drafts")
     ap.add_argument("--permute", metavar="FUNCTION", help="Run the permuter on this function")
     ap.add_argument("--minutes", type=float, default=10.0, help="Permuter duration")
+    ap.add_argument("--no-auto", action="store_true", help="Skip automatic matching of m2c drafts")
+    ap.add_argument("--permute-near", type=int, default=0, metavar="N", help="Permuter on N near misses")
+    ap.add_argument("--near-minutes", type=float, default=5.0, help="Permuter time per near miss")
     args = ap.parse_args()
     py = sys.executable
 
@@ -67,6 +74,8 @@ def main():
     if not (ROOT / "build.ninja").exists():
         run([py, "tools/configure.py", "usa"])
     run(["ninja"])
+    # dsd does not delete stale files from a previous split: start from an empty directory
+    shutil.rmtree(ROOT / "build" / "usa" / "asm", ignore_errors=True)
     run(["ninja", "dis"])
 
     if not args.no_drafts:
@@ -74,6 +83,14 @@ def main():
         r = run([py, "tools/draft.py", "--worklist"], check=False)
         if r.returncode != 0:
             print("(drafts skipped: m2c not installed? see docs/automation.md)")
+
+    if not args.no_auto:
+        step("Automatic matching (m2c)")
+        cmd = [py, "tools/auto_match.py"]
+        if args.permute_near:
+            cmd += ["--permute", str(args.permute_near), "--minutes", str(args.near_minutes)]
+        if run(cmd, check=False).returncode != 0:
+            print("(automatic matching failed or was rolled back, continuing)")
 
     if args.permute:
         step(f"Permuter on {args.permute}")
@@ -111,7 +128,9 @@ def main():
             sys.exit(1)
         run(["pre-commit", "run"])
     title = f"Match {len(new)} function(s)" if new else "Update decompilation"
-    body = "\n".join(f"- {n}" for n in new)
+    body = "\n".join(f"- {n}" for n in new[:50])
+    if len(new) > 50:
+        body += f"\n- ... and {len(new) - 50} more"
     run(["git", "commit", "-m", title + ("\n\n" + body if body else "")])
     SNAPSHOT.write_text(json.dumps(sorted(now)))
     if args.no_push:

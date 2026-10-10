@@ -59,6 +59,17 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
 
 ## Automation
 
+**Files declared in `delinks.txt` disappear from the link (`Unreferenced symbols ... [whole file]`), symbols shift**
+- Cause: mwldarm dead-strips unreferenced files **by default**, e.g. `AutoloadCallback`, which is only reached
+  through the ROM header. Removing `-dead` is not enough.
+- Fix: `-nodead` in the linker flags (`tools/configure.py`).
+
+**Drafts or `auto_match` use old symbol names (link error `Undefined : "func_0201b39c"`)**
+- Cause: `dsd dis` does not delete its old output, and the gap file names change when `delinks.txt` changes, so a
+  stale `.s` file with the old names was read first.
+- Fix: delete `build/usa/asm/` before `ninja dis` (the moulinette and `auto_match.py` do it).
+
+
 **The permuter keeps running after its time limit / worker processes stay alive (Windows)**
 - Cause: `taskkill /T` needs WMI; on some Windows installs WMI is broken (`Invalid provider registration` /
   `Inscription du fournisseur non valide`), so only the parent process was stopped.
