@@ -36,12 +36,18 @@ About 220 functions (mostly around `0x0200xxxx`-`0x0201xxxx` and `0x020bxxxx`) s
 Files built with another compiler are listed in `config/usa/compilers.txt` (`<source path> <version>`), read by
 `tools/configure.py`. `tools/auto_match.py` tries 2.0/sp1p5 first, then 1.2/sp2p3, and records the files that need 1.2.
 
-## Open lead: ARMv4T-style epilogues
+## `pop {..., lr}` + `bx lr` epilogues are 1.2 too
 
-390 functions return with `pop {..., lr}` + `bx lr` instead of `pop {..., pc}` (typical of code built for an ARMv4T
-processor, where `pop {pc}` cannot switch to Thumb). 133 already match with 1.2; **257 remain**, mostly around
-`0x0200xxxx`-`0x0201xxxx` and `0x020bxxxx`. `func_02013f44` gets closer with `-proc arm7tdmi` (size 0x48 instead of
-0x4c) but does not match with any version yet. Next step: try the processor/option combinations on a few of them.
+390 functions return with `pop {..., lr}` + `bx lr` instead of `pop {..., pc}`. This first looked like code built for
+an ARMv4T processor, but it is the normal 1.2 epilogue: `func_02013f44` matches with plain 1.2/sp2p3 once its fields
+are `volatile` and its interrupt guard is written (see below). One function, `func_02098974`, needs
+`-proc arm7tdmi`; `compilers.txt` accepts extra flags after the version for such cases.
+
+## Interrupt guards
+
+The SDK interrupt helpers (named from their code: `OS_EnableIrq`, `OS_DisableIrq`, `OS_RestoreIrq`,
+`OS_DisableInterrupts`, `OS_RestoreInterrupts`, `OS_GetProcMode`) are assembly functions. Callers keep the returned
+state in `r0` and pass it back: `state = OS_DisableIrq(); ...; OS_RestoreIrq(state);`.
 
 ## Flags (`tools/configure.py`)
 

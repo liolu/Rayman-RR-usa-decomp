@@ -39,8 +39,9 @@ WORK = ROOT / "build" / "auto"
 M2C = Path(os.environ.get("M2C_PATH", ROOT / "tools" / "m2c")) / "m2c.py"
 MWCC_ROOT = Path(os.environ.get("MWCCARM", ROOT / "tools" / "mwccarm"))
 # Main compiler first, then the one used for some libraries (see docs/compiler.md)
-COMPILERS = ["2.0/sp1p5", "1.2/sp2p3"]
-MWCC = MWCC_ROOT / COMPILERS[0] / "mwccarm.exe"
+# (version, extra flags): profiles found in this game, most common first (see docs/compiler.md)
+COMPILERS = [("2.0/sp1p5", ""), ("1.2/sp2p3", ""), ("1.2/sp2p3", "-proc arm7tdmi")]
+MWCC = MWCC_ROOT / COMPILERS[0][0] / "mwccarm.exe"
 COMPILERS_TXT = ROOT / "config" / "usa" / "compilers.txt"
 MARKER = "/* compiler: "
 MAIN_TEXT = (0x02000000, 0x020b5f14)
@@ -128,17 +129,17 @@ def asm_function(name: str, asm: str) -> str | None:
 def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
     """Tries every compiler; a match with a non-default compiler is tagged with a marker comment."""
     first = None
-    for version in COMPILERS:
-        result = try_function_with(f, MWCC_ROOT / version / "mwccarm.exe")
+    for version, extra in COMPILERS:
+        result = try_function_with(f, MWCC_ROOT / version / "mwccarm.exe", extra)
         if result[3] == "match":
-            if version != COMPILERS[0]:
-                result = result[:4] + (f"{MARKER}{version} */\n" + result[4],)
+            if (version, extra) != COMPILERS[0]:
+                result = result[:4] + (f"{MARKER}{version} {extra} */\n" + result[4],)
             return result
         first = first or result
     return first
 
 
-def try_function_with(f: tuple[str, int, int], mwcc: Path) -> tuple[str, int, int, str, str]:
+def try_function_with(f: tuple[str, int, int], mwcc: Path, extra: str = "") -> tuple[str, int, int, str, str]:
     """Returns (name, size, addr, status, source). Status: match, near, size, compile, m2c."""
     name, size, addr = f
     asm = function_asm(name)
@@ -157,11 +158,11 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path) -> tuple[str, int, in
                 return name, size, addr, "m2c", r.stdout
         else:
             source = HEADER + fix_byte_offsets(restore_leading_args(r.stdout, name))
-        status = compile_and_compare(t, source, name, size, addr, mwcc)
+        status = compile_and_compare(t, source, name, size, addr, mwcc, extra)
         if status == "compile":
             fixed = compile_fixes(source)
             if fixed != source:
-                fixed_status = compile_and_compare(t, fixed, name, size, addr, mwcc)
+                fixed_status = compile_and_compare(t, fixed, name, size, addr, mwcc, extra)
                 if fixed_status != "compile":
                     source, status = fixed, fixed_status
                     if status == "match":
@@ -169,7 +170,7 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path) -> tuple[str, int, in
         if status in ("near", "size"):
             # Close but not exact: try the known m2c corrections one by one
             for variant in variants(source, name):
-                if compile_and_compare(t, variant, name, size, addr, mwcc) == "match":
+                if compile_and_compare(t, variant, name, size, addr, mwcc, extra) == "match":
                     return name, size, addr, "match", variant
         return name, size, addr, status, source
 
@@ -188,10 +189,11 @@ def compile_fixes(source: str) -> str:
     return s
 
 
-def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, mwcc: Path = MWCC) -> str:
+def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, mwcc: Path = MWCC,
+                        extra: str = "") -> str:
     (t / "f.o").unlink(missing_ok=True)
     (t / "f.c").write_text(source)
-    cmd = f'"{mwcc}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
+    cmd = f'"{mwcc}" -O4,p {pc.BASE_FLAGS} {extra} -i "{ROOT / "include"}" -c f.c -o f.o'
     r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
     if r.returncode != 0 or not (t / "f.o").exists():
         return "compile"
@@ -227,6 +229,15 @@ def variants(source: str, name: str) -> list[str]:
                    r"((\3 *)(\2 + \4))[\1]", source)
     if table != source:
         out.append(table)
+    # 5. Fields of volatile structures (hardware-like objects are re-read after every access)
+    vol = re.sub(r"M2C_FIELD\(([^,]+), (\w+) \*, ", r"M2C_FIELD(\1, volatile \2 *, ", source)
+    if vol != source:
+        out.append(vol)
+    # 6. Interrupt guards: the state returned by OS_Disable*/OS_EnableIrq is passed to OS_Restore*
+    for base in [source] + ([vol] if vol != source else []):
+        guarded = irq_guard(base, name)
+        if guarded:
+            out.append(guarded)
     # 4. Arguments forwarded to callees: m2c declares callees without parameters (`func()`), so the compiler
     #    reuses r0-r3; in the game the function passes its own first k arguments through.
     for k in range(1, 5):
@@ -234,6 +245,23 @@ def variants(source: str, name: str) -> list[str]:
         if forwarded:
             out.append(forwarded)
     return out
+
+
+IRQ_GUARDS = {"OS_DisableIrq": "OS_RestoreIrq", "OS_EnableIrq": "OS_RestoreIrq",
+              "OS_DisableInterrupts": "OS_RestoreInterrupts"}
+
+
+def irq_guard(source: str, name: str) -> str | None:
+    m = re.search(rf"^.*\b{re.escape(name)}\(.*\) \{{$", source, re.M)
+    if not m:
+        return None
+    for get, restore in IRQ_GUARDS.items():
+        if f"    {get}();" in source and f"{restore}();" in source:
+            body = source[m.end():]
+            body = body.replace(f"    {get}();", f"    m2c_irq = {get}();", 1)
+            body = re.sub(rf"\b{restore}\(\);", f"{restore}(m2c_irq);", body)
+            return source[:m.end()] + "\n    M2C_UNK m2c_irq;" + body
+    return None
 
 
 def forward_args(source: str, name: str, k: int) -> str | None:
@@ -270,7 +298,8 @@ def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:
     for path in created:
         first_line = path.read_text(encoding="utf-8").split("\n", 1)[0]
         if first_line.startswith(MARKER):
-            overrides.append(f"{path.relative_to(ROOT).as_posix()} {first_line[len(MARKER):].split()[0]}\n")
+            profile = first_line[len(MARKER):].split("*/")[0].strip()
+            overrides.append(f"{path.relative_to(ROOT).as_posix()} {profile}\n")
     if overrides:
         with COMPILERS_TXT.open("a", newline="\n") as f:
             f.writelines(overrides)

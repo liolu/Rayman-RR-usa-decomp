@@ -2,14 +2,14 @@
 #include "m2c.h"
 
 M2C_UNK func_0200caf0();                            /* extern */
-s32 func_0200e908();                                /* extern */
-M2C_UNK func_0200e91c(s32);                         /* extern */
+s32 OS_DisableIrq();                                /* extern */
+M2C_UNK OS_RestoreIrq(s32);                         /* extern */
 
 void func_0200cc08(void *arg0) {
     s32 temp_r4;
 
-    temp_r4                      = func_0200e908();
+    temp_r4                      = OS_DisableIrq();
     M2C_FIELD(arg0, s32 *, 0x64) = 1;
     func_0200caf0();
-    func_0200e91c(temp_r4);
+    OS_RestoreIrq(temp_r4);
 }

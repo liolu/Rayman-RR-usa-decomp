@@ -1,6 +1,6 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 // clang-format off
-asm void func_0200e948(void) {
+asm void OS_RestoreInterrupts(void) {
     mrs r1, cpsr
     bic r2, r1, #0xc0
     orr r2, r2, r0

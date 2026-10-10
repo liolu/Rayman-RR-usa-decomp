@@ -279,7 +279,7 @@ def main():
 
         # -MMD excludes all includes instead of just system includes for some reason, so use -MD instead.
         # $cc is set per source file (see compiler_overrides)
-        mwcc_cmd = f'{WINE} {SJISWRAP} "$cc" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
+        mwcc_cmd = f'{WINE} {SJISWRAP} "$cc" {CC_FLAGS} {CC_INCLUDES} $cc_flags $cc_extra -d $game_version -MD -c $in -o $basedir'
         mwcc_implicit = [SJISWRAP]
         if platform.system != "windows":
             transform_dep = "tools/transform_dep.py"
@@ -541,17 +541,17 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     n.newline()
 
 
-def compiler_overrides(project: Project) -> dict[str, str]:
-    """Reads <config>/compilers.txt: `<source path> <compiler version>` per line, for files that were not built
-    with MWCC_VERSION (e.g. libraries compiled with mwccarm 1.2)."""
+def compiler_overrides(project: Project) -> dict[str, tuple[str, str]]:
+    """Reads <config>/compilers.txt: `<source path> <compiler version> [extra flags]` per line, for files that were
+    not built with MWCC_VERSION (e.g. libraries compiled with mwccarm 1.2, some of them with -proc arm7tdmi)."""
     path = project.game_config / "compilers.txt"
     overrides = {}
     if path.is_file():
         for line in path.read_text().splitlines():
             line = line.split("#", 1)[0].strip()
             if line:
-                source, version = line.split()
-                overrides[source] = version
+                source, version, *flags = line.split()
+                overrides[source] = (version, " ".join(flags))
     return overrides
 
 
@@ -559,7 +559,7 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
     overrides = compiler_overrides(project)
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
-        version = overrides.get(source_file.as_posix())
+        version, cc_extra = overrides.get(source_file.as_posix(), (None, ""))
         cc = os.path.join('.', str(mwcc_root / version / "mwccarm.exe")) if version else CC
         cc_flags: list[str] = []
         if is_cpp(source_file):
@@ -574,6 +574,7 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
             variables={
                 "game_version": project.game_version,
                 "cc": cc,
+                "cc_extra": cc_extra,
                 "cc_flags": " ".join(cc_flags),
                 "basedir": os.path.dirname(src_obj_path),
                 "basefile": str(src_obj_path.with_suffix("")),

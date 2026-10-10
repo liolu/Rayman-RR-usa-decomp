@@ -79,6 +79,10 @@ added to `config/usa/compilers.txt`.
 With these rules later runs added 129, 40, 34, 15, then 129 (`NULL`), 7 (repairs) and 147 (compiler 1.2) functions
 (1,500/3,608 in total).
 
+Two more variants: fields of `volatile` structures (re-read after each access) and interrupt guards
+(`state = OS_DisableIrq(); ...; OS_RestoreIrq(state);`), alone or combined. Profiles tried, in order: 2.0/sp1p5,
+1.2/sp2p3, 1.2/sp2p3 `-proc arm7tdmi`. Later run: +12 (1,513/3,608).
+
 `src/auto/` is raw m2c code: it is byte-exact but not clean (`s32`, `M2C_FIELD(...)`, `temp_r2`...). It uses the
 types of `include/m2c.h`. Two rules:
 - when a real source file (e.g. `StdGame.c`) is delinked over the same addresses, move the functions into it, clean

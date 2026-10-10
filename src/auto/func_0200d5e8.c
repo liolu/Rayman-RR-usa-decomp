@@ -3,8 +3,8 @@
 
 M2C_UNK func_0200ccbc(void *);                      /* extern */
 M2C_UNK func_0200d498(void *, void *);              /* extern */
-s32 func_0200e908();                                /* extern */
-M2C_UNK func_0200e91c(s32);                         /* extern */
+s32 OS_DisableIrq();                                /* extern */
+M2C_UNK OS_RestoreIrq(s32);                         /* extern */
 extern M2C_UNK data_020c0c5c;
 
 void func_0200d5e8(void *arg0) {
@@ -12,7 +12,7 @@ void func_0200d5e8(void *arg0) {
     void *temp_r0;
     void *temp_r7;
 
-    temp_r4 = func_0200e908();
+    temp_r4 = OS_DisableIrq();
     temp_r7 = M2C_FIELD(&data_020c0c5c, void **, 4);
 loop_1:
     temp_r0 = M2C_FIELD(arg0, void **, 8);
@@ -28,5 +28,5 @@ loop_1:
         M2C_FIELD(temp_r7, void **, 0x84) = NULL;
         goto loop_1;
     }
-    func_0200e91c(temp_r4);
+    OS_RestoreIrq(temp_r4);
 }
