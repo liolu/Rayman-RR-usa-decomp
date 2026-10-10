@@ -35,6 +35,8 @@ python tools/probe_compiler.py <file.c> <function> <address> --flags=-O4,p
 - `-lang=c`: the engine is written in C.
 
 ## Reproduced observations
+- A value computed into `r0` right before `bx lr` (e.g. `ldr r0, [r1]; add r0, r0, #1; str r0, [r1]`) means the
+  function returns it: `return ++x;`.
 - `ldr r0, [r1, r0, lsl #N]` is a plain array access `table[i]` (or `table[i].first_field` for a stride of
   `1 << N` bytes).
 - No `__swpb` intrinsic: functions using `swp`/`swpb` (and `mrs`/`msr`) were written as `asm` functions.

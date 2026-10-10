@@ -138,18 +138,55 @@ def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
                 return name, size, addr, "m2c", r.stdout
         else:
             source = HEADER + fix_byte_offsets(restore_leading_args(r.stdout, name))
-        (t / "f.c").write_text(source)
-        cmd = f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
-        r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
-        if r.returncode != 0 or not (t / "f.o").exists():
-            return name, size, addr, "compile", source
-        cand = pc.compiled_function(t / "f.o", name)
-        if cand is None:
-            return name, size, addr, "compile", source
-        bad, _ = pc.compare(pc.target_bytes(addr, size), cand)
-        if bad == 0:
-            return name, size, addr, "match", source
-        return name, size, addr, ("near" if len(cand) == size else "size"), source
+        status = compile_and_compare(t, source, name, size, addr)
+        if status in ("near", "size"):
+            # Close but not exact: try the known m2c corrections one by one
+            for variant in variants(source, name):
+                if compile_and_compare(t, variant, name, size, addr) == "match":
+                    return name, size, addr, "match", variant
+        return name, size, addr, status, source
+
+
+def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int) -> str:
+    (t / "f.o").unlink(missing_ok=True)
+    (t / "f.c").write_text(source)
+    cmd = f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
+    r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
+    if r.returncode != 0 or not (t / "f.o").exists():
+        return "compile"
+    cand = pc.compiled_function(t / "f.o", name)
+    if cand is None:
+        return "compile"
+    bad, _ = pc.compare(pc.target_bytes(addr, size), cand)
+    if bad == 0:
+        return "match"
+    return "near" if len(cand) == size else "size"
+
+
+def variants(source: str, name: str) -> list[str]:
+    """Rewrites of a near-miss draft for m2c mistakes seen in this game (docs/automation.md)."""
+    out = []
+    # 1. The function returns the value it just stored (m2c typed it void): `return x = v;`
+    m = re.search(rf"^void ({re.escape(name)}\(.*\) \{{)$", source, re.M)
+    last = re.search(r"^    ([^;\n]+?) (=|\+=|-=|\|=|&=) ([^;\n]+);\n\}", source, re.M)
+    if m and last and last.start() > m.start():
+        returned = source[:last.start()] + f"    return {last.group(1)} {last.group(2)} {last.group(3)};\n}}" + \
+            source[last.end():]
+        out.append(returned.replace(f"void {m.group(1)}", f"s32 {m.group(1)}", 1))
+    # 2. Pointer + constant meant in bytes (m2c scales it by the pointee size)
+    ptrs = set(re.findall(r"\b\w+ \*(arg\d+)\b", source))
+    bytes_ = re.sub(r"\b(arg\d+) \+ (0x[0-9A-Fa-f]+|\d+)\b",
+                    lambda mm: f"((s8 *){mm.group(1)} + {mm.group(2)})" if mm.group(1) in ptrs else mm.group(0), source)
+    bytes_ = re.sub(r"\(M2C_UNK \*\)\(\(s8 \*\)&(\w+) \+ \(([^()]*)\)\) \+ (0x[0-9A-Fa-f]+|\d+)",
+                    r"(void *)((s8 *)&\1 + (\2) + \3)", bytes_)
+    if bytes_ != source:
+        out.append(bytes_)
+    # 3. Table at a fixed address: M2C_FIELD(((i * 4) + BASE), s32 *, OFF) -> ((s32 *)(BASE + OFF))[i]
+    table = re.sub(r"M2C_FIELD\(\(\((\w+) \* 4\) \+ (0x[0-9A-Fa-f]+)\), (\w+) \*, (0x[0-9A-Fa-f]+|\d+)\)",
+                   r"((\3 *)(\2 + \4))[\1]", source)
+    if table != source:
+        out.append(table)
+    return out
 
 
 def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:

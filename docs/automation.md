@@ -60,7 +60,13 @@ Two corrections are applied to the drafts automatically:
   `M2C_UNK` (4 bytes) so C would scale the offset again. The addition is rewritten in bytes. In clean code these
   are arrays: `data_X[i].field`.
 
-With these rules later runs added 129, then 40 functions (1,158/3,608 in total).
+When a draft is close but not exact, `auto_match` also tries these rewrites one by one:
+- **Returned value.** m2c types a function `void` when no caller uses its result, but the code keeps the stored
+  value in `r0`: `return x = v;` / `return ++x;`.
+- **Pointer + constant in bytes.** `arg1 + 8` on an `s32 *` means 8 bytes, not 8 elements.
+- **Table at a fixed address.** `M2C_FIELD(((i * 4) + 0x027FF000), s32 *, 0xDA0)` is `((s32 *)0x027FFDA0)[i]`.
+
+With these rules later runs added 129, 40, then 34 functions (1,197/3,608 in total).
 
 `src/auto/` is raw m2c code: it is byte-exact but not clean (`s32`, `M2C_FIELD(...)`, `temp_r2`...). It uses the
 types of `include/m2c.h`. Two rules:
