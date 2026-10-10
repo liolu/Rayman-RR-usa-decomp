@@ -37,7 +37,12 @@ ASM_DIR = ROOT / "build" / "usa" / "asm"
 AUTO_SRC = ROOT / "src" / "auto"
 WORK = ROOT / "build" / "auto"
 M2C = Path(os.environ.get("M2C_PATH", ROOT / "tools" / "m2c")) / "m2c.py"
-MWCC = Path(os.environ.get("MWCCARM", ROOT / "tools" / "mwccarm")) / "2.0" / "sp1p5" / "mwccarm.exe"
+MWCC_ROOT = Path(os.environ.get("MWCCARM", ROOT / "tools" / "mwccarm"))
+# Main compiler first, then the one used for some libraries (see docs/compiler.md)
+COMPILERS = ["2.0/sp1p5", "1.2/sp2p3"]
+MWCC = MWCC_ROOT / COMPILERS[0] / "mwccarm.exe"
+COMPILERS_TXT = ROOT / "config" / "usa" / "compilers.txt"
+MARKER = "/* compiler: "
 MAIN_TEXT = (0x02000000, 0x020b5f14)
 HEADER = '#include "m2c.h"\n\n'
 
@@ -121,6 +126,19 @@ def asm_function(name: str, asm: str) -> str | None:
 
 
 def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
+    """Tries every compiler; a match with a non-default compiler is tagged with a marker comment."""
+    first = None
+    for version in COMPILERS:
+        result = try_function_with(f, MWCC_ROOT / version / "mwccarm.exe")
+        if result[3] == "match":
+            if version != COMPILERS[0]:
+                result = result[:4] + (f"{MARKER}{version} */\n" + result[4],)
+            return result
+        first = first or result
+    return first
+
+
+def try_function_with(f: tuple[str, int, int], mwcc: Path) -> tuple[str, int, int, str, str]:
     """Returns (name, size, addr, status, source). Status: match, near, size, compile, m2c."""
     name, size, addr = f
     asm = function_asm(name)
@@ -139,19 +157,41 @@ def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
                 return name, size, addr, "m2c", r.stdout
         else:
             source = HEADER + fix_byte_offsets(restore_leading_args(r.stdout, name))
-        status = compile_and_compare(t, source, name, size, addr)
+        status = compile_and_compare(t, source, name, size, addr, mwcc)
+        if status == "compile":
+            fixed = compile_fixes(source)
+            if fixed != source:
+                fixed_status = compile_and_compare(t, fixed, name, size, addr, mwcc)
+                if fixed_status != "compile":
+                    source, status = fixed, fixed_status
+                    if status == "match":
+                        return name, size, addr, status, source
         if status in ("near", "size"):
             # Close but not exact: try the known m2c corrections one by one
             for variant in variants(source, name):
-                if compile_and_compare(t, variant, name, size, addr) == "match":
+                if compile_and_compare(t, variant, name, size, addr, mwcc) == "match":
                     return name, size, addr, "match", variant
         return name, size, addr, status, source
 
 
-def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int) -> str:
+def compile_fixes(source: str) -> str:
+    """Repairs m2c output that the compiler rejects (docs/automation.md)."""
+    s = source
+    # Callees declared with a parameter list but called with fewer arguments: use old-style declarations
+    s = re.sub(r"^(.*?\b\w+)\([^()]*\);(\s*/\* extern \*/)$", r"\1();\2", s, flags=re.M)
+    # `*(void *)0x04000060 = ...` is not valid C
+    s = s.replace("*(void *)", "*(M2C_UNK *)")
+    # Dereference of a variable that m2c typed as an integer: `*var_r1 = arg0;`
+    integers = set(re.findall(r"\b(?:s8|u8|s16|u16|s32|u32|M2C_UNK) (\w+)(?=[;,)])", s))
+    s = re.sub(r"(?<![\w)\]])\*(\w+)\b",
+               lambda m: f"*(M2C_UNK *){m.group(1)}" if m.group(1) in integers else m.group(0), s)
+    return s
+
+
+def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, mwcc: Path = MWCC) -> str:
     (t / "f.o").unlink(missing_ok=True)
     (t / "f.c").write_text(source)
-    cmd = f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
+    cmd = f'"{mwcc}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o'
     r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
     if r.returncode != 0 or not (t / "f.o").exists():
         return "compile"
@@ -225,6 +265,15 @@ def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:
         entries.append(f"\nsrc/auto/{name}.c:\n    complete\n    .text       start:0x{addr:08x} end:0x{addr + size:08x}\n")
     with DELINKS.open("a", newline="\n") as f:
         f.writelines(entries)
+    # Files matched with another compiler are recorded in compilers.txt (read by tools/configure.py)
+    overrides = []
+    for path in created:
+        first_line = path.read_text(encoding="utf-8").split("\n", 1)[0]
+        if first_line.startswith(MARKER):
+            overrides.append(f"{path.relative_to(ROOT).as_posix()} {first_line[len(MARKER):].split()[0]}\n")
+    if overrides:
+        with COMPILERS_TXT.open("a", newline="\n") as f:
+            f.writelines(overrides)
     return created
 
 
@@ -287,6 +336,7 @@ def main():
         return
 
     backup = DELINKS.read_bytes()
+    compilers_backup = COMPILERS_TXT.read_bytes() if COMPILERS_TXT.exists() else b""
     created = integrate(found)
     print(f"Added {len(created)} functions to src/auto/, verifying...")
     subprocess.run([sys.executable, "tools/configure.py", "usa"], cwd=ROOT, check=True, capture_output=True)
@@ -296,6 +346,7 @@ def main():
         print(verify.stdout[-3000:])
         print("Verification failed: rolling back.")
         DELINKS.write_bytes(backup)
+        COMPILERS_TXT.write_bytes(compilers_backup)
         for p in created:
             p.unlink()
         subprocess.run([sys.executable, "tools/configure.py", "usa"], cwd=ROOT, capture_output=True)

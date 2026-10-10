@@ -69,7 +69,15 @@ When a draft is close but not exact, `auto_match` also tries these rewrites one 
 - **Forwarded arguments.** m2c declares callees without parameters (`func()`), so the compiler feels free to reuse
   `r0`-`r3`. When the game keeps them intact, the function passes its own first 1-4 arguments to the callee.
 
-With these rules later runs added 129, 40, 34, then 15 functions (1,217/3,608 in total).
+Drafts that do not compile get mechanical repairs first: old-style declarations for callees (`func();`),
+`*(void *)addr` → `*(M2C_UNK *)addr`, and dereferences of variables m2c typed as integers. `include/m2c.h` also
+defines `NULL`, whose absence alone blocked 512 drafts.
+
+Every draft is tried with 2.0/sp1p5, then with 1.2/sp2p3 (see [compiler.md](compiler.md)); files that need 1.2 are
+added to `config/usa/compilers.txt`.
+
+With these rules later runs added 129, 40, 34, 15, then 129 (`NULL`), 7 (repairs) and 147 (compiler 1.2) functions
+(1,500/3,608 in total).
 
 `src/auto/` is raw m2c code: it is byte-exact but not clean (`s32`, `M2C_FIELD(...)`, `temp_r2`...). It uses the
 types of `include/m2c.h`. Two rules:

@@ -15,6 +15,10 @@ typedef double f64;
 
 typedef s32 M2C_UNK;
 
+#ifndef NULL
+    #define NULL ((void *) 0)
+#endif
+
 /* Access to a struct field whose type is not reconstructed yet. */
 #define M2C_FIELD(base, type, offset) (*(type) ((s8 *) (base) + (offset)))
 

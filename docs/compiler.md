@@ -27,6 +27,15 @@ to match although everything looks right, run the probe against all versions:
 python tools/probe_compiler.py <file.c> <function> <address> --flags=-O4,p
 ```
 
+## A second compiler: mwccarm 1.2 for some libraries
+
+About 220 functions (mostly around `0x0200xxxx`-`0x0201xxxx` and `0x020bxxxx`) start with `push {lr}` +
+`sub sp, sp, #0x4` and return with `ldmfd` + `bx lr`: the 1.2 prologue. They match with **1.2 (base to sp2p3)**
+`-O4,p`, never with 2.0. These are probably libraries built separately.
+
+Files built with another compiler are listed in `config/usa/compilers.txt` (`<source path> <version>`), read by
+`tools/configure.py`. `tools/auto_match.py` tries 2.0/sp1p5 first, then 1.2/sp2p3, and records the files that need 1.2.
+
 ## Flags (`tools/configure.py`)
 
 `-O4,p -enum int -char signed -str noreuse -proc arm946e -gccext,on -fp soft -inline noauto -lang=c -interworking`

@@ -278,8 +278,9 @@ def main():
         n.newline()
 
         # -MMD excludes all includes instead of just system includes for some reason, so use -MD instead.
-        mwcc_cmd = f'{WINE} {SJISWRAP} "{CC}" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
-        mwcc_implicit = [CC, SJISWRAP]
+        # $cc is set per source file (see compiler_overrides)
+        mwcc_cmd = f'{WINE} {SJISWRAP} "$cc" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
+        mwcc_implicit = [SJISWRAP]
         if platform.system != "windows":
             transform_dep = "tools/transform_dep.py"
             mwcc_cmd += f" && $python {transform_dep} $basefile.d $basefile.d"
@@ -540,9 +541,26 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     n.newline()
 
 
+def compiler_overrides(project: Project) -> dict[str, str]:
+    """Reads <config>/compilers.txt: `<source path> <compiler version>` per line, for files that were not built
+    with MWCC_VERSION (e.g. libraries compiled with mwccarm 1.2)."""
+    path = project.game_config / "compilers.txt"
+    overrides = {}
+    if path.is_file():
+        for line in path.read_text().splitlines():
+            line = line.split("#", 1)[0].strip()
+            if line:
+                source, version = line.split()
+                overrides[source] = version
+    return overrides
+
+
 def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: list[str]):
+    overrides = compiler_overrides(project)
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
+        version = overrides.get(source_file.as_posix())
+        cc = os.path.join('.', str(mwcc_root / version / "mwccarm.exe")) if version else CC
         cc_flags: list[str] = []
         if is_cpp(source_file):
             cc_flags.append("-lang=c++")
@@ -550,11 +568,12 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
             cc_flags.append("-lang=c")
         n.build(
             inputs=str(source_file),
-            implicit=mwcc_implicit,
+            implicit=mwcc_implicit + [cc],
             rule="mwcc",
             outputs=str(src_obj_path.with_suffix(".o")),
             variables={
                 "game_version": project.game_version,
+                "cc": cc,
                 "cc_flags": " ".join(cc_flags),
                 "basedir": os.path.dirname(src_obj_path),
                 "basefile": str(src_obj_path.with_suffix("")),
