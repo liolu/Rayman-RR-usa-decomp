@@ -65,6 +65,10 @@ state in `r0` and pass it back: `state = OS_DisableIrq(); ...; OS_RestoreIrq(sta
   `1 << N` bytes).
 - Hardware registers are `volatile`; a register written as two words at `addr` and `addr + 4` is a 64-bit register
   (e.g. `REG_SQRT_PARAM` at `0x040002B8`): otherwise the compiler merges the addresses into `base + offset`.
+- `mul` (32-bit) instead of `smulbb` (16-bit) for `count * 12` means the size is `count * sizeof(elem)`:
+  `sizeof` is unsigned long, so the product is computed on 32 bits.
+- `smlabb` with a `short` argument indexes a table through a pointer to it: `&g_p_stTable[wIndex]`.
+- Copy loops written as `if (n <= 0) return; do { n--; *p op= v; p++; } while (n > 0);`.
 - No `__swpb` intrinsic: functions using `swp`/`swpb` (and `mrs`/`msr`) were written as `asm` functions.
 - When the first argument of a function is unused, the code still reads the second argument from `r1`: declare the
   unused parameter.

@@ -6036,3 +6036,27 @@ src/auto/func_02018ddc.c:
 src/auto/func_02073bc4.c:
     complete
     .text       start:0x02073bc4 end:0x02073c98
+
+src/auto/func_0200c8f0.c:
+    complete
+    .text       start:0x0200c8f0 end:0x0200c928
+
+src/auto/func_0202f778.c:
+    complete
+    .text       start:0x0202f778 end:0x0202f7a4
+
+src/auto/func_02054248.c:
+    complete
+    .text       start:0x02054248 end:0x02054280
+
+src/auto/func_020544d8.c:
+    complete
+    .text       start:0x020544d8 end:0x02054510
+
+src/auto/func_02078194.c:
+    complete
+    .text       start:0x02078194 end:0x020781b8
+
+src/auto/func_020781b8.c:
+    complete
+    .text       start:0x020781b8 end:0x020781dc

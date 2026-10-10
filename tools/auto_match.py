@@ -186,6 +186,12 @@ def compile_fixes(source: str) -> str:
     integers = set(re.findall(r"\b(?:s8|u8|s16|u16|s32|u32|M2C_UNK) (\w+)(?=[;,)])", s))
     s = re.sub(r"(?<![\w)\]])\*(\w+)\b",
                lambda m: f"*(M2C_UNK *){m.group(1)}" if m.group(1) in integers else m.group(0), s)
+    # Stack slots m2c refers to without declaring them (sp10, saved_reg_r4...): declare them as locals
+    declared = set(re.findall(r"\b(?:s8|u8|s16|u16|s32|u32|M2C_UNK|void \*) \*?(\w+)(?=[;,)\[])", s))
+    used = sorted(set(re.findall(r"\b(sp[0-9A-F]+|saved_reg_r\d+|unksp[0-9A-F]+)\b", s)) - declared)
+    if used:
+        decls = "".join(f"\n    M2C_UNK {u};" for u in used)
+        s = re.sub(r"^(\S.*\) \{)$", lambda m: m.group(1) + decls, s, count=1, flags=re.M)
     return s
 
 
