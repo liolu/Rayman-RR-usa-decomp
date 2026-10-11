@@ -48,6 +48,25 @@ MAIN_TEXT = (0x02000000, 0x020b5f14)
 CONTEXT = ROOT / "build" / "auto" / "m2c_context.c"
 
 
+def run_limited(cmd, cwd=None, shell=False, timeout=60):
+    """subprocess.run with a time limit; the compiler sometimes loops forever on odd sources.
+    On timeout the whole process tree is killed and a failed result is returned."""
+    p = subprocess.Popen(cmd, shell=shell, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        out, err = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        import psutil
+        try:
+            for c in psutil.Process(p.pid).children(recursive=True):
+                c.kill()
+            p.kill()
+        except Exception:
+            pass
+        p.communicate()
+        return subprocess.CompletedProcess(cmd, 1, "", "timeout")
+    return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+
+
 def header(name: str) -> str:
     # m2c_protos.h declares every known function except the one defined in this file
     return f'#define M2C_SELF_{name}\n#include "m2c_protos.h"\n\n'
@@ -223,7 +242,7 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path, extra: str = "") -> t
         best = (name, size, addr, "m2c", "")
         for cmd, head in ((m2c[:-1] + ["--context", str(CONTEXT), m2c[-1]], header(name)),
                           (m2c, '#include "m2c.h"\n\n')):
-            result = evaluate(t, subprocess.run(cmd, capture_output=True, text=True), head, asm, f, mwcc, extra)
+            result = evaluate(t, run_limited(cmd), head, asm, f, mwcc, extra)
             if RANK[result[3]] > RANK[best[3]]:
                 best = result
             if best[3] == "match":
@@ -287,7 +306,7 @@ def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, m
     (t / "f.o").unlink(missing_ok=True)
     (t / "f.c").write_text(source)
     cmd = f'"{mwcc}" -O4,p {pc.BASE_FLAGS} {extra} -i "{ROOT / "include"}" -c f.c -o f.o'
-    r = subprocess.run(cmd, shell=True, cwd=t, capture_output=True, text=True)
+    r = run_limited(cmd, cwd=t, shell=True)
     if r.returncode != 0 or not (t / "f.o").exists():
         return "compile"
     cand = pc.compiled_function(t / "f.o", name)
