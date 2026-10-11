@@ -28,4 +28,5 @@ extract/*/
 # Optional third-party tools (see docs/automation.md)
 /tools/m2c/
 /tools/decomp-permuter/
+/tools/mwccarm/
 __pycache__/

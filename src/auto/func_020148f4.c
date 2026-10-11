@@ -1,6 +1,6 @@
 /* compiler: 1.2/sp2p3 */
-#include "m2c.h"
 #include "engine.h"
+#include "m2c.h"
 
 void func_02014794(fx32);
 fx32 func_020147d0(void);
