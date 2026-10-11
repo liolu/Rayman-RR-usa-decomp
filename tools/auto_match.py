@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from multiprocessing import Pool
 from pathlib import Path
 
@@ -48,7 +49,10 @@ MAIN_TEXT = (0x02000000, 0x020b5f14)
 CONTEXT = ROOT / "build" / "auto" / "m2c_context.c"
 
 
-def run_limited(cmd, cwd=None, shell=False, timeout=60):
+FUNCTION_BUDGET = 45  # seconds spent on one function over all compilers/variants
+
+
+def run_limited(cmd, cwd=None, shell=False, timeout=15):
     """subprocess.run with a time limit; the compiler sometimes loops forever on odd sources.
     On timeout the whole process tree is killed and a failed result is returned."""
     p = subprocess.Popen(cmd, shell=shell, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -209,7 +213,10 @@ def asm_function_general(name: str, asm: str) -> str | None:
 def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
     """Tries every compiler; a match with a non-default compiler is tagged with a marker comment."""
     first = None
+    t0 = time.time()
     for version, extra in COMPILERS:
+        if first is not None and time.time() - t0 > FUNCTION_BUDGET:
+            break
         result = try_function_with(f, MWCC_ROOT / version / "mwccarm.exe", extra)
         if result[3] == "match":
             if (version, extra) != COMPILERS[0]:
@@ -527,8 +534,7 @@ def main():
     if verify.returncode != 0:
         print(verify.stdout[-3000:])
         WORK.mkdir(parents=True, exist_ok=True)
-        (WORK / 'verify_fail.log').write_text(verify.stdout + '
-' + verify.stderr, encoding='utf-8')
+        (WORK / 'verify_fail.log').write_text(verify.stdout + chr(10) + verify.stderr, encoding='utf-8')
         print("Verification failed: rolling back.")
         DELINKS.write_bytes(backup)
         COMPILERS_TXT.write_bytes(compilers_backup)
