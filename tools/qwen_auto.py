@@ -104,7 +104,7 @@ def chat_loop(model: str, work: Path, name: str, addr: int, diff: str, minutes: 
     history = []
     while time.time() < deadline:
         messages.append({"role": "user", "content": f"File:\n```c\n{work.read_text(encoding='utf-8')}```\n\n{diff}"})
-        body = json.dumps({"model": model, "messages": messages[-7:], "stream": False,
+        body = json.dumps({"model": model, "messages": messages[:1] + messages[1:][-6:], "stream": False,
                            "options": {"temperature": 0.7}, "think": False}).encode()
         try:
             req = urllib.request.Request("http://127.0.0.1:11434/api/chat", body,
@@ -115,11 +115,20 @@ def chat_loop(model: str, work: Path, name: str, addr: int, diff: str, minutes: 
             history.append(f"(request failed: {e})")
             break
         messages.append({"role": "assistant", "content": reply})
-        m = re.search(r"```(?:c)?\n(.*?)```", reply, re.S)
-        if not m:
+        m = re.search(r"```[a-zA-Z]*\s*\n(.*?)```", reply, re.S)
+        code = m.group(1) if m else None
+        if code is None and name in reply and "{" in reply:
+            # No fences: keep from the first #include / declaration to the last closing brace
+            starts = [i for i in (reply.find("#include"), reply.find("s32 "), reply.find("void ")) if i >= 0]
+            end = reply.rfind("}")
+            if starts and min(starts) < end:
+                code = reply[min(starts):end + 1] + "\n"
+        if code is None:
             history.append("(no code block)")
+            if history.count("(no code block)") >= 3:
+                break  # the model does not follow the format: give up on this function
+            messages.append({"role": "user", "content": "Reply with the complete C file inside ```c ... ``` only."})
             continue
-        code = m.group(1)
         if any(ord(c) > 127 for c in code):
             code = "".join(c for c in code if ord(c) < 128)
         work.write_text(code, encoding="utf-8", newline="\n")
