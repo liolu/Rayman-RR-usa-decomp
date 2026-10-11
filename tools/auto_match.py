@@ -526,6 +526,9 @@ def main():
     print(verify.stdout.strip().splitlines()[-1] if verify.stdout else "")
     if verify.returncode != 0:
         print(verify.stdout[-3000:])
+        WORK.mkdir(parents=True, exist_ok=True)
+        (WORK / 'verify_fail.log').write_text(verify.stdout + '
+' + verify.stderr, encoding='utf-8')
         print("Verification failed: rolling back.")
         DELINKS.write_bytes(backup)
         COMPILERS_TXT.write_bytes(compilers_backup)
