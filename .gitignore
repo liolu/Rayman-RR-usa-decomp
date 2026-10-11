@@ -30,3 +30,10 @@ extract/*/
 /tools/decomp-permuter/
 /tools/mwccarm/
 __pycache__/
+
+# local tooling / editors / nested clone
+/.qwen/
+/.vs/
+/Modelfile*
+/QWEN.md
+/Rayman-RR-usa-decomp/
