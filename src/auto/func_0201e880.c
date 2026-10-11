@@ -1,0 +1,74 @@
+#include "m2c.h"
+
+/* Uses instructions the compiler never generates: written in assembly. */
+extern void func_02018a48();
+extern void func_0201ea9c();
+extern char data_020bb604[];
+extern char data_020c4a64[];
+extern char func_0201e810[];
+// clang-format off
+asm void func_0201e880(void) {
+    stmfd sp!, {r4, lr}
+    ldr r2, =data_020c4a64
+    mov r4, r0
+    ldr r1, [r2, #0x20]
+    ldr r0, [r1, #0x34]
+    str r0, [r1, #0x38]
+    ldr r1, [r2, #0x20]
+    ldr r0, [r1, #0x38]
+    add r1, r1, #0x3c
+    mov r0, r0, asr #0xc
+    swpb r0, r0, [r1]
+    ldr r3, [r2, #0x20]
+    ldr r1, [r3, #0x34]
+    ldr r0, [r3, #0x38]
+    cmp r0, r1
+    blt L_0201e8f8
+    mov r0, r1, asr #0xc
+    add r1, r3, #0x3c
+    swpb r0, r0, [r1]
+    ldr r1, [r2, #0x20]
+    ldr r0, [r1, #0x50]
+    cmp r0, #0x0
+    ldreq r0, =func_0201e810
+    streq r0, [r1, #0x18]
+    beq L_0201e8f8
+    mov r0, #0x0
+    str r0, [r1, #0x50]
+    ldr r0, [r2, #0x20]
+    ldr r1, =func_0201ea9c
+    str r1, [r0, #0x18]
+L_0201e8f8:
+    ldr r0, =data_020c4a64
+    ldr r2, [r0, #0x20]
+    ldr r0, [r2, #0x14]
+    tst r0, #0x2
+    ldreq r0, [r2, #0x34]
+    moveq r0, r0, asr #0xc
+    rsbeq r0, r0, r0, lsl #0x8
+    beq L_0201e928
+    ldrsb r0, [r2, #0x3c]
+    ldrsb r1, [r2, #0x3d]
+    mov r0, r0, lsl #0x1
+    mul r0, r1, r0
+L_0201e928:
+    strh r0, [r2, #0x3e]
+    ldr r0, =data_020c4a64
+    ldr r1, =data_020bb604
+    ldr r2, [r0, #0x20]
+    mov r0, #0x0
+    ldrsh r2, [r2, #0x3e]
+    mov r2, r2, asr #0x8
+    mov r2, r2, lsl #0x1
+    ldrsh r1, [r1, r2]
+    bl func_02018a48
+    ldr r0, =data_020c4a64
+    ldr r0, [r0, #0x20]
+    ldr r0, [r0, #0x50]
+    cmp r0, #0x0
+    ldmeqfd sp!, {r4, pc}
+    mov r0, r4
+    bl func_0201ea9c
+    ldmfd sp!, {r4, pc}
+}
+// clang-format on

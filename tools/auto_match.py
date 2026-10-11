@@ -131,6 +131,62 @@ def asm_function(name: str, asm: str) -> str | None:
             f"// clang-format off\nasm void {name}(void) {{\n" + "\n".join(body) + "\n}\n// clang-format on\n")
 
 
+COPROC = re.compile(r"^(\s*)(mcr2?|mrc2?|cdp2?|ldc2?l?|stc2?l?)\b(.*)$")
+
+
+def asm_function_general(name: str, asm: str) -> str | None:
+    """Like asm_function, for assembly-only functions with local labels and a literal pool: the pool words
+    become `ldr rX, =value` (the compiler rebuilds the pool) and `.L_xxx` labels become plain labels."""
+    lines = [line.split(";")[0].rstrip() for line in asm.splitlines()[1:-1]]
+    lines = [line for line in lines if line.strip()]
+    pool = {}
+    body = []
+    for line in lines:
+        m = re.match(r"^\.L_(\w+): \.word (.+)$", line)
+        if m:
+            pool[m.group(1)] = m.group(2).strip()
+        elif re.match(r"^\s*\.(?!L_)", line) or ".word" in line:
+            return None  # other directives (jump tables, data in code...)
+        else:
+            body.append(line)
+    if not ASM_ONLY.search(asm) or not body:
+        return None
+    out, calls, data = [], set(), set()
+    for line in body:
+        m = re.match(r"^\.L_(\w+):$", line)
+        if m:
+            out.append(f"L_{m.group(1)}:")
+            continue
+        # mwcc's assembler only knows the stack-addressing-mode spellings
+        line = re.sub(r"^(\s*)push(\w{0,2})\s+", r"\1stm\2fd sp!, ", line)
+        line = re.sub(r"^(\s*)pop(\w{0,2})\s+", r"\1ldm\2fd sp!, ", line)
+        line = re.sub(r"^(\s*)ldm(\w{0,2})db\b", r"\1ldm\2ea", line)
+        line = re.sub(r"^(\s*)stm(\w{0,2})db\b", r"\1stm\2fd", line)
+        line = re.sub(r"^(\s*)(ldm|stm)(eq|ne|cs|hs|cc|lo|mi|pl|vs|vc|hi|ls|ge|lt|gt|le)?\s+", r"\1\2\3ia ", line)
+        line = re.sub(r"^(\s*)(lsl|lsr|asr|ror)(s?)(eq|ne|cs|hs|cc|lo|mi|pl|vs|vc|hi|ls|ge|lt|gt|le)?\s+(\w+),\s*(\w+),\s*(.+)$",
+                      lambda m: f"{m.group(1)}mov{m.group(4) or ''}{m.group(3)} {m.group(5)}, {m.group(6)}, "
+                                f"{m.group(2)} {m.group(7)}", line)
+        c = COPROC.match(line)
+        if c:
+            line = c.group(1) + c.group(2) + c.group(3).replace("#", "")
+        m = re.match(r"^(\s*ldr\w*\s+\w+,\s*)\.L_(\w+)$", line)
+        if m and m.group(2) in pool:
+            value = pool[m.group(2)]
+            out.append(f"{m.group(1)}={value}")
+            data.update(re.findall(r"[A-Za-z_]\w*", re.sub(r"0x[0-9a-fA-F]+", "", value)))
+            continue
+        m = re.match(r"^(\s*b\w*\s+)(\w+)$", line)  # b / bl / bx lr / conditional forms
+        if m and not re.match(r"^\s*bx", line) and m.group(2) not in ("lr",):
+            calls.add(m.group(2))
+        line = re.sub(r"\.L_(\w+)", r"L_\1", line)
+        out.append(line)
+    calls = {c for c in calls if not c.startswith("L_")}
+    decls = "".join(f"extern void {c}();\n" for c in sorted(calls))
+    decls += "".join(f"extern char {d}[];\n" for d in sorted(data - calls - {name}))
+    return (f"/* Uses instructions the compiler never generates: written in assembly. */\n{decls}"
+            f"// clang-format off\nasm void {name}(void) {{\n" + "\n".join(out) + "\n}\n// clang-format on\n")
+
+
 def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
     """Tries every compiler; a match with a non-default compiler is tagged with a marker comment."""
     first = None
@@ -152,6 +208,13 @@ def try_function_with(f: tuple[str, int, int], mwcc: Path, extra: str = "") -> t
         return name, size, addr, "m2c", ""
     with tempfile.TemporaryDirectory() as tmp:
         t = Path(tmp)
+        if ASM_ONLY.search(asm):
+            # m2c cannot express these instructions: go straight to an assembly-language rewrite
+            source = asm_function(name, asm) or asm_function_general(name, asm)
+            if source:
+                status = compile_and_compare(t, '#include "m2c.h"\n\n' + source, name, size, addr, mwcc, extra)
+                if status == "match":
+                    return name, size, addr, status, '#include "m2c.h"\n\n' + source
         (t / "f.s").write_text(asm + "\n")
         m2c = [sys.executable, str(M2C), "-t", "arm-mwcc-c", "--valid-syntax", str(t / "f.s")]
         # With the context first, then without it: guessed signatures help most drafts but can also make m2c
