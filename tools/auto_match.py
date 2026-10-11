@@ -530,6 +530,22 @@ def main():
     print(f"Added {len(created)} functions to src/auto/, verifying...")
     subprocess.run([sys.executable, "tools/configure.py", "usa"], cwd=ROOT, check=True, capture_output=True)
     verify = subprocess.run([sys.executable, "tools/match.py", "verify"], cwd=ROOT, capture_output=True, text=True)
+    for _ in range(8):
+        bad = re.findall(r"FAIL: (src/auto/\S+?\.c) is marked complete", verify.stdout) if verify.returncode else []
+        if not bad:
+            break
+        print(f"Dropping {len(bad)} file(s) that do not match once linked: " + ", ".join(bad[:5]))
+        text = DELINKS.read_text()
+        for rel in bad:
+            text = re.sub(r"\n" + re.escape(rel) + r":\n    complete\n    \.text[^\n]*\n", "\n", text)
+            (ROOT / rel).unlink(missing_ok=True)
+        DELINKS.write_text(text, newline="\n")
+        if COMPILERS_TXT.exists():
+            keep = [l for l in COMPILERS_TXT.read_text().splitlines(True) if l.split(" ")[0] not in bad]
+            COMPILERS_TXT.write_text("".join(keep), newline="\n")
+        created = [c for c in created if c.relative_to(ROOT).as_posix() not in bad]
+        subprocess.run([sys.executable, "tools/configure.py", "usa"], cwd=ROOT, check=True, capture_output=True)
+        verify = subprocess.run([sys.executable, "tools/match.py", "verify"], cwd=ROOT, capture_output=True, text=True)
     print(verify.stdout.strip().splitlines()[-1] if verify.stdout else "")
     if verify.returncode != 0:
         print(verify.stdout[-3000:])
