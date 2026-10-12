@@ -65,6 +65,12 @@ When a draft is close but not exact, `auto_match` also tries these rewrites one 
   value in `r0`: `return x = v;` / `return ++x;`.
 - **Pointer + constant in bytes.** `arg1 + 8` on an `s32 *` means 8 bytes, not 8 elements.
 - **Table at a fixed address.** `M2C_FIELD(((i * 4) + 0x027FF000), s32 *, 0xDA0)` is `((s32 *)0x027FFDA0)[i]`.
+- **Accumulated flags.** m2c folds `x = 0; if (a) x |= 0x10;` into `x = 0x10;` (`orr` became `mov`): when `x` is
+  also accumulated with `|=` / `+=` elsewhere, the plain assignments are turned back into `|=` / `+=`.
+- **Typed tables at unknown globals.** `*(&data_X + (i * 2))` loses the load type (`ldrsh` became `ldr`): it is
+  rewritten `((s16 *)&data_X)[i]` (`u16`, and `s8`/`u8` for byte offsets, `s32` for `* 4`).
+  These two rules matched 5 of the 208 near misses at once (`func_0201e748`, `func_02052390`, `func_02072f54`,
+  `func_02078134`, `func_0207d158`).
 
 - **Forwarded arguments.** m2c declares callees without parameters (`func()`), so the compiler feels free to reuse
   `r0`-`r3`. When the game keeps them intact, the function passes its own first 1-4 arguments to the callee.

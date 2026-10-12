@@ -209,7 +209,11 @@ def main():
     todo = [(n, s, a) for n, s, a, st in json.loads(STATUS.read_text()) if st == "near" and (NEAR / f"{n}.c").exists()]
     if args.function:
         todo = [t for t in todo if t[0] == args.function]
-    todo = sorted((t for t in todo if t[0] not in tried), key=lambda t: t[1])
+    import tempfile
+    import auto_match as am
+    todo = [t for t in todo if t[0] not in tried]
+    with tempfile.TemporaryDirectory() as tmp:  # fewest differing instructions first
+        todo.sort(key=lambda t: (am.diff_count(Path(tmp), *t, (NEAR / f"{t[0]}.c").read_text(encoding="utf-8")), t[1]))
     if args.max:
         todo = todo[:args.max]
     log(f"{len(todo)} functions to try with {args.model}")

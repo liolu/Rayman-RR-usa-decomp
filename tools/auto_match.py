@@ -362,6 +362,15 @@ def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, m
     return "near" if len(cand) == size else "size"
 
 
+def diff_count(t: Path, name: str, size: int, addr: int, source: str) -> int:
+    """Number of differing instructions of a draft (a large number when it does not compile)."""
+    (t / "f.o").unlink(missing_ok=True)
+    (t / "f.c").write_text(source)
+    run_limited(f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o', cwd=t, shell=True)
+    cand = pc.compiled_function(t / "f.o", name) if (t / "f.o").exists() else None
+    return pc.compare(pc.target_bytes(addr, size), cand)[0] if cand else 10**6
+
+
 def variants(source: str, name: str) -> list[str]:
     """Rewrites of a near-miss draft for m2c mistakes seen in this game (docs/automation.md)."""
     out = []
@@ -405,6 +414,73 @@ def variants(source: str, name: str) -> list[str]:
         forwarded = forward_args(source, name, k)
         if forwarded:
             out.append(forwarded)
+    # 8. Accumulated flags/sums: m2c folds `x = 0; if (c) x |= 0x10;` into `x = 0x10;`
+    out += accumulate(source)
+    # 9. Element type of tables at unknown globals: `*(&data_X + (i * 2))` -> `((s16 *)&data_X)[i]`
+    out += typed_tables(source)
+    return out
+
+
+def accumulate(source: str) -> list[str]:
+    """`x = K;` after `x = 0;` where x is also accumulated with `|=` / `+=`: the original accumulated there too."""
+    out = []
+    zero = set(re.findall(r"^\s+(\w+) = 0;$", source, re.M))
+    for op in ("|=", "+="):
+        names = zero & set(re.findall(rf"^\s+(\w+) {re.escape(op)} ", source, re.M))
+        if not names:
+            continue
+        fixed = re.sub(r"^(\s+)(\w+) = (?!0;)([^;\n]+);$",
+                       lambda m: f"{m.group(1)}{m.group(2)} {op} {m.group(3)};" if m.group(2) in names else m.group(0),
+                       source, flags=re.M)
+        if fixed != source:
+            out.append(fixed)
+    return out
+
+
+def _closing(s: str, i: int) -> int:
+    """Index of the parenthesis closing the one opened just before s[i]."""
+    depth = 1
+    while i < len(s):
+        depth += {"(": 1, ")": -1}.get(s[i], 0)
+        if depth == 0:
+            return i
+        i += 1
+    return -1
+
+
+TABLE_TYPES = {1: ("s8", "u8"), 2: ("s16", "u16"), 4: ("s32",)}
+
+
+def typed_tables(source: str) -> list[str]:
+    """m2c leaves `*(&data_X + byte_offset)` when data_X is an `M2C_UNK`: the load type is lost. Rewrite it as an
+    indexed table of each plausible element type (from the scale of the offset)."""
+    out = []
+    for g in sorted(set(re.findall(r"^extern M2C_UNK (\w+);", source, re.M))):
+        for ty_index in range(2):
+            fixed, pos, changed = source, 0, False
+            while True:
+                start = fixed.find(f"*(&{g} + ", pos)
+                if start < 0:
+                    break
+                body = start + len(f"*(&{g} + ")
+                end = _closing(fixed, body)
+                if end < 0:
+                    break
+                offset = fixed[body:end]
+                scale = 1
+                m = re.fullmatch(r"\((.*) \* ([124])\)", offset)
+                if m and _closing(offset, 1) == len(offset) - 1:
+                    offset, scale = m.group(1), int(m.group(2))
+                types = TABLE_TYPES[scale]
+                if ty_index >= len(types):
+                    pos = end
+                    continue
+                repl = f"(({types[ty_index]} *)&{g})[{offset}]"
+                fixed = fixed[:start] + repl + fixed[end + 1:]
+                pos = start + len(repl)
+                changed = True
+            if changed:
+                out.append(fixed)
     return out
 
 def stack_buffers(source: str, name: str) -> str | None:
@@ -551,7 +627,10 @@ def integrate(found: list[tuple[str, int, int, str]]) -> list[Path]:
 def permute_near(near: list[tuple[str, int, int, str]], count: int, minutes: float) -> list[tuple[str, int, int, str]]:
     """Runs the permuter on the smallest near misses; returns the ones that reached a match."""
     won = []
-    for name, size, addr, source in sorted(near, key=lambda x: x[1])[:count]:
+    # Fewest differing instructions first: those are the ones the permuter can actually finish
+    with tempfile.TemporaryDirectory() as tmp:
+        ranked = sorted(near, key=lambda x: (diff_count(Path(tmp), *x), x[1]))
+    for name, size, addr, source in ranked[:count]:
         src = WORK / "near" / f"{name}.c"
         r = subprocess.run([sys.executable, str(ROOT / "tools" / "permute.py"), name, "--source", str(src),
                             "--minutes", str(minutes)], cwd=ROOT, capture_output=True, text=True)
