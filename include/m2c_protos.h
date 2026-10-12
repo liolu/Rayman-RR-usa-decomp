@@ -3882,6 +3882,9 @@ void func_0208d000(void *, M2C_UNK);
 #ifndef M2C_SELF_func_0208d1f0
 s32 func_0208d1f0(void *, s32 *);
 #endif
+#ifndef M2C_SELF_func_0208d2e4
+s32 func_0208d2e4(void *);
+#endif
 #ifndef M2C_SELF_func_0208d61c
 void func_0208d61c(s32, M2C_UNK, M2C_UNK, s32 *, s32 *, s32);
 #endif
@@ -8156,9 +8159,6 @@ void func_0208c750(M2C_UNK, M2C_UNK);
 #endif
 #ifndef M2C_SELF_func_0208cf58
 void func_0208cf58(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
-#endif
-#ifndef M2C_SELF_func_0208d2e4
-void func_0208d2e4(M2C_UNK);
 #endif
 #ifndef M2C_SELF_func_0208d56c
 M2C_UNK func_0208d56c(M2C_UNK, M2C_UNK, M2C_UNK);
