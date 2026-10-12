@@ -8208,3 +8208,7 @@ src/auto/func_02078134.c:
 src/auto/func_0207d158.c:
     complete
     .text       start:0x0207d158 end:0x0207d1c8
+
+src/auto/func_0208d2e4.c:
+    complete
+    .text       start:0x0208d2e4 end:0x0208d32c
