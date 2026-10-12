@@ -118,6 +118,20 @@ every function already defined in `src/` to `include/m2c_protos.h`, and gives th
 - **Adding a correct prototype to `engine.h` improves every draft that calls the function**: it is the cheapest way
   to help the automation. First run with the context: +23 functions.
 
+## Restarting what was already tried
+
+The tools remember their failures so that a normal pass only handles what is new. For a longer pass that redoes
+everything, `moulinette.py --restart` forgets that memory first:
+
+```shell
+python tools/moulinette.py --restart                      # all: m2c cache, permuter history, Qwen list
+python tools/moulinette.py --restart permuter --permute-near 100 --near-minutes 15
+python tools/moulinette.py --restart auto                 # only build/auto/cache.jsonl
+python tools/moulinette.py --restart qwen                 # only build/qwen_auto/tried.json
+```
+
+The permuter history is moved to `build/auto/history/` rather than deleted. Matched functions are never touched.
+
 ## Daily loop (human part)
 
 1. Run the moulinette once: it refreshes drafts for the functions left to do.
