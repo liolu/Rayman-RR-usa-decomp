@@ -255,4 +255,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from pipeline_lock import pipeline_lock
+
+    with pipeline_lock("qwen_auto"):
+        main()

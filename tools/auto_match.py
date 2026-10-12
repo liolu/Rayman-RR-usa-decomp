@@ -319,7 +319,8 @@ def evaluate(t: Path, r: subprocess.CompletedProcess, head: str, asm: str, f: tu
                     return name, size, addr, status, source
     if status in ("near", "size"):
         # Close but not exact: try the known m2c corrections one by one
-        for variant in variants(source, name):
+        singles = variants(source, name)
+        for variant in singles:
             if compile_and_compare(t, variant, name, size, addr, mwcc, extra) == "match":
                 return name, size, addr, "match", variant
     return name, size, addr, status, source
@@ -362,13 +363,15 @@ def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, m
     return "near" if len(cand) == size else "size"
 
 
-def diff_count(t: Path, name: str, size: int, addr: int, source: str) -> int:
-    """Number of differing instructions of a draft (a large number when it does not compile)."""
+def diff_count(t: Path, name: str, size: int, addr: int, source: str, mwcc: Path = MWCC, extra: str = "") -> int:
+    """Number of differing instructions of a draft (a large number when it does not compile or changes size)."""
     (t / "f.o").unlink(missing_ok=True)
     (t / "f.c").write_text(source)
-    run_limited(f'"{MWCC}" -O4,p {pc.BASE_FLAGS} -i "{ROOT / "include"}" -c f.c -o f.o', cwd=t, shell=True)
+    run_limited(f'"{mwcc}" -O4,p {pc.BASE_FLAGS} {extra} -i "{ROOT / "include"}" -c f.c -o f.o', cwd=t, shell=True)
     cand = pc.compiled_function(t / "f.o", name) if (t / "f.o").exists() else None
-    return pc.compare(pc.target_bytes(addr, size), cand)[0] if cand else 10**6
+    if not cand or len(cand) != size:
+        return 10**6
+    return pc.compare(pc.target_bytes(addr, size), cand)[0]
 
 
 def variants(source: str, name: str) -> list[str]:
@@ -761,4 +764,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from pipeline_lock import pipeline_lock
+
+    with pipeline_lock("auto_match"):
+        main()
