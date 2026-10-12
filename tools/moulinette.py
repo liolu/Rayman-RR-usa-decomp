@@ -5,8 +5,14 @@
     python tools/moulinette.py --no-push       # same, but commit locally only
     python tools/moulinette.py --permute FUNC  # also run the permuter on FUNC (10 min, --minutes to change)
     python tools/moulinette.py --permute-near 50 --near-minutes 5   # overnight: permuter on 50 near misses
+    python tools/moulinette.py --games         # list the games (projets/*) with their progress
+    python tools/moulinette.py --game heroes-of-mana     # run on another game (a unique part of the name is enough)
+    python tools/moulinette.py --choose        # numbered menu to pick the game
     python tools/moulinette.py --restart       # forget everything already tried, then run (longer pass)
     python tools/moulinette.py --restart permuter --permute-near 100 --near-minutes 15
+
+Without `--game`, the project this file belongs to is used. Other games commit locally and are never pushed unless
+they have a git remote. The game's own `tools/` are used, so each game keeps its own version of the tools.
 
 `--restart [all|auto|permuter|qwen]` clears what the tools remember as "already seen", so the next pass redoes it:
   auto      build/auto/cache.jsonl (m2c drafts and their results: every function is tried again)
@@ -37,10 +43,83 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-REPORT = ROOT / "build" / "usa" / "report.json"
-SNAPSHOT = ROOT / "build" / "usa" / "published_matches.json"
+HOME = Path(__file__).resolve().parent.parent  # the project this file belongs to
+PROJECTS = HOME.parent
 TRACKED = ["src", "include", "config", "docs", "tools", "README.md", "CONTRIBUTING.md", "INSTALL.md", "AGENTS.md"]
+
+
+def version_of(root: Path) -> str:
+    """Game version (usa, eu, jp...) = the directory of config/ that holds an arm9 config."""
+    found = sorted(p.parent.parent.name for p in (root / "config").glob("*/arm9/config.yaml"))
+    return found[0] if found else "usa"
+
+
+def set_project(root: Path):
+    """Points every path of this script to one game."""
+    global ROOT, VER, REPORT, SNAPSHOT, MEMORIES
+    ROOT, VER = root, version_of(root)
+    REPORT = ROOT / "build" / VER / "report.json"
+    SNAPSHOT = ROOT / "build" / VER / "published_matches.json"
+    MEMORIES = {
+        "auto": ROOT / "build" / "auto" / "cache.jsonl",
+        "permuter": ROOT / "build" / "auto" / "permute_state.json",
+        "qwen": ROOT / "build" / "qwen_auto" / "tried.json",
+    }
+
+
+def games() -> list[Path]:
+    return sorted(p for p in PROJECTS.iterdir() if (p / "tools" / "match.py").exists() and (p / "config").is_dir()
+                  and any((p / "config").glob("*/arm9/config.yaml")))
+
+
+def game_status(root: Path) -> str:
+    ver = version_of(root)
+    try:
+        m = json.loads((root / "build" / ver / "report.json").read_text())["measures"]
+        return f"{ver:4} {m.get('matched_functions', 0)}/{m['total_functions']} functions"
+    except Exception:
+        return f"{ver:4} (not built yet)"
+
+
+def resolve_game(name: str) -> Path:
+    """Exact slug, else the only game whose name contains `name`."""
+    all_games = games()
+    exact = [g for g in all_games if g.name == name]
+    hits = exact or [g for g in all_games if name.lower() in g.name.lower()]
+    if len(hits) != 1:
+        options = ", ".join(g.name for g in (hits or all_games))
+        raise SystemExit(f"Game {name!r}: {'ambiguous' if hits else 'not found'}. Candidates: {options}")
+    return hits[0]
+
+
+def choose_game() -> Path:
+    all_games = games()
+    print("Games:")
+    for i, g in enumerate(all_games, 1):
+        print(f"  {i:2}. {g.name:42} {game_status(g)}")
+    answer = input("Number or part of the name (empty = rayman-rr): ").strip()
+    if not answer:
+        return HOME
+    return all_games[int(answer) - 1] if answer.isdigit() and 1 <= int(answer) <= len(all_games)         else resolve_game(answer)
+
+
+def pick_project(argv: list[str]) -> Path:
+    """Reads --game / --games / --choose before the lock is taken (the lock is per game)."""
+    if "--games" in argv:
+        for g in games():
+            print(f"{g.name:42} {game_status(g)}")
+        raise SystemExit(0)
+    if "--choose" in argv:
+        return choose_game()
+    for i, a in enumerate(argv):
+        if a == "--game" and i + 1 < len(argv):
+            return resolve_game(argv[i + 1])
+        if a.startswith("--game="):
+            return resolve_game(a.split("=", 1)[1])
+    return HOME
+
+
+set_project(HOME)
 
 
 def step(title: str):
@@ -60,13 +139,6 @@ def matched_functions() -> set[str]:
     report = json.loads(REPORT.read_text())
     return {f["name"] for u in report["units"] if not u.get("metadata", {}).get("auto_generated")
             for f in u.get("functions", []) if float(f.get("fuzzy_match_percent", 0)) == 100.0}
-
-
-MEMORIES = {
-    "auto": ROOT / "build" / "auto" / "cache.jsonl",
-    "permuter": ROOT / "build" / "auto" / "permute_state.json",
-    "qwen": ROOT / "build" / "qwen_auto" / "tried.json",
-}
 
 
 def restart(scope: str):
@@ -91,6 +163,9 @@ def restart(scope: str):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--game", metavar="NAME", help="Game to work on (folder of projets/, a unique part is enough)")
+    ap.add_argument("--games", action="store_true", help="List the games with their progress and exit")
+    ap.add_argument("--choose", action="store_true", help="Pick the game from a numbered menu")
     ap.add_argument("--restart", nargs="?", const="all", choices=["all", "auto", "permuter", "qwen"],
                     help="Forget what was already tried (default: all) so that the pass redoes it")
     ap.add_argument("--no-push", action="store_true", help="Commit locally, do not push")
@@ -108,16 +183,19 @@ def main():
     if args.restart:
         restart(args.restart)
 
-    if not args.offline:
+    has_remote = bool(run(["git", "remote"], check=False, capture=True).stdout.strip())
+    print(f"Game: {ROOT.name} ({VER})" + ("" if has_remote else " - no git remote: commits stay local"))
+
+    if has_remote and not args.offline:
         step("Sync with GitHub")
         run(["git", "pull", "--ff-only"], check=False)
 
     step("Build")
     if not (ROOT / "build.ninja").exists():
-        run([py, "tools/configure.py", "usa"])
+        run([py, "tools/configure.py", VER])
     run(["ninja"])
     # dsd does not delete stale files from a previous split: start from an empty directory
-    shutil.rmtree(ROOT / "build" / "usa" / "asm", ignore_errors=True)
+    shutil.rmtree(ROOT / "build" / VER / "asm", ignore_errors=True)
     run(["ninja", "dis"])
 
     if not args.no_drafts:
@@ -155,8 +233,9 @@ def main():
         return
 
     step("Publish")
-    run([py, "tools/match.py", "progress"])
-    run(["git", "add", "--", *TRACKED])
+    run([py, "tools/match.py", "progress"], check=False)  # games without a progress table in README.md: skipped
+    tracked = [t for t in TRACKED if (ROOT / t).exists()]
+    run(["git", "add", "--", *tracked])
     if run(["git", "diff", "--cached", "--quiet"], check=False).returncode == 0:
         print("Nothing to commit.")
         SNAPSHOT.write_text(json.dumps(sorted(now)))
@@ -164,7 +243,7 @@ def main():
     hooks = run(["pre-commit", "run"], check=False)
     if hooks.returncode != 0:
         # Hooks may have reformatted files: re-verify the reformatted code before committing
-        run(["git", "add", "--", *TRACKED])
+        run(["git", "add", "--", *tracked])
         if run([py, "tools/match.py", "verify"], check=False).returncode != 0:
             print("Verification failed after formatting: nothing committed.")
             sys.exit(1)
@@ -175,8 +254,8 @@ def main():
         body += f"\n- ... and {len(new) - 50} more"
     run(["git", "commit", "-m", title + ("\n\n" + body if body else "")])
     SNAPSHOT.write_text(json.dumps(sorted(now)))
-    if args.no_push:
-        print("Committed locally (--no-push).")
+    if args.no_push or not has_remote:
+        print("Committed locally" + (" (--no-push)." if args.no_push else " (no git remote)."))
         return
     run(["git", "push", "origin", "HEAD:main"])
     print("Pushed to main.")
@@ -186,5 +265,7 @@ if __name__ == "__main__":
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from pipeline_lock import pipeline_lock
 
-    with pipeline_lock("moulinette"):
+    if not ({"-h", "--help"} & set(sys.argv[1:])):
+        set_project(pick_project(sys.argv[1:]))  # before the lock: it is taken per game
+    with pipeline_lock("moulinette", ROOT):
         main()

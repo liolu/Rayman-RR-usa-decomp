@@ -118,6 +118,21 @@ every function already defined in `src/` to `include/m2c_protos.h`, and gives th
 - **Adding a correct prototype to `engine.h` improves every draft that calls the function**: it is the cheapest way
   to help the automation. First run with the context: +23 functions.
 
+## Choosing the game
+
+The moulinette works on any game of `projets/`, not only this one:
+
+```shell
+python tools/moulinette.py --games                       # list the games with their progress
+python tools/moulinette.py --game heroes-of-mana         # a unique part of the name is enough (--game hero)
+python tools/moulinette.py --choose                      # numbered menu
+```
+
+`moulinette-jeu.cmd` (in `decomp ds/`) opens that menu with a double-click. The selected game uses **its own**
+`tools/` and its own version (`usa`, `eu`, `jp`...), and the lock is per game, so two different games can run at the
+same time. Games without a git remote (all but this one) commit locally and are never pushed; a game without a
+progress table in its `README.md` just skips that step.
+
 ## Restarting what was already tried
 
 The tools remember their failures so that a normal pass only handles what is new. For a longer pass that redoes

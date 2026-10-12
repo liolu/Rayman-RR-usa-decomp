@@ -28,15 +28,16 @@ def _alive(pid: int) -> bool:
 
 
 @contextmanager
-def pipeline_lock(owner: str):
+def pipeline_lock(owner: str, root: Path | None = None):
     if {"-h", "--help"} & set(sys.argv[1:]):
         yield  # printing the help changes nothing: no need to wait for a running pipeline
         return
-    LOCK.parent.mkdir(parents=True, exist_ok=True)
+    lock = (root / "build" / "pipeline.lock") if root else LOCK  # one lock per game
+    lock.parent.mkdir(parents=True, exist_ok=True)
     held_by_parent = False
-    if LOCK.exists():
+    if lock.exists():
         try:
-            info = json.loads(LOCK.read_text())
+            info = json.loads(lock.read_text())
         except ValueError:
             info = {}
         pid = int(info.get("pid", 0))
@@ -44,12 +45,12 @@ def pipeline_lock(owner: str):
             held_by_parent = True
         elif pid and _alive(pid):
             raise SystemExit(f"{info.get('owner', 'another tool')} (PID {pid}) is already running: wait for it to "
-                             f"finish. If it crashed, delete {LOCK.relative_to(ROOT)}.")
+                             f"finish. If it crashed, delete {lock}.")
     if not held_by_parent:
-        LOCK.write_text(json.dumps({"pid": os.getpid(), "owner": owner}))
+        lock.write_text(json.dumps({"pid": os.getpid(), "owner": owner}))
         os.environ["PIPELINE_LOCK_PID"] = str(os.getpid())  # inherited by the tools this process starts
     try:
         yield
     finally:
         if not held_by_parent:
-            LOCK.unlink(missing_ok=True)
+            lock.unlink(missing_ok=True)
