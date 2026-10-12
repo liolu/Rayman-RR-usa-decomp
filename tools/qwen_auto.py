@@ -12,7 +12,9 @@ re-checks it with probe_compiler. Only an exact match is integrated (src/auto/, 
 Needs build/auto/status.json and build/auto/near/ (run `python tools/auto_match.py` first).
 """
 import argparse
+import difflib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -94,18 +96,37 @@ Keep the first two lines and the function name. ASCII only.
 Answer with the COMPLETE new C file in a single ```c code block and nothing else."""
 
 
+def score(out: str) -> int:
+    """Distance of a probe result: 0 = MATCH, then differing instructions, then wrong size, then compile error."""
+    last = out.strip().splitlines()[-1] if out.strip() else ""
+    if last.rstrip().endswith("MATCH"):
+        return 0
+    m = re.search(r"(\d+)/\d+ diff", last)
+    if not m:
+        return 10000
+    return int(m.group(1)) + (1000 if "(size" in last else 0)
+
+
 def chat_loop(model: str, work: Path, name: str, addr: int, diff: str, minutes: float) -> str:
-    """Asks the model for a full new file, compiles it, feeds the new diff back, until MATCH or timeout."""
-    import re
+    """Asks the model for a full new file, compiles it, until MATCH or timeout.
+
+    Every request starts from the BEST version so far (not the last one), with a short list of the attempts that
+    failed: a small model otherwise drifts further away at each step."""
     import urllib.request
     deadline = time.time() + minutes * 60
-    messages = [{"role": "system", "content": CHAT_SYSTEM}]
-    best = work.read_text(encoding="utf-8")
-    history = []
+    best, best_out = work.read_text(encoding="utf-8"), diff
+    best_score = score(diff)
+    history, tried_notes = [], []
     while time.time() < deadline:
-        messages.append({"role": "user", "content": f"File:\n```c\n{work.read_text(encoding='utf-8')}```\n\n{diff}"})
-        body = json.dumps({"model": model, "messages": messages[:1] + messages[1:][-6:], "stream": False,
-                           "options": {"temperature": 0.7}, "think": False}).encode()
+        notes = ""
+        if tried_notes:
+            notes = "\n\nAlready tried from this file, all worse or equal (do something different):\n" + \
+                "\n".join(tried_notes[-6:])
+        messages = [{"role": "system", "content": CHAT_SYSTEM},
+                    {"role": "user", "content": f"File:\n```c\n{best}```\n\nResult of this file:\n{best_out}{notes}"}]
+        temp = min(1.0, 0.4 + 0.1 * len(tried_notes))  # more variety after each failure
+        body = json.dumps({"model": model, "messages": messages, "stream": False,
+                           "options": {"temperature": temp}, "think": False}).encode()
         try:
             req = urllib.request.Request("http://127.0.0.1:11434/api/chat", body,
                                          {"Content-Type": "application/json"})
@@ -114,7 +135,6 @@ def chat_loop(model: str, work: Path, name: str, addr: int, diff: str, minutes: 
         except Exception as e:  # timeout, Ollama not running...
             history.append(f"(request failed: {e})")
             break
-        messages.append({"role": "assistant", "content": reply})
         m = re.search(r"```[a-zA-Z]*\s*\n(.*?)```", reply, re.S)
         code = m.group(1) if m else None
         if code is None and name in reply and "{" in reply:
@@ -127,19 +147,26 @@ def chat_loop(model: str, work: Path, name: str, addr: int, diff: str, minutes: 
             history.append("(no code block)")
             if history.count("(no code block)") >= 3:
                 break  # the model does not follow the format: give up on this function
-            messages.append({"role": "user", "content": "Reply with the complete C file inside ```c ... ``` only."})
             continue
         if any(ord(c) > 127 for c in code):
             code = "".join(c for c in code if ord(c) < 128)
         work.write_text(code, encoding="utf-8", newline="\n")
         ok, out = probe(work, name, addr, show=True)
         last = out.strip().splitlines()[-1] if out.strip() else "(no output)"
-        history.append(last)
+        s = score(out)
+        history.append(f"{last}  (best {min(s, best_score)})")
         if ok:
             return "\n".join(history)
-        diff = out
-    work.write_text(best, encoding="utf-8", newline="\n") if not probe(work, name, addr)[0] else None
-    return "\n".join(history[-10:])
+        if s < best_score:
+            best, best_out, best_score, tried_notes = code, out, s, []
+        else:
+            # Remember what failed, with the compiler error if there was one
+            err = [l for l in out.splitlines() if "rror" in l][:2] if s >= 10000 else []
+            changed = [l[1:] for l in difflib.unified_diff(best.splitlines(), code.splitlines(), lineterm="", n=0)
+                       if l[:1] in "+-" and l[:3] not in ("+++", "---")][:6]
+            tried_notes.append(f"- change {changed} -> {last.split(':', 1)[-1].strip()} {' '.join(err)}"[:400])
+    work.write_text(best, encoding="utf-8", newline="\n")
+    return "\n".join(history[-12:])
 
 
 def integrate_and_verify(name: str, size: int, addr: int, source: str) -> bool:
