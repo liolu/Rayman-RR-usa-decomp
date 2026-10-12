@@ -5,6 +5,15 @@
     python tools/moulinette.py --no-push       # same, but commit locally only
     python tools/moulinette.py --permute FUNC  # also run the permuter on FUNC (10 min, --minutes to change)
     python tools/moulinette.py --permute-near 50 --near-minutes 5   # overnight: permuter on 50 near misses
+    python tools/moulinette.py --restart       # forget everything already tried, then run (longer pass)
+    python tools/moulinette.py --restart permuter --permute-near 100 --near-minutes 15
+
+`--restart [all|auto|permuter|qwen]` clears what the tools remember as "already seen", so the next pass redoes it:
+  auto      build/auto/cache.jsonl (m2c drafts and their results: every function is tried again)
+  permuter  build/auto/permute_state.json (near misses the permuter already tried; the old file is kept in
+            build/auto/history/)
+  qwen      build/qwen_auto/tried.json (functions the Qwen autopilot already failed on)
+Nothing that is already matched is touched: only the memory of failures.
 
 Steps:
  1. `git pull --ff-only` (skipped with --offline)
@@ -25,6 +34,7 @@ import json
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -52,8 +62,37 @@ def matched_functions() -> set[str]:
             for f in u.get("functions", []) if float(f.get("fuzzy_match_percent", 0)) == 100.0}
 
 
+MEMORIES = {
+    "auto": ROOT / "build" / "auto" / "cache.jsonl",
+    "permuter": ROOT / "build" / "auto" / "permute_state.json",
+    "qwen": ROOT / "build" / "qwen_auto" / "tried.json",
+}
+
+
+def restart(scope: str):
+    """Forgets what the tools already tried. The permuter history is archived, the others are regenerable."""
+    step(f"Restart: forgetting what was already tried ({scope})")
+    names = list(MEMORIES) if scope == "all" else [scope]
+    for name in names:
+        path = MEMORIES[name]
+        if not path.exists():
+            print(f"  {name}: nothing to forget")
+            continue
+        if name == "permuter":
+            history = path.parent / "history"
+            history.mkdir(exist_ok=True)
+            archive = history / f"permute_state-{time.strftime('%Y%m%d-%H%M%S')}.json"
+            shutil.move(str(path), str(archive))
+            print(f"  {name}: cleared (old state kept in {archive.relative_to(ROOT).as_posix()})")
+        else:
+            path.unlink()
+            print(f"  {name}: cleared ({path.relative_to(ROOT).as_posix()})")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--restart", nargs="?", const="all", choices=["all", "auto", "permuter", "qwen"],
+                    help="Forget what was already tried (default: all) so that the pass redoes it")
     ap.add_argument("--no-push", action="store_true", help="Commit locally, do not push")
     ap.add_argument("--no-commit", action="store_true", help="Verify only, do not commit")
     ap.add_argument("--offline", action="store_true", help="Do not git pull")
@@ -65,6 +104,9 @@ def main():
     ap.add_argument("--near-minutes", type=float, default=5.0, help="Permuter time per near miss")
     args = ap.parse_args()
     py = sys.executable
+
+    if args.restart:
+        restart(args.restart)
 
     if not args.offline:
         step("Sync with GitHub")

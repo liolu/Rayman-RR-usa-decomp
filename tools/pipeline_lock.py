@@ -11,6 +11,7 @@ started by the moulinette) can take it again.
 
 import json
 import os
+import sys
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -28,6 +29,9 @@ def _alive(pid: int) -> bool:
 
 @contextmanager
 def pipeline_lock(owner: str):
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        yield  # printing the help changes nothing: no need to wait for a running pipeline
+        return
     LOCK.parent.mkdir(parents=True, exist_ok=True)
     held_by_parent = False
     if LOCK.exists():
