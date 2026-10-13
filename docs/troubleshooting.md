@@ -30,11 +30,29 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
 - Cause: dsd includes alignment padding in data symbol sizes (0x20 instead of 0x1f).
 - Fix: give the real size in `symbols.txt`, e.g. `kind:data(byte[31])`.
 
-**`func_0200cbdc` (search in a linked list) does not match (open)**
+**`func_0200cbdc` (search in a linked list) — solved with a `goto` loop**
 - Symptom: the game has `b <test>` at the top of the loop and a separate `bxeq lr`. Every tried form (`for`,
   `while`, `break`, `return` inside the loop) gives either a rotated loop or conditional instructions
   (`ldrne`/`cmpne`). Same result with every 2.0 compiler, so it is not a compiler version issue.
-- Ideas: an OpenSpace list macro (`LST_M_...` in ACP_Ray2), an inline function, or different flags for that file.
+- Fix: the shape with `goto` and the test labelled at the top is exactly what the compiler produced:
+
+  ```c
+      var_r0 = M2C_FIELD(&data_020c0c5c, void **, 8);
+      goto test;
+  body:
+      var_r0 = M2C_FIELD(var_r0, void **, 0x68);
+  test:
+      if (var_r0 == NULL) {
+          return (s32) var_r0;
+      }
+      if (M2C_FIELD(var_r0, s32 *, 0x64) == 1) {
+          return (s32) var_r0;
+      }
+      goto body;
+  ```
+
+  When a draft has odd control flow that no `for`/`while` reproduces, writing m2c's own `goto` shape by hand is
+  often what matches.
 
 **`addcc` where the game has `addlt` (constant written `0xFFFFCDBC`)**
 - Cause: m2c writes a negative `int` constant as hex. In C, `0xFFFFCDBC` has type `unsigned int`, so
@@ -183,9 +201,10 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
 - Fix: wrap every `asm` function in `// clang-format off` / `// clang-format on`. The moulinette re-verifies the
   build after formatting, which is how this was caught.
 
-**`func_0200c4f8` tail call uses `r1` instead of `ip` (open)**
+**`func_0200c4f8` tail call uses `r1` instead of `ip` — solved as an `asm` function**
 - The game loads the target in `r1` (`ldr r1, =func_0200c61c; bx r1`); every C form tried (8 signatures, every
-  compiler version) uses `ip`. Possibly hand-written assembly.
+  compiler version) uses `ip`, so it is hand-written assembly: an `asm void` function between
+  `// clang-format off` and `// clang-format on` with `ldr r1, =func_0200c61c` / `bx r1` reproduces it exactly.
 
 ## Notes
 
