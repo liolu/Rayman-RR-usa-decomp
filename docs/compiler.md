@@ -94,3 +94,7 @@ carries the probe that justifies it in a comment. The list (all in `src/auto/`, 
 | `func_020171a4` | the destination base `0x06400000` is materialised once into `ip` and added with a register operand; mwcc always folds it into the immediate or a literal-pool load |
 | `func_02017894` | 32-byte block send: `ldm r0!, {r2..r8, ip}` / non-writeback `stm r1, {...}`; aggregate copies use `{r0..r3}` as data registers and at most four of them |
 | `func_0201c198` | `movs r0, #0` with dead flags followed by six word stores; every C spelling is peepholed into `mov r1, #0` + `stm` |
+| `func_02017fac`, `func_02017fc8` | the other 32- and 36-byte hand-written block copies of the SDK block at `0x02017f34` (`func_02017894` above) |
+| `func_02017144` | like `func_020171a4`, with the VRAM bank base `0x06600000` materialised once into `ip` |
+| `func_02010d9c` | the trailing call is a plain call followed by more code, which every mwcc turns into a tail call (`b`), changing the frame and the register use |
+| `func_02091bcc` | the buffer base, the loaded word and the two flags are pinned to `r1`/`r2`/`r3` across `func_02084450` (the object's type handler), a register assignment no C spelling reproduces |

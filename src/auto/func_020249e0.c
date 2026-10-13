@@ -1,0 +1,14 @@
+#include "m2c.h"
+
+M2C_UNK func_02024eec(s32);                          /* extern */
+M2C_UNK func_02027a14(s32);                          /* extern */
+
+void func_020249e0(void *arg0) {
+    s32 temp = M2C_FIELD(arg0, s32 *, 0x4);
+
+    if (M2C_FIELD(arg0, s32 *, 0xC) != 0) {
+        func_02027a14(temp);
+        return;
+    }
+    func_02024eec(temp);
+}
