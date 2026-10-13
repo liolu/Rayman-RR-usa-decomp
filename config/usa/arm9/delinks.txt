@@ -8329,3 +8329,103 @@ src/auto/func_0204a06c.c:
 src/auto/func_020b3478.c:
     complete
     .text       start:0x020b3478 end:0x020b3498
+
+src/auto/func_02000930.c:
+    complete
+    .text       start:0x02000930 end:0x02000944
+
+src/auto/func_0200896c.c:
+    complete
+    .text       start:0x0200896c end:0x02008998
+
+src/auto/func_0200c4f8.c:
+    complete
+    .text       start:0x0200c4f8 end:0x0200c504
+
+src/auto/func_02012500.c:
+    complete
+    .text       start:0x02012500 end:0x02012518
+
+src/auto/func_02017f34.c:
+    complete
+    .text       start:0x02017f34 end:0x02017f48
+
+src/auto/func_02017f48.c:
+    complete
+    .text       start:0x02017f48 end:0x02017f60
+
+src/auto/func_02025cd0.c:
+    complete
+    .text       start:0x02025cd0 end:0x02025d40
+
+src/auto/func_0202f74c.c:
+    complete
+    .text       start:0x0202f74c end:0x0202f778
+
+src/auto/func_0203284c.c:
+    complete
+    .text       start:0x0203284c end:0x0203288c
+
+src/auto/func_02046988.c:
+    complete
+    .text       start:0x02046988 end:0x02046ab8
+
+src/auto/func_020482e0.c:
+    complete
+    .text       start:0x020482e0 end:0x02048300
+
+src/auto/func_0205847c.c:
+    complete
+    .text       start:0x0205847c end:0x020584d4
+
+src/auto/func_02059580.c:
+    complete
+    .text       start:0x02059580 end:0x02059600
+
+src/auto/func_020604dc.c:
+    complete
+    .text       start:0x020604dc end:0x02060548
+
+src/auto/func_02063c78.c:
+    complete
+    .text       start:0x02063c78 end:0x02063cec
+
+src/auto/func_020832b4.c:
+    complete
+    .text       start:0x020832b4 end:0x02083314
+
+src/auto/func_02083700.c:
+    complete
+    .text       start:0x02083700 end:0x0208371c
+
+src/auto/func_02092238.c:
+    complete
+    .text       start:0x02092238 end:0x02092260
+
+src/auto/func_0209660c.c:
+    complete
+    .text       start:0x0209660c end:0x02096638
+
+src/auto/func_0209a8e8.c:
+    complete
+    .text       start:0x0209a8e8 end:0x0209a99c
+
+src/auto/func_020a2fe8.c:
+    complete
+    .text       start:0x020a2fe8 end:0x020a3010
+
+src/auto/func_020a3028.c:
+    complete
+    .text       start:0x020a3028 end:0x020a3054
+
+src/auto/func_020a39c0.c:
+    complete
+    .text       start:0x020a39c0 end:0x020a39e8
+
+src/auto/func_020a58f8.c:
+    complete
+    .text       start:0x020a58f8 end:0x020a5924
+
+src/auto/func_020a595c.c:
+    complete
+    .text       start:0x020a595c end:0x020a5984

@@ -95,6 +95,32 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
 - Fix: none in C. The nine drafts using `CLZ` need an `asm` function (the instruction is one the compiler
   never generates, so the rule allows it).
 
+**Single-register `ldm`/`stm` in a word fill/copy loop (no C form)**
+- Symptom: the game has `add ip, r1, r2; cmp r1, ip; stmlt r1!, {r0}; blt ...` (`func_02000930`,
+  `func_02017f34`) or the copying pair `ldmlt r0!, {r2}` / `stmlt r1!, {r2}` (`func_02017f48`).
+- Cause: the compiler emits `str r0, [r1], #4` for a 4-byte scalar store in `r2`, and `ldm`/`stm` only for
+  structure copies of 12 bytes and more. Every C form tried (word/struct/union/packed/volatile/bitfield, all
+  profiles) gives `ldr`/`str` and the wrong scratch register.
+- Fix: these routines are written in assembly (the same hand-written block-transfer idiom as their neighbours
+  `func_02017f60`/`func_02017fc8`), between `// clang-format off` / `// clang-format on`.
+
+**A callee keeps more argument registers alive than the draft's prototype declares**
+- Symptom: the draft calls `func_X(a)` but the game keeps `r1`/`r2` untouched across the `bl`, and `func_X`'s
+  declaration in the draft only has one parameter.
+- Cause: m2c declares callees without parameters, so the compiler reuses the registers; the original passed
+  more arguments (often the field or temporary it just computed).
+- Fix: widen the callee's declaration in the same file and pass the extra argument
+  (`func_0202cb6c(spC, arg1)`, `func_02063cec(temp_r2)`, `func_0202e814(3, temp_r0)`).
+  `auto_match.variants` (`forward_extra_arg`) covers the case where the wrapper forwards its own parameters;
+  passing a computed local is still done by hand.
+
+**`add r3, r3, #0x14` where the draft has `var_r3 = 0x14`**
+- Symptom: the game accumulates into r3 twice (`+= 0x14` then `+= 0xB8`), the draft has `var_r3 = 0x14;` then
+  `var_r3 = 0xCC;` (m2c folded the sum `0x14 + 0xB8`).
+- Cause: the compiler folds two accumulations that m2c cannot see through.
+- Fix: write them back as accumulations, splitting the folded constant (`var_r3 += 0x14; ... var_r3 += 0xB8;`,
+  `func_020832b4`).
+
 
 ## Probe tool
 

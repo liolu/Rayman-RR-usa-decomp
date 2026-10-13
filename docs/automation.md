@@ -146,6 +146,32 @@ every function already defined in `src/` to `include/m2c_protos.h`, and gives th
 - **Adding a correct prototype to `engine.h` improves every draft that calls the function**: it is the cheapest way
   to help the automation. First run with the context: +23 functions.
 
+## Agent fan-out on the near misses
+
+The automatic repairs saturate: `tools/auto_match.py` finds a handful of functions per new rule, and the same
+drafts then stay in `build/auto/near/` forever. The remaining near misses are solved one by one, each by a
+human-level insight (a real type, a wider callee prototype, a structure), which is what a fan-out of agents is
+good at:
+
+```shell
+python build/best_draft.py          # closest draft the current repairs can produce for every near miss
+                                    # -> build/agent_drafts/<name>.c and build/agent_items.json (best first)
+```
+
+Then give each agent one entry of `build/agent_items.json`, tell it to start from `build/agent_drafts/<name>.c`
+and to iterate `python build/try.py <file> <name>` until it prints `MATCH` (the same criterion objdiff uses:
+identical instructions, `bl` targets and literal-pool words masked). Each agent writes only inside
+`build/agent_work/<name>/` and, on success, `build/agent_out/<name>.c`; a second, independent agent re-runs the
+command on every claim.
+
+One pass over the first 30 near misses (30 solver + 26 verifier agents) produced **25 verified matches**, and
+`build/verify_agent_out.py` re-checks all of them (bytes, ASCII, no unknown `func_`/`data_` symbol) before they
+are integrated with `build/integrate_agents.py`, `tools/configure.py` and `tools/match.py verify`.
+
+Four of the solutions are `asm` functions (wrapped in `// clang-format off`), which the agents justified by
+probing every compiler profile: mwcc never emits a **single-register** `ldm`/`stm` from C (a 4-byte copy always
+comes out as `ldr`/`str`, 12 bytes and more as `ldm`/`stm`), and never a tail call through `r1` instead of `ip`.
+
 ## Choosing the game
 
 The moulinette works on any game of `projets/`, not only this one:

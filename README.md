@@ -19,12 +19,12 @@ to extract assets from.
 ## Progress
 
 <!-- progress:start -->
-**Code:** 37.71% · **Data:** 0.04% · **Functions:** 2086/3608
+**Code:** 37.94% · **Data:** 0.04% · **Functions:** 2111/3608
 
 | File | Code | Functions | Status |
 |---|---|---|---|
 | `src/HIE/HieMtStk.c` | 100.0% | 3/3 | ✅ complete |
-| `src/auto/` (2080 files, raw m2c output) | – | 2083/2083 | 🤖 auto-matched, to clean up |
+| `src/auto/` (2105 files, raw m2c output) | – | 2108/2108 | 🤖 auto-matched, to clean up |
 <!-- progress:end -->
 
 Run `ninja report` to get detailed numbers in `build/usa/report.json`.
