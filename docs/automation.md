@@ -146,15 +146,16 @@ every function already defined in `src/` to `include/m2c_protos.h`, and gives th
 - **Adding a correct prototype to `engine.h` improves every draft that calls the function**: it is the cheapest way
   to help the automation. First run with the context: +23 functions.
 
-## Agent fan-out on the near misses
+## Agent fan-out on the unmatched drafts
 
 The automatic repairs saturate: `tools/auto_match.py` finds a handful of functions per new rule, and the same
-drafts then stay in `build/auto/near/` forever. The remaining near misses are solved one by one, each by a
-human-level insight (a real type, a wider callee prototype, a structure), which is what a fan-out of agents is
-good at:
+drafts then stay in `build/auto/near/` forever. The rest are solved one by one, each by a human-level insight
+(a real type, a wider callee prototype, a structure, a rewritten control flow), which is what a fan-out of
+agents is good at:
 
 ```shell
-python build/best_draft.py          # closest draft the current repairs can produce for every near miss
+python build/best_draft.py                  # closest draft for every near miss
+python build/worklist_status.py size 128    # same for the smallest 'size' drafts (compiles, wrong length)
                                     # -> build/agent_drafts/<name>.c and build/agent_items.json (best first)
 ```
 
@@ -164,13 +165,19 @@ identical instructions, `bl` targets and literal-pool words masked). Each agent 
 `build/agent_work/<name>/` and, on success, `build/agent_out/<name>.c`; a second, independent agent re-runs the
 command on every claim.
 
-One pass over the first 30 near misses (30 solver + 26 verifier agents) produced **25 verified matches**, and
-`build/verify_agent_out.py` re-checks all of them (bytes, ASCII, no unknown `func_`/`data_` symbol) before they
-are integrated with `build/integrate_agents.py`, `tools/configure.py` and `tools/match.py verify`.
+Four passes of 30-40 agents each (one solver + one verifier per function) matched **118 functions**
+(25, 35, 35 and 23 from the 'size' pool); two functions documented as unsolved fell:
+`func_0200cbdc` (m2c's own `goto` loop shape) and `func_0200c4f8` (an `asm` tail call). Before they are
+integrated, `build/verify_agent_out.py` re-checks every file (bytes, ASCII, no unknown `func_`/`data_` symbol)
+and `build/integrate_agents.py` writes them to `src/auto/`; `tools/configure.py` and `tools/match.py verify`
+gate the commit. A file that matches standalone but is not 100% once linked (like `func_0200b53c`, whose raw
+`.word` must stay a link-time constant) is dropped again.
 
-Four of the solutions are `asm` functions (wrapped in `// clang-format off`), which the agents justified by
-probing every compiler profile: mwcc never emits a **single-register** `ldm`/`stm` from C (a 4-byte copy always
-comes out as `ldr`/`str`, 12 bytes and more as `ldm`/`stm`), and never a tail call through `r1` instead of `ip`.
+Seven of the solutions are `asm` functions (between `// clang-format off` / `// clang-format on`) for
+instruction forms no mwcc profile emits from C (single-register `ldm`/`stm` block transfers, an unmerged
+`pop {r0, lr}` frame, a bare epilogue fragment, `clz`); each carries the probe that justifies it. They are
+reviewed by hand before committing, because `AGENTS.md` allows `asm` only for instructions the compiler never
+generates.
 
 ## Choosing the game
 

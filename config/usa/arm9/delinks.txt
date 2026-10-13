@@ -8706,3 +8706,95 @@ src/auto/func_020a5218.c:
 src/auto/func_020a6988.c:
     complete
     .text       start:0x020a6988 end:0x020a69b4
+
+src/auto/func_020088e8.c:
+    complete
+    .text       start:0x020088e8 end:0x020088fc
+
+src/auto/func_0201f97c.c:
+    complete
+    .text       start:0x0201f97c end:0x0201f9c4
+
+src/auto/func_020223cc.c:
+    complete
+    .text       start:0x020223cc end:0x020223e4
+
+src/auto/func_020223e4.c:
+    complete
+    .text       start:0x020223e4 end:0x020223fc
+
+src/auto/func_02024118.c:
+    complete
+    .text       start:0x02024118 end:0x02024178
+
+src/auto/func_02024e0c.c:
+    complete
+    .text       start:0x02024e0c end:0x02024e5c
+
+src/auto/func_02028024.c:
+    complete
+    .text       start:0x02028024 end:0x0202806c
+
+src/auto/func_02041c84.c:
+    complete
+    .text       start:0x02041c84 end:0x02041ce8
+
+src/auto/func_02042084.c:
+    complete
+    .text       start:0x02042084 end:0x020420d4
+
+src/auto/func_02042db8.c:
+    complete
+    .text       start:0x02042db8 end:0x02042e08
+
+src/auto/func_020542d4.c:
+    complete
+    .text       start:0x020542d4 end:0x020542f0
+
+src/auto/func_020559c8.c:
+    complete
+    .text       start:0x020559c8 end:0x020559e0
+
+src/auto/func_020559e0.c:
+    complete
+    .text       start:0x020559e0 end:0x020559fc
+
+src/auto/func_02058d30.c:
+    complete
+    .text       start:0x02058d30 end:0x02058d4c
+
+src/auto/func_02066d60.c:
+    complete
+    .text       start:0x02066d60 end:0x02066d88
+
+src/auto/func_02066fa0.c:
+    complete
+    .text       start:0x02066fa0 end:0x02066fb4
+
+src/auto/func_0206b434.c:
+    complete
+    .text       start:0x0206b434 end:0x0206b450
+
+src/auto/func_0206b450.c:
+    complete
+    .text       start:0x0206b450 end:0x0206b46c
+
+src/auto/func_02093064.c:
+    complete
+    .text       start:0x02093064 end:0x020930cc
+
+src/auto/func_0209c724.c:
+    complete
+    .text       start:0x0209c724 end:0x0209c740
+
+src/auto/func_0209d420.c:
+    complete
+    .text       start:0x0209d420 end:0x0209d45c
+
+src/auto/func_020a0eac.c:
+    complete
+    .text       start:0x020a0eac end:0x020a0f10
+
+src/auto/func_020a575c.c:
+    complete
+    .text       start:0x020a575c end:0x020a57c0
