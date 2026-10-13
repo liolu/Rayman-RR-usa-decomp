@@ -36,6 +36,42 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
   (`ldrne`/`cmpne`). Same result with every 2.0 compiler, so it is not a compiler version issue.
 - Ideas: an OpenSpace list macro (`LST_M_...` in ACP_Ray2), an inline function, or different flags for that file.
 
+**`addcc` where the game has `addlt` (constant written `0xFFFFCDBC`)**
+- Cause: m2c writes a negative `int` constant as hex. In C, `0xFFFFCDBC` has type `unsigned int`, so
+  `x < 0xFFFFCDBC` compiles as an **unsigned** comparison, while the game's comparison is signed.
+- Fix: write the signed value instead (`x < -12868`). `auto_match.variants` (`signed_constants`) tries it;
+  it matched `func_02032220` and `func_02088dc8` (2.0/sp1p5) and `func_02088e60` (1.2/sp2p3).
+
+**`beq` where the game has `bls` at the top of a loop**
+- Cause: m2c rebuilds the compiler's rotated `for` loop as `if (guard) { do { step; body } while (cond); }`,
+  which the compiler then compiles differently from the `for` loop it started from.
+- Fix: write the `for` loop again (`for (v = init; cond; step) { body }`, step taken out of the body).
+  `auto_match.variants` (`rotated_loops`) tries it; it matched `func_0205e720`.
+
+**A local typed `s32` makes a condition signed (`addlt` where the game has `addcc`)**
+- Cause: m2c types every local `s32`; the original function often uses an unsigned type there.
+- Fix: `auto_match.variants` (`local_types`) tries the same draft with every local's signedness flipped.
+  No new match yet (it only fixed drafts of functions already matched), but it is cheap.
+
+**`add r1, r1, #0x30` where the game has `add r1, r1, #0xC`**
+- Cause: `var_r1 += 0xC;` on a pointer m2c typed `M2C_UNK *` (4 bytes): C scales the offset by 4.
+- Fix: make the addition explicit in bytes, `var_r1 = (M2C_UNK *)((s8 *)var_r1 + 0xC);`
+  (`auto_match.variants`, `pointer_add_bytes`). No match yet, but it removes the difference.
+
+**A wrapper forwards one argument less than the game**
+- Symptom: the game keeps the last argument register intact across the tail call (`mov r3, r0; ...; bx ip`);
+  the draft's call has one argument fewer and the compiler reuses that register.
+- Cause: m2c only declares the parameters the function itself reads, so the wrapper looks 2-parameter.
+- Fix: add the missing parameter and pass it through. `func_0200bd40` (three parameters, all forwarded to
+  `func_02017f60`) matches that way with 2.0/sp1p5; `auto_match.variants` (`forward_extra_arg`) tries it.
+
+**`a pointer/array type was expected for this operation instead of 'long'` (156 of the 295 compile failures)**
+- Cause: m2c typed a variable holding an address as an integer, so `*(temp_r3 + arg1)` is not valid C.
+- Workaround: cast the whole operand, `*(s8 *)(temp_r3 + arg1)`, which keeps the byte arithmetic. A
+  compiler-driven loop that patches the failing line makes 108 of the 295 compile (22 near, 86 different
+  size) but none matches on its own: the type really is lost. Only useful to let the variants run.
+
+
 ## Probe tool
 
 **Every compiler gives `N/N diff` even with correct C**

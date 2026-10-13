@@ -421,6 +421,11 @@ def variants(source: str, name: str) -> list[str]:
     out += accumulate(source)
     # 9. Element type of tables at unknown globals: `*(&data_X + (i * 2))` -> `((s16 *)&data_X)[i]`
     out += typed_tables(source)
+    # 10. Rotated `for` loops, local signedness, signed constants and byte offsets (see each function)
+    out += rotated_loops(source)
+    out += local_types(source)
+    out += signed_constants(source)
+    out += pointer_add_bytes(source)
     return out
 
 
@@ -485,6 +490,89 @@ def typed_tables(source: str) -> list[str]:
             if changed:
                 out.append(fixed)
     return out
+
+
+# The compiler turns `for (v = init; cond; step)` into a do/while with an entry test at the top; m2c rebuilds
+# that rotated shape as `if (guard) { do { step; body } while (cond); }`. The original is often the `for` loop.
+ROTATED_LOOP = re.compile(
+    r"^(?P<ind>[ ]*)(?P<var>\w+) = (?P<init>[^;\n]+);\n"
+    r"^(?P=ind)if \((?P<guard>[^()]*(?:\([^()]*\)[^()]*)*)\) \{\n"
+    r"^(?P=ind)    do \{\n"
+    r"(?P<body>(?:^(?P=ind)        [^\n]*\n)+)"
+    r"^(?P=ind)    \} while \((?P<cond>[^\n]*)\);\n"
+    r"^(?P=ind)\}\n", re.M)
+ROTATED_LOOP_NO_INIT = re.compile(
+    r"^(?P<ind>[ ]*)if \((?P<guard>[^()]*(?:\([^()]*\)[^()]*)*)\) \{\n"
+    r"^(?P=ind)    do \{\n"
+    r"(?P<body>(?:^(?P=ind)        [^\n]*\n)+)"
+    r"^(?P=ind)    \} while \((?P<cond>[^\n]*)\);\n"
+    r"^(?P=ind)\}\n", re.M)
+LOOP_STEP = re.compile(r"^\s*(\w+) (\+=|-=|\|=|&=|\*=|/=) ([^;]+);\s*$")
+LOOP_STEP_INCDEC = re.compile(r"^\s*(\w+)(\+\+|--);\s*$")
+
+
+def rotated_loops(source: str) -> list[str]:
+    """Writes a rotated loop back as the `for` loop the compiler started from (`func_0205e720`)."""
+    out = []
+    for regex, withinit in ((ROTATED_LOOP, True), (ROTATED_LOOP_NO_INIT, False)):
+        m = regex.search(source)
+        if not m:
+            continue
+        ind, cond = m.group("ind"), m.group("cond")
+        lines = [line for line in m.group("body").splitlines() if line.strip()]
+        names = set(re.findall(r"\b(\w+)\b", cond))
+        step, step_index = None, -1
+        for i, line in enumerate(lines):
+            match = LOOP_STEP.match(line) or LOOP_STEP_INCDEC.match(line)
+            if match and match.group(1) in names:
+                step, step_index = line.strip().rstrip(";"), i
+                break
+        if step is None:
+            continue
+        del lines[step_index]
+        rest = "\n".join(f"{ind}    {line.strip()}" for line in lines)
+        init = f'{m.group("var")} = {m.group("init")}' if withinit else ""
+        new = f"{ind}for ({init}; {cond.strip()}; {step}) {{\n{rest}\n{ind}}}\n"
+        out.append(source[:m.start()] + new + source[m.end():])
+    return out
+
+
+def local_types(source: str) -> list[str]:
+    """m2c types every local `s32`; the original often uses an unsigned type there, which makes the compiler
+    emit an unsigned condition (`addcc`) where the game has a signed one (`addlt`)."""
+    out = []
+    for old, new in (("s32", "u32"), ("u32", "s32")):
+        fixed = re.sub(rf"^(    ){old} (\w+);$", rf"\1{new} \2;", source, flags=re.M)
+        if fixed != source:
+            out.append(fixed)
+    return out
+
+
+SIGNED_COMPARISON = re.compile(r"(<=|>=|==|!=|<|>)\s*(0x[89A-Fa-f][0-9A-Fa-f]{7})\b")
+
+
+def signed_constants(source: str) -> list[str]:
+    """`0xFFFFCDBC` has type `unsigned int` in C, so `x < 0xFFFFCDBC` compiles as an unsigned comparison.
+    m2c writes negative constants that way; the original wrote the signed value."""
+    fixed = SIGNED_COMPARISON.sub(lambda m: f"{m.group(1)} {int(m.group(2), 16) - 0x100000000}", source)
+    return [fixed] if fixed != source else []
+
+
+POINTER_LOCAL = re.compile(r"^[ \t]+([A-Za-z_][\w ]*?)\s*\*[ \t]*(\w+);", re.M)
+
+
+def pointer_add_bytes(source: str) -> list[str]:
+    """`var_r1 += 0xC;` on a pointer m2c typed `M2C_UNK *` means 12 bytes, but C scales the offset by 4."""
+    types = {m.group(2): m.group(1).strip() for m in POINTER_LOCAL.finditer(source)}
+    if not types:
+        return []
+    out = source
+    for var, ty in types.items():
+        def repl(m, var=var, ty=ty):
+            sign = "+" if m.group(2) == "+=" else "-"
+            return f"{m.group(1)}{var} = ({ty} *)((s8 *){var} {sign} {m.group(3)});"
+        out = re.sub(rf"^(\s*){re.escape(var)} (\+=|-=) (0x[0-9A-Fa-f]+|\d+);$", repl, out, flags=re.M)
+    return [out] if out != source else []
 
 def stack_buffers(source: str, name: str) -> str | None:
     """`M2C_UNK sp2;` only used as `&sp2` is really a buffer: size it from the stack frame of the original."""

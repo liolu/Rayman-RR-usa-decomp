@@ -8269,3 +8269,19 @@ src/auto/func_020716e4.c:
 src/auto/func_02085b38.c:
     complete
     .text       start:0x02085b38 end:0x02085c48
+
+src/auto/func_02032220.c:
+    complete
+    .text       start:0x02032220 end:0x02032338
+
+src/auto/func_0205e720.c:
+    complete
+    .text       start:0x0205e720 end:0x0205e758
+
+src/auto/func_02088dc8.c:
+    complete
+    .text       start:0x02088dc8 end:0x02088e08
+
+src/auto/func_02088e60.c:
+    complete
+    .text       start:0x02088e60 end:0x02088eb4

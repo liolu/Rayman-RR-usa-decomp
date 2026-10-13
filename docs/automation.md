@@ -75,6 +75,24 @@ When a draft is close but not exact, `auto_match` also tries these rewrites one 
 - **Forwarded arguments.** m2c declares callees without parameters (`func()`), so the compiler feels free to reuse
   `r0`-`r3`. When the game keeps them intact, the function passes its own first 1-4 arguments to the callee.
 
+- **Rotated loops.** The compiler turns `for (v = init; cond; step)` into a do/while with an entry test; m2c rebuilds
+  that shape as `if (guard) { do { step; body } while (cond); }`, which the compiler does not always compile back to
+  the same instructions. The `for` form is tried again (matched `func_0205e720`).
+
+- **Local signedness.** m2c types every local `s32`; the original often uses an unsigned type, which makes the
+  compiler emit an unsigned condition (`addcc`/`bcc`) where the game has a signed one (`addlt`/`blt`). Both
+  directions are tried.
+
+- **Signed constants.** `0xFFFFCDBC` has type `unsigned int` in C, so `x < 0xFFFFCDBC` is an unsigned comparison.
+  Comparisons against such a literal are retried with the signed value (matched `func_02032220`, `func_02088dc8`
+  and `func_02088e60`, the last one with 1.2/sp2p3).
+
+- **Byte offsets in pointer arithmetic.** `var_r1 += 0xC;` on a pointer m2c typed `M2C_UNK *` means 12 bytes, but C
+  scales the offset by 4; the addition is rewritten as `(M2C_UNK *)((s8 *)var_r1 + 0xC)`.
+
+- **One more forwarded argument.** A wrapper only reads part of its arguments, so m2c declares fewer parameters than
+  the game passes on: one and two extra parameters are tried, with the call forwarding them (`func_0200bd40`).
+
 Drafts that do not compile get mechanical repairs first: old-style declarations for callees (`func();`),
 `*(void *)addr` → `*(M2C_UNK *)addr`, and dereferences of variables m2c typed as integers. `include/m2c.h` also
 defines `NULL`, whose absence alone blocked 512 drafts.
