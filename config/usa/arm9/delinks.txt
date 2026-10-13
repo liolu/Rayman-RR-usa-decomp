@@ -9074,3 +9074,15 @@ src/auto/func_0206fdcc.c:
 src/auto/func_020899ec.c:
     complete
     .text       start:0x020899ec end:0x02089b48
+
+src/auto/func_02017528.c:
+    complete
+    .text       start:0x02017528 end:0x02017570
+
+src/auto/func_02065a7c.c:
+    complete
+    .text       start:0x02065a7c end:0x02065d4c
+
+src/auto/func_0206adc4.c:
+    complete
+    .text       start:0x0206adc4 end:0x0206aeb0
