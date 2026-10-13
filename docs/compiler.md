@@ -76,3 +76,21 @@ state in `r0` and pass it back: `state = OS_DisableIrq(); ...; OS_RestoreIrq(sta
 - `x > 0` on an `unsigned long` compiles to `subs` + `bne` (a `!= 0` test).
 - A `static char[]` declared inside a function is placed in `.data` **before** the string literals of that function.
 - String literals go to `.data` (not `.rodata`), each one aligned to 4 bytes.
+
+## Functions written in assembly
+
+`AGENTS.md` allows `asm` functions only for instructions the compiler never generates, and every one of them
+carries the probe that justifies it in a comment. The list (all in `src/auto/`, all wrapped in
+`// clang-format off` / `// clang-format on`):
+
+| Function | Why assembly |
+|---|---|
+| `func_02000930`, `func_02017f34`, `func_02017f48` | single-register block transfer (`stm r1!, {r0}`, `ldm r0!, {r2}`): from C a 4-byte copy is always `ldr`/`str` in another scratch register |
+| `func_0200c4f8` | tail call with the target in `r1` (`ldr r1, =f; bx r1`): every C form and compiler uses `ip` |
+| `func_02003b0c` | not a function: the dead trailing epilogue of `func_020039b0` (`add sp, sp, #0x10` + `pop`), no `b`/`bl`/pool word in the image targets it |
+| `func_0200e114`, `func_0200e4a0` | OS stubs with an unmerged frame (`push {r0, lr} ... pop {r0, lr}`): mwcc pads the frame with `r3` and merges the return into `pop {r3, pc}`, or emits the 1.2 `stmfd`/`ldmfd` sequence |
+| `func_0200eac8` | `clz r0, r0`: mwccarm has no intrinsic for it (`__cntlzw`, `__clz`, `__builtin_clz`, `__CLZ` all become a call) |
+| `func_020146c8` | block store that materialises immediates into `r2`/`r3` and emits two writeback `stm`; C always gives four `str` or a folded aggregate copy |
+| `func_020171a4` | the destination base `0x06400000` is materialised once into `ip` and added with a register operand; mwcc always folds it into the immediate or a literal-pool load |
+| `func_02017894` | 32-byte block send: `ldm r0!, {r2..r8, ip}` / non-writeback `stm r1, {...}`; aggregate copies use `{r0..r3}` as data registers and at most four of them |
+| `func_0201c198` | `movs r0, #0` with dead flags followed by six word stores; every C spelling is peepholed into `mov r1, #0` + `stm` |
