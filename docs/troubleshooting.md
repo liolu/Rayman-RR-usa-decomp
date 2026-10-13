@@ -155,6 +155,15 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
   stale `.s` file with the old names was read first.
 - Fix: delete `build/usa/asm/` before `ninja dis` (the moulinette and `auto_match.py` do it).
 
+**A function matches standalone but `verify` reports `.text is 99.55%` once integrated (`func_0200b53c`)**
+- Symptom: `build/try.py build/agent_out/func_0200b53c.c func_0200b53c` prints MATCH, but after declaring it
+  `complete` in `delinks.txt`, `match.py verify` fails with "marked complete but .text is 99.55%".
+- Cause: the function calls the static initializers through a raw `.word 0x20bbb2c`. In the gap it is a
+  `kind:link_time_const(ARM9_CTOR_START)` relocation that dsd resolves; written as C the literal becomes an
+  ordinary value and the section no longer matches.
+- Fix: drop the file again (`auto_match` does this automatically: it removes the `complete` entry, deletes the
+  file, reconfigures and re-verifies). It needs the real ctor symbol before it can be integrated.
+
 
 **The permuter keeps running after its time limit / worker processes stay alive (Windows)**
 - Cause: `taskkill /T` needs WMI; on some Windows installs WMI is broken (`Invalid provider registration` /
