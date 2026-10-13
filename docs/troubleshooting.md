@@ -71,6 +71,30 @@ Known errors, their cause and the fix. Add an entry every time you solve a new p
   compiler-driven loop that patches the failing line makes 108 of the 295 compile (22 near, 86 different
   size) but none matches on its own: the type really is lost. Only useful to let the variants run.
 
+**`ldr` where the game has `ldrb` (a table at an unknown global)**
+- Symptom: the draft `*((M2C_UNK *)((s8 *)&data_X + (arg0 * 8)))` loads a word, the game has
+  `ldrb r0, [r1, r0, lsl #3]`.
+- Cause: the byte-offset repairs type the base `M2C_UNK` (32 bits), so the load width is lost.
+- Fix: keep the byte offset and change the pointee type (`*((u8 *)((s8 *)&data_X + (arg0 * 8)))`).
+  `auto_match.variants` (`typed_global_loads`) tries `u8`, `s8`, `u16`, `s16` and `u32`; this matched
+  `func_02093100`, `func_02093198`, `func_020931d8`, `func_02093248` (and 123 drafts of the 1,330 contain
+  the shape, so more should follow as their other differences are fixed).
+
+**Four word copies instead of `ldm`/`stm` (a structure copy)**
+- Symptom: the game has `add ip, r0, #0x10; ldm r1, {r0, r1, r2, r3}; stm ip, {r0, r1, r2, r3}`; the draft
+  assigns four `M2C_FIELD(x, s32 *, k)` fields one by one.
+- Cause: a 16-byte structure assignment, which m2c cannot see through.
+- Fix: assign a structure of that size, `*(S16 *)((s8 *)arg0 + 0x10) = *(S16 *)arg1;`.
+  `auto_match.variants` (`struct_copy`) rebuilds it from the copy statements and matched `func_0204a038`,
+  `func_0204a048`, `func_0204a05c`, `func_0204a06c`.
+
+**`CLZ(x)` in a draft (no mwccarm intrinsic)**
+- Symptom: the game has `clz r0, r0`, the draft calls an external `CLZ`.
+- Cause: m2c cannot express the instruction and mwccarm has no intrinsic for it: `__cntlzw`, `__clz`,
+  `__builtin_clz`, `__CLZ` all compile to a library call (or a bare `bl`).
+- Fix: none in C. The nine drafts using `CLZ` need an `asm` function (the instruction is one the compiler
+  never generates, so the rule allows it).
+
 
 ## Probe tool
 

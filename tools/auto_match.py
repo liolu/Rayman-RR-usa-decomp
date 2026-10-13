@@ -317,6 +317,15 @@ def evaluate(t: Path, r: subprocess.CompletedProcess, head: str, asm: str, f: tu
                 source, status = fixed, fixed_status
                 if status == "match":
                     return name, size, addr, status, source
+    if status == "compile":
+        # m2c typed an address as an integer: let the compiler say which line, and cast the operand
+        fixed = fix_pointer_bases(t, source, mwcc, extra)
+        if fixed is not None and fixed != source:
+            fixed_status = compile_and_compare(t, fixed, name, size, addr, mwcc, extra)
+            if fixed_status != "compile":
+                source, status = fixed, fixed_status
+                if status == "match":
+                    return name, size, addr, status, source
     if status in ("near", "size"):
         # Close but not exact: try the known m2c corrections one by one
         singles = variants(source, name)
@@ -324,6 +333,66 @@ def evaluate(t: Path, r: subprocess.CompletedProcess, head: str, asm: str, f: tu
             if compile_and_compare(t, variant, name, size, addr, mwcc, extra) == "match":
                 return name, size, addr, "match", variant
     return name, size, addr, status, source
+
+
+ERROR_LINE = re.compile(r"^#\s+(\d+):\s?(.*)$")
+POINTER_CASTS = ("s8 *", "s32 *", "s16 *", "u8 *", "M2C_UNK *")
+
+
+def compile_error(t: Path, source: str, mwcc: Path = MWCC, extra: str = "") -> tuple[int, str] | None:
+    """(line number, message) of the first compiler error, or None when the source compiles."""
+    (t / "f.o").unlink(missing_ok=True)
+    (t / "f.c").write_text(source)
+    cmd = f'"{mwcc}" -O4,p {pc.BASE_FLAGS} {extra} -i "{ROOT / "include"}" -c f.c -o f.o'
+    r = run_limited(cmd, cwd=t, shell=True)
+    if r.returncode == 0 and (t / "f.o").exists():
+        return None
+    lines = ((r.stdout or "") + (r.stderr or "")).splitlines()
+    for i, line in enumerate(lines):
+        if "Error:" in line:
+            lineno = -1
+            for j in range(i - 1, max(-1, i - 3), -1):
+                match = ERROR_LINE.match(lines[j])
+                if match:
+                    lineno = int(match.group(1))
+                    break
+            return lineno, lines[i + 1].lstrip("# ").strip() if i + 1 < len(lines) else ""
+    return -1, "unknown error"
+
+
+def cast_operand(source: str, line_index: int, cast: str) -> str | None:
+    """`*(E)` -> `*(cast)(E)` at the first dereference of that line that is not already cast."""
+    lines = source.splitlines()
+    if not (0 <= line_index < len(lines)):
+        return None
+    line = lines[line_index]
+    for m in re.finditer(r"\*\(", line):
+        if re.match(r"(?:[A-Za-z_]\w*\s*)*\*\)\(", line[m.end():]):  # already `*(type *)(`
+            continue
+        lines[line_index] = line[:m.start()] + f"*({cast})(" + line[m.end():]
+        return "\n".join(lines)
+    return None
+
+
+def fix_pointer_bases(t: Path, source: str, mwcc: Path = MWCC, extra: str = "") -> str | None:
+    """m2c computed an address in an integer (`temp_r3 = arg0 + 5; *(temp_r3 + arg1)`) so the draft does not
+    compile. Casting the whole operand keeps the byte arithmetic; the compiler's error line says where.
+    Returns a source that compiles, or None. 156 of the 295 compile failures start this way."""
+    for _ in range(8):
+        err = compile_error(t, source, mwcc, extra)
+        if err is None:
+            return source
+        lineno, message = err
+        if "pointer/array type was expected" not in message:
+            return None
+        for cast in POINTER_CASTS:
+            fixed = cast_operand(source, lineno - 1, cast)
+            if fixed is not None and fixed != source:
+                source = fixed
+                break
+        else:
+            return None
+    return None
 
 
 def compile_fixes(source: str) -> str:
@@ -426,6 +495,12 @@ def variants(source: str, name: str) -> list[str]:
     out += local_types(source)
     out += signed_constants(source)
     out += pointer_add_bytes(source)
+    # 11. A wrapper only reads part of its arguments, so m2c declares fewer parameters than the game passes on
+    out += forward_extra_arg(source, name)
+    # 12. Load type of a global reached through `(M2C_UNK *)((s8 *)&data_X + n)`: byte and halfword loads
+    out += typed_global_loads(source)
+    # 13. Consecutive word copies are one struct assignment (`ldm`/`stm` in the game)
+    out += struct_copy(source, name)
     return out
 
 
@@ -573,6 +648,101 @@ def pointer_add_bytes(source: str) -> list[str]:
             return f"{m.group(1)}{var} = ({ty} *)((s8 *){var} {sign} {m.group(3)});"
         out = re.sub(rf"^(\s*){re.escape(var)} (\+=|-=) (0x[0-9A-Fa-f]+|\d+);$", repl, out, flags=re.M)
     return [out] if out != source else []
+
+
+CAST_GLOBAL_LOAD = re.compile(r"\*\(\(M2C_UNK \*\)\(\(s8 \*\)&")
+GLOBAL_LOAD_TYPES = ("u8", "s8", "u16", "s16", "u32")
+
+
+def typed_global_loads(source: str) -> list[str]:
+    """`fix_byte_offsets` and `addr_plus_var` write `&data_X + n` as `(M2C_UNK *)((s8 *)&data_X + (n))`, so the
+    load is always 32 bits wide even when the game loads a byte or a halfword (`ldrb` became `ldr`). The byte
+    offset is kept as it is and only the pointee type is changed."""
+    if not CAST_GLOBAL_LOAD.search(source):
+        return []
+    out = []
+    for ty in GLOBAL_LOAD_TYPES:
+        fixed = CAST_GLOBAL_LOAD.sub(f"*(({ty} *)((s8 *)&", source)
+        if fixed != source:
+            out.append(fixed)
+    return out
+
+
+COPY_STMT = re.compile(r"^    M2C_FIELD\((?P<d>\w+), s32 \*, (?P<do>0x[0-9A-Fa-f]+|\d+)\) = "
+                       r"\(s32\) M2C_FIELD\((?P<s>\w+), s32 \*, (?P<so>0x[0-9A-Fa-f]+|\d+)\);$", re.M)
+TEMP_INIT = re.compile(r"^    (?P<v>\w+) = (?P<base>\w+) \+ (?P<k>0x[0-9A-Fa-f]+|\d+);$", re.M)
+
+
+def struct_copy(source: str, name: str) -> list[str]:
+    """Consecutive word copies from one base to another are a single struct assignment in the game: the
+    compiler emits `ldm r1, {r0-r3}; stm ip, {r0-r3}` for a 16-byte structure copy (`func_0204a038`)."""
+    stmts = list(COPY_STMT.finditer(source))
+    if not 2 <= len(stmts) <= 8:
+        return []
+    temps = {m.group("v"): (m.group("base"), int(m.group("k"), 0)) for m in TEMP_INIT.finditer(source)}
+
+    def resolve(var):
+        if var in temps:
+            base, offset = temps[var]
+            return None if base in temps else (base, offset)
+        return var, 0
+
+    rows = []
+    for m in stmts:
+        dst, src = resolve(m.group("d")), resolve(m.group("s"))
+        if dst is None or src is None:
+            return []
+        rows.append((int(m.group("do"), 0) + dst[1], int(m.group("so"), 0) + src[1], dst[0], src[0]))
+    if len({r[2] for r in rows}) != 1 or len({r[3] for r in rows}) != 1:
+        return []
+    dst_offs, src_offs = [r[0] for r in rows], [r[1] for r in rows]
+    if any(b - a != 4 for a, b in zip(dst_offs, dst_offs[1:])) or \
+       any(b - a != 4 for a, b in zip(src_offs, src_offs[1:])):
+        return []
+    sig = re.search(r"^[A-Za-z_][\w \*]*?\b\w+\([^)]*\) \{$", source, re.M)
+    if not sig:
+        return []
+    n = len(rows)
+    ty = f"M2C_S{n * 4}"
+    typedef = f"typedef struct {{ {' '.join('s32 f%d;' % i for i in range(n))} }} {ty};\n\n"
+    stmt = (f"    *({ty} *)((s8 *){rows[0][2]} + {dst_offs[0]}) = *({ty} *)((s8 *){rows[0][3]} + {src_offs[0]});\n")
+    fixed = source[:stmts[0].start()] + stmt + source[stmts[-1].end():]
+    return [fixed[:sig.start()] + typedef + fixed[sig.start():]]
+
+
+def forward_extra_arg(source: str, name: str) -> list[str]:
+    """A wrapper that passes its arguments through: m2c only declares the parameters it reads, so the wrapper
+    looks one or two parameters shorter than the game (`func_0200bd40` forwards three to `func_02017f60`)."""
+    out = []
+    sig = re.search(rf"^(?P<ret>[A-Za-z_][\w \*]*?){re.escape(name)}\((?P<params>[^)]*)\) \{{$", source, re.M)
+    if not sig:
+        return out
+    params_txt = sig.group("params")
+    params = [] if params_txt.strip() in ("", "void") else [p.strip() for p in params_txt.split(",")]
+    n = len(params)
+    last_type = re.match(r"(.*?)\s*\w+$", params[-1]).group(1) if params else "M2C_UNK"
+    body_start = sig.end()
+    seen = set()
+    for m in re.finditer(r"^(    )(\w+)\(([^;()]*)\);$", source[body_start:], re.M):
+        args = [a.strip() for a in m.group(3).split(",") if a.strip()]
+        if len(args) != n or m.group(2) in seen:
+            continue
+        seen.add(m.group(2))
+        for extra in (1, 2):
+            new_params = params + [f"{last_type} arg{n + i}" for i in range(extra)]
+            new_args = args + [f"arg{n + i}" for i in range(extra)]
+            call = f"{m.group(1)}{m.group(2)}({', '.join(new_args)});"
+            new = (source[:sig.start("params")] + ", ".join(new_params)
+                   + source[sig.end("params"):body_start + m.start()] + call
+                   + source[body_start + m.end():])
+            # The callee is usually declared in the same draft: widen its declaration too
+            decl = re.search(rf"^([A-Za-z_][\w \*]*?){re.escape(m.group(2))}\(([^)]*)\);", new, re.M)
+            if decl:
+                existing = [p for p in decl.group(2).split(",") if p.strip() and p.strip() != "void"]
+                filled = existing + ["M2C_UNK"] * max(0, len(new_args) - len(existing))
+                new = new[:decl.start(2)] + ", ".join(filled) + new[decl.end(2):]
+            out.append(new)
+    return out
 
 def stack_buffers(source: str, name: str) -> str | None:
     """`M2C_UNK sp2;` only used as `&sp2` is really a buffer: size it from the stack frame of the original."""

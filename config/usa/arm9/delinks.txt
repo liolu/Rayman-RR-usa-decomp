@@ -8285,3 +8285,47 @@ src/auto/func_02088dc8.c:
 src/auto/func_02088e60.c:
     complete
     .text       start:0x02088e60 end:0x02088eb4
+
+src/auto/func_0200bd40.c:
+    complete
+    .text       start:0x0200bd40 end:0x0200bd58
+
+src/auto/func_020473d4.c:
+    complete
+    .text       start:0x020473d4 end:0x02047404
+
+src/auto/func_02093100.c:
+    complete
+    .text       start:0x02093100 end:0x02093110
+
+src/auto/func_02093198.c:
+    complete
+    .text       start:0x02093198 end:0x020931a8
+
+src/auto/func_020931d8.c:
+    complete
+    .text       start:0x020931d8 end:0x020931e8
+
+src/auto/func_02093248.c:
+    complete
+    .text       start:0x02093248 end:0x0209325c
+
+src/auto/func_0204a038.c:
+    complete
+    .text       start:0x0204a038 end:0x0204a048
+
+src/auto/func_0204a048.c:
+    complete
+    .text       start:0x0204a048 end:0x0204a05c
+
+src/auto/func_0204a05c.c:
+    complete
+    .text       start:0x0204a05c end:0x0204a06c
+
+src/auto/func_0204a06c.c:
+    complete
+    .text       start:0x0204a06c end:0x0204a080
+
+src/auto/func_020b3478.c:
+    complete
+    .text       start:0x020b3478 end:0x020b3498

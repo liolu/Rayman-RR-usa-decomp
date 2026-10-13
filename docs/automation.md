@@ -93,6 +93,16 @@ When a draft is close but not exact, `auto_match` also tries these rewrites one 
 - **One more forwarded argument.** A wrapper only reads part of its arguments, so m2c declares fewer parameters than
   the game passes on: one and two extra parameters are tried, with the call forwarding them (`func_0200bd40`).
 
+- **Load type of a global at an unknown address.** The byte-offset repairs write `&data_X + n` as
+  `(M2C_UNK *)((s8 *)&data_X + (n))`, which always loads 32 bits (`ldr` where the game has `ldrb`/`ldrh`). The byte
+  offset is kept and only the pointee type is changed (`u8`, `s8`, `u16`, `s16`, `u32`); this matched
+  `func_02093100`, `func_02093198`, `func_020931d8` and `func_02093248`.
+
+- **Consecutive word copies are one struct assignment.** m2c expands a 16-byte structure copy into four
+  `M2C_FIELD(x, s32 *, k) = M2C_FIELD(y, s32 *, k)` statements; the game has `ldm r1, {r0-r3}; stm ip, {r0-r3}`.
+  Rewriting them as an assignment of a structure of the right size matched `func_0204a038`, `func_0204a048`,
+  `func_0204a05c` and `func_0204a06c`.
+
 Drafts that do not compile get mechanical repairs first: old-style declarations for callees (`func();`),
 `*(void *)addr` → `*(M2C_UNK *)addr`, and dereferences of variables m2c typed as integers. `include/m2c.h` also
 defines `NULL`, whose absence alone blocked 512 drafts.
