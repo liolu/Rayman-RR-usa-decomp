@@ -22,6 +22,7 @@ import json
 import os
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -241,12 +242,42 @@ def asm_function_general(name: str, asm: str) -> str | None:
             f"// clang-format off\nasm void {name}(void) {{\n" + "\n".join(out) + "\n}\n// clang-format on\n")
 
 
+def code_style(addr: int, size: int) -> str:
+    """Which compiler a compiled function comes from, judged on its epilogue (checked on the ~2,100 functions
+    already matched: no function contradicts it, except hand-written assembly):
+      v20    `ldmfd sp!, {..., pc}`            -> mwccarm 2.0
+      v12    `ldmfd sp!, {..., lr}` + `bx lr`  -> mwccarm 1.2
+      other  leaf functions (no stack frame) and anything else: any compiler."""
+    data = pc.target_bytes(addr, size)
+    words = struct.unpack(f"<{len(data) // 4}I", data[: len(data) // 4 * 4])
+    pops = [w for w in words if (w & 0xFFFF0000) == 0xE8BD0000]  # ldmfd sp!, {...}
+    pc_ret = any(w & 0x8000 for w in pops)
+    lr_ret = any(w & 0x4000 and not w & 0x8000 for w in pops)
+    if lr_ret and 0xE12FFF1E in words and not pc_ret:  # bx lr
+        return "v12"
+    if pc_ret and not lr_ret:
+        return "v20"
+    return "other"
+
+
+def profiles_for(name: str, size: int, addr: int) -> list[tuple[str, str]]:
+    """Compiler profiles worth trying for one function (all of them when in doubt; AUTO_ALL_PROFILES=1 forces that)."""
+    if os.environ.get("AUTO_ALL_PROFILES") or ASM_ONLY.search(function_asm(name) or ""):
+        return COMPILERS
+    style = code_style(addr, size)
+    if style == "v20":
+        return [c for c in COMPILERS if c[0].startswith("2.")]
+    if style == "v12":
+        return [c for c in COMPILERS if c[0].startswith("1.")]
+    return COMPILERS
+
+
 def try_function(f: tuple[str, int, int]) -> tuple[str, int, int, str, str]:
     """Tries every compiler; a match with a non-default compiler is tagged with a marker comment."""
     _M2C.clear()
     first = None
     t0 = time.time()
-    for version, extra in COMPILERS:
+    for version, extra in profiles_for(*f):
         if first is not None and time.time() - t0 > FUNCTION_BUDGET:
             break
         result = try_function_with(f, MWCC_ROOT / version / "mwccarm.exe", extra)
@@ -327,10 +358,11 @@ def evaluate(t: Path, r: subprocess.CompletedProcess, head: str, asm: str, f: tu
                 if status == "match":
                     return name, size, addr, status, source
     if status in ("near", "size"):
-        # Close but not exact: try the known m2c corrections one by one
+        # Close but not exact: try the known m2c corrections, all in one compiler call (the first match in the
+        # order of the list wins, as when they were tried one by one)
         singles = variants(source, name)
-        for variant in singles:
-            if compile_and_compare(t, variant, name, size, addr, mwcc, extra) == "match":
+        for variant, variant_status in zip(singles, compile_batch(t, singles, name, size, addr, mwcc, extra)):
+            if variant_status == "match":
                 return name, size, addr, "match", variant
     return name, size, addr, status, source
 
@@ -430,6 +462,52 @@ def compile_and_compare(t: Path, source: str, name: str, size: int, addr: int, m
     if bad == 0:
         return "match"
     return "near" if len(cand) == size else "size"
+
+
+def compile_batch(t: Path, sources: list[str], name: str, size: int, addr: int, mwcc: Path = MWCC,
+                  extra: str = "") -> list[str]:
+    """Same result as `compile_and_compare` on each source, in far fewer compiler calls.
+
+    The compiler spends about a second starting up and almost nothing per file, so all the sources go into one call
+    (`-c v0.c v1.c ... -o objs`). When a file has an error the compiler stops there: that file is `compile`, and the
+    files after it are compiled by the next call. Identical sources are compiled once."""
+    if not sources:
+        return []
+    unique = list(dict.fromkeys(sources))
+    work = t / "batch"
+    shutil.rmtree(work, ignore_errors=True)
+    (work / "objs").mkdir(parents=True)
+    for i, s in enumerate(unique):
+        (work / f"v{i}.c").write_text(s)
+    target = pc.target_bytes(addr, size)
+    result = {}
+    pending = list(range(len(unique)))
+    while pending:
+        files = " ".join(f"v{i}.c" for i in pending)
+        cmd = f'"{mwcc}" -O4,p {pc.BASE_FLAGS} {extra} -i "{ROOT / "include"}" -c {files} -o objs'
+        r = run_limited(cmd, cwd=work, shell=True, timeout=15 + len(pending) // 2)
+        if r.stderr == "timeout":
+            # One source makes the compiler loop: find it by compiling the rest one at a time
+            for i in pending:
+                result[i] = compile_and_compare(t, unique[i], name, size, addr, mwcc, extra)
+            break
+        missing = []
+        for i in pending:
+            obj = work / "objs" / f"v{i}.o"
+            if not obj.exists():
+                missing.append(i)  # not compiled: error, or not reached because of an earlier error
+                continue
+            cand = pc.compiled_function(obj, name)
+            if cand is None:
+                result[i] = "compile"  # compiled, but the function is not in the object
+                continue
+            bad, _ = pc.compare(target, cand)
+            result[i] = "match" if bad == 0 else ("near" if len(cand) == size else "size")
+        if not missing:
+            break
+        result[missing[0]] = "compile"  # the compiler stopped on the first missing file
+        pending = missing[1:]
+    return [result.get(unique.index(s), "compile") for s in sources]
 
 
 def diff_count(t: Path, name: str, size: int, addr: int, source: str, mwcc: Path = MWCC, extra: str = "") -> int:

@@ -179,6 +179,22 @@ instruction forms no mwcc profile emits from C (single-register `ldm`/`stm` bloc
 reviewed by hand before committing, because `AGENTS.md` allows `asm` only for instructions the compiler never
 generates.
 
+## Speed
+
+`auto_match` spends almost all its time starting external programs, so two things keep that count low (both give
+exactly the same results as the slow way; checked on 296 variants of 56 functions and on 2,100 known matches):
+
+- **One compiler call for all the variants of a draft** (`compile_batch`). Starting the compiler costs far more than
+  compiling a file, so `-c v0.c v1.c ... -o objs` takes all of them at once. The compiler stops at the first file
+  with an error: that file is `compile` and the files after it are compiled by a second call.
+- **Only the compiler profiles that can match** (`profiles_for`). The epilogue tells which compiler built a function:
+  `ldmfd sp!, {..., pc}` is mwccarm 2.0, `ldmfd sp!, {..., lr}` + `bx lr` is mwccarm 1.2. Functions without a stack
+  frame and assembly functions (which do not depend on the compiler) still try every profile.
+  `AUTO_ALL_PROFILES=1` turns this off.
+
+Measured on 20 unmatched functions, one process: 4.3 s per function before, 1.7 s after. Changing `auto_match.py`
+changes its hash, which empties the cache of failures: the next pass redoes everything once.
+
 ## Choosing the game
 
 The moulinette works on any game of `projets/`, not only this one:
