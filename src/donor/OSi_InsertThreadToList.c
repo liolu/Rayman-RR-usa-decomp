@@ -78,7 +78,7 @@ void OSi_InsertThreadToList(OSThread *thread) {
     }
 
     if (pre == 0) {
-        thread->next       = OSi_ThreadInfo.list;
+        thread->next        = OSi_ThreadInfo.list;
         OSi_ThreadInfo.list = thread;
     } else {
         thread->next = pre->next;

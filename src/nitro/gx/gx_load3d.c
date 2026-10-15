@@ -13,6 +13,6 @@ void GX_EndLoadTexPltt(void) {
         MI_WaitDma(GXi_DmaId);
     }
     func_02015850(sTexPltt);
-    sTexPltt = 0;
+    sTexPltt        = 0;
     sTexPlttLCDCBlk = 0;
 }

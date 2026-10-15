@@ -5,5 +5,5 @@ extern s32 sCapParam;
 
 void NNSi_SndCaptureInit(void) {
     data_020e9c24 = 0;
-    sCapParam = 0;
+    sCapParam     = 0;
 }

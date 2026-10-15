@@ -270,7 +270,7 @@ void CTRDGi_TaskThread(void *arg) {
         prevIRQState = OS_DisableIrq();
         {
             const UnkCtrdgTaskCallback callback = task.unk_04;
-            ctrdgi_task_list.unk_22                = 0;
+            ctrdgi_task_list.unk_22             = 0;
             if (callback != 0) {
                 callback(&task);
             }

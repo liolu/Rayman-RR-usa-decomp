@@ -166,7 +166,7 @@ BOOL FS_RegisterArchiveName(FS_Record *record, const char *name, u32 name_len) {
     if (FS_FindArchive(name, name_len) == 0) {
         FS_Record *listNode = arc_list;
         if (listNode == 0) {
-            arc_list          = record;
+            arc_list                 = record;
             current_dir_pos.record   = record;
             current_dir_pos.position = 0;
             current_dir_pos.index    = 0;

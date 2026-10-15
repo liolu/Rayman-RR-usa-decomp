@@ -12,7 +12,7 @@ extern void OSi_EnterTimerCallback(u32 timerNo, void (*func)(void *), void *arg)
 extern u32 OS_EnableIrqMask(u32 mask);
 extern UnkIrqCallbackInfo OSi_IrqCallbackInfo[8];
 void OSi_EnterTimerCallback(u32 timerNo, void (*func)(void *), void *arg) {
-    u32 mask                          = 1 << (timerNo + 3);
+    u32 mask                                = 1 << (timerNo + 3);
     (OSi_IrqCallbackInfo + 4)[timerNo].func = func;
     (OSi_IrqCallbackInfo + 4)[timerNo].arg  = arg;
     OS_EnableIrqMask(mask);

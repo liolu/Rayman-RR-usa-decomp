@@ -29,8 +29,8 @@ void NNS_SndInit(void) {
     }
     data_020e9254 = 1;
     SND_Init();
-    sPreSleepCallback.func = BeginSleep;
-    sPreSleepCallback.arg  = ((void *) 0);
+    sPreSleepCallback.func  = BeginSleep;
+    sPreSleepCallback.arg   = ((void *) 0);
     sPostSleepCallback.func = EndSleep;
     sPostSleepCallback.arg  = ((void *) 0);
     PM_PrependPreSleepCallback(&sPreSleepCallback);
@@ -38,6 +38,6 @@ void NNS_SndInit(void) {
     NNSi_SndInitResourceMgr();
     NNSi_SndCaptureInit();
     NNSi_SndPlayerInit();
-    sCurDriverInfo = -1;
+    sCurDriverInfo       = -1;
     sDriverInfoFirstFlag = 1;
 }

@@ -11,7 +11,7 @@ void SND_PushCommand(s32 arg0) {
     temp_r0 = OS_DisableIrq();
     if (sReserveListEnd == 0) {
         sReserveListEnd = arg0;
-        sReserveList = arg0;
+        sReserveList    = arg0;
     } else {
         *(M2C_UNK *) sReserveListEnd = arg0;
         sReserveListEnd              = arg0;

@@ -159,7 +159,7 @@ void func_02010890(void) {
         return;
     }
 
-    PMi_IsInit          = 1;
+    PMi_IsInit        = 1;
     PMi_Work.lock     = 0;
     PMi_Work.callback = 0;
 

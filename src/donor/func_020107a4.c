@@ -67,7 +67,7 @@ void func_020107a4(PXIFifoTag tag, u32 data, BOOL err) {
             *buffer = value;
         }
         PMi_RegisterBuffer[num].flag = 1;
-        pxiResult               = 0;
+        pxiResult                    = 0;
     } else if (command == 0x0060) {
         PMi_SyncFlag = 1;
     } else if (command == 0x0062) {

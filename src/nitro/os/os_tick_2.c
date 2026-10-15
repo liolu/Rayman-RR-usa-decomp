@@ -21,7 +21,7 @@ void OSi_CountUpTick(void) {
         (*(vu16 *) 0x04000102) = 0;
         (*(vu16 *) 0x04000100) = 0;
         (*(vu16 *) 0x04000102) = 0xc1;
-        OSi_NeedResetTimer          = 0;
+        OSi_NeedResetTimer     = 0;
     }
 
     OSi_EnterTimerCallback(0, (void (*)(void *)) OSi_CountUpTick, 0);

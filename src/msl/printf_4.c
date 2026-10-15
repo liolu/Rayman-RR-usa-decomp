@@ -8,7 +8,7 @@ typedef struct {
     size_t CharsWritten;
 } __OutStrCtrl;
 extern int __pformatter(void *(*WriteProc)(void *, const char *, size_t), void *WriteProcArg, const char *format_str,
-                         va_list arg);
+                        va_list arg);
 extern void *__StringWrite(void *wosc, const char *buffer, size_t numchars);
 
 /* func_020236ac from projets/heroes-of-mana/src/donor/func_020236ac.c (same code in another game of this workspace), reused by

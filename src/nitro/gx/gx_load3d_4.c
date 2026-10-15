@@ -18,9 +18,9 @@ extern const struct {
 /* func_0214c6a8 from https://github.com/RonyxDumb/mkds src/arm9/0214c6a8_func_0214c6a8.c (license: none), reused by
  * tools/donor_match.py */
 void GX_BeginLoadTex() {
-    u32 temp      = GX_ResetBankForTex();
-    sTex = (s32) temp;
+    u32 temp     = GX_ResetBankForTex();
+    sTex         = (s32) temp;
     sTexLCDCBlk1 = (u32) (sTexStartAddrTable[temp].blk1 << 0xC);
     sTexLCDCBlk2 = (u32) (sTexStartAddrTable[temp].blk2 << 0xC);
-    sSzTexBlk1 = (u32) (sTexStartAddrTable[temp].szBlk1 << 0xC);
+    sSzTexBlk1   = (u32) (sTexStartAddrTable[temp].szBlk1 << 0xC);
 }

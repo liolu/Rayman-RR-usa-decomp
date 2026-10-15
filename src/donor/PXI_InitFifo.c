@@ -29,7 +29,7 @@ void PXI_InitFifo(void) {
     s32 i;
 
     if (!FifoCtrlInit) {
-        FifoCtrlInit                  = 1;
+        FifoCtrlInit                   = 1;
         GetPxiSystemWork()->unk_388[0] = 0;
         for (i = 0; i < 32; i++) {
             FifoRecvCallbackTable[i] = 0;

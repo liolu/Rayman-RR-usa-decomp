@@ -42,7 +42,7 @@ void OS_InitVAlarm(void) {
 
         (void) OS_DisableIrqMask((1UL << 2));
 
-        OSi_VFrameCount = 0;
+        OSi_VFrameCount    = 0;
         OSi_PreviousVCount = 0;
     }
 }

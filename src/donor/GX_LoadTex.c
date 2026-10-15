@@ -41,8 +41,7 @@ void GX_LoadTex(void *src, u32 offset, u32 size) {
             u32 temp1   = sSzTexBlk1 - offset;
             temp        = (void *) (sTexLCDCBlk1 + offset);
             GXi_DmaCopy32(GXi_DmaId, src, temp, temp1);
-            GXi_DmaCopy32Async(GXi_DmaId, (void *) ((u8 *) src + temp1), temp2, (size - temp1), ((void *) 0),
-                               ((void *) 0));
+            GXi_DmaCopy32Async(GXi_DmaId, (void *) ((u8 *) src + temp1), temp2, (size - temp1), ((void *) 0), ((void *) 0));
             return;
         }
     }

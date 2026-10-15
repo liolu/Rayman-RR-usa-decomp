@@ -9,7 +9,7 @@ extern s32 sTexPltt;
 void GX_BeginLoadTexPltt(void) {
     s32 temp_r0;
 
-    temp_r0       = GX_ResetBankForTexPltt();
-    sTexPltt = temp_r0;
+    temp_r0         = GX_ResetBankForTexPltt();
+    sTexPltt        = temp_r0;
     sTexPlttLCDCBlk = *((u16 *) ((s8 *) &sTexPlttStartAddrTable + ((temp_r0 >> 4) * 2))) << 0xC;
 }

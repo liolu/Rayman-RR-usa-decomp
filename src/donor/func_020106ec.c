@@ -17,7 +17,7 @@ int func_020106ec(unsigned int a, unsigned int b) {
     p = &PMi_SyncFlag;
     while (!*p) {
     }
-    *p            = 0;
+    *p               = 0;
     PMi_SleepEndFlag = 0;
     PMi_SetLCDPower(0, 2, 0, 0);
     PMi_SendPxiData((a & 0xff) | 0x2006100);

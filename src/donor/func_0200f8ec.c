@@ -218,7 +218,7 @@ void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err) {
             micWork.lock = MIC_LOCK_OFF;
         }
         if (micWork.callback) {
-            cb                     = micWork.callback;
+            cb               = micWork.callback;
             micWork.callback = ((void *) 0);
             cb(MIC_RESULT_FATAL_ERROR, micWork.callbackArg);
         }
@@ -263,7 +263,7 @@ void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err) {
         }
 
         if (micWork.callback) {
-            cb                     = micWork.callback;
+            cb               = micWork.callback;
             micWork.callback = ((void *) 0);
             cb(result, micWork.callbackArg);
         }

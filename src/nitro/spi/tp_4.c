@@ -32,8 +32,8 @@ static inline s32 CP_GetDivResult32(void) {
     return (s32) (*(volatile u32 *) 0x40002a0);
 }
 
-u32 TP_CalcCalibrateParam(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, u16 dy1, u16 raw_x2, u16 raw_y2, u16 dx2,
-                  u16 dy2) {
+u32 TP_CalcCalibrateParam(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, u16 dy1, u16 raw_x2, u16 raw_y2,
+                          u16 dx2, u16 dy2) {
     s32 rx_width, dx_width, ry_width, dy_width;
     s32 tmp32;
     u32 enabled;

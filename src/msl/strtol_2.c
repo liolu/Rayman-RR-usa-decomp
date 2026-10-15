@@ -5,7 +5,7 @@ typedef struct {
     int NullCharDetected;
 } __InStrCtrl;
 extern unsigned long __strtoul(int base, int max, int (*ReadProc)(void *, int, int), void *ReadProcArg, int *chars_scanned,
-                                   int *negative, int *overflow);
+                               int *negative, int *overflow);
 extern int CharCursor_Control(void *isc, int ch, int action);
 extern int data_020c0a10;
 

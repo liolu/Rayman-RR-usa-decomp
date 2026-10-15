@@ -77,7 +77,7 @@ BOOL SND_FlushCommand(u32 flags) {
         sWaitingCommandListQueueWrite = 0;
     }
 
-    sReserveList = ((void *) 0);
+    sReserveList    = ((void *) 0);
     sReserveListEnd = ((void *) 0);
     sWaitingCommandListCount++;
     sCurrentTag++;

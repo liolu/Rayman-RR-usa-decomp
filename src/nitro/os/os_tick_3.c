@@ -17,9 +17,9 @@ void OS_InitTick(void) {
     OSi_SetTimerReserved(0);
     M2C_FIELD(&OSi_TickCounter, s32 *, 0) = 0;
     M2C_FIELD(&OSi_TickCounter, s32 *, 4) = 0;
-    *(s16 *) 0x04000102                 = 0;
-    *(s16 *) 0x04000100                 = 0;
-    *(s16 *) 0x04000102                 = 0xC1;
+    *(s16 *) 0x04000102                   = 0;
+    *(s16 *) 0x04000100                   = 0;
+    *(s16 *) 0x04000102                   = 0xC1;
     OS_SetIrqFunction(8, &OSi_CountUpTick);
     OS_EnableIrqMask(8);
     OSi_NeedResetTimer = 0;

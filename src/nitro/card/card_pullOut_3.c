@@ -13,7 +13,7 @@ void CARDi_PulledOutCallback(s32 arg0, s32 arg1) {
         if (CARDi_IsPulledOutFlag != 0) {
             return;
         }
-        var_r0        = 1;
+        var_r0                = 1;
         CARDi_IsPulledOutFlag = 1;
         if (CARD_UserCallback != NULL) {
             var_r0 = CARD_UserCallback();

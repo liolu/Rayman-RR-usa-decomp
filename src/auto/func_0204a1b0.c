@@ -12,6 +12,6 @@ void func_0204a1b0(s32 arg0, s32 arg1) {
         data_020db928 += 1;
         return;
     }
-    sIsThreadCreated                                          = temp_ip + 1;
+    sIsThreadCreated                                       = temp_ip + 1;
     *((M2C_UNK *) ((s8 *) &data_020db988 + (temp_ip * 4))) = arg1;
 }

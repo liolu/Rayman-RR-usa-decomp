@@ -9,7 +9,7 @@ extern M2C_UNK MicGetResultCallback;
 s32 MIC_StopAutoSampling(void) {
     s32 temp_r0;
 
-    temp_r0                               = MIC_StopAutoSamplingAsync(&MicGetResultCallback, 0);
+    temp_r0                         = MIC_StopAutoSamplingAsync(&MicGetResultCallback, 0);
     M2C_FIELD(&micWork, s32 *, 0xC) = temp_r0;
     if (temp_r0 == 0) {
         MicWaitBusy();
