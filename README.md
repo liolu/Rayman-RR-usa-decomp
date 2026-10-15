@@ -1,3 +1,7 @@
+
+<!-- bytematch:start -->
+[![Code](https://bytematch.dev/liolu/Rayman-RR-usa-decomp.svg?label=Code&measure=matched_code_percent)](https://bytematch.dev/liolu/Rayman-RR-usa-decomp) [![Data](https://bytematch.dev/liolu/Rayman-RR-usa-decomp.svg?label=Data&measure=matched_data_percent)](https://bytematch.dev/liolu/Rayman-RR-usa-decomp) [![Functions](https://bytematch.dev/liolu/Rayman-RR-usa-decomp.svg?label=Functions&measure=matched_functions)](https://bytematch.dev/liolu/Rayman-RR-usa-decomp)
+<!-- bytematch:end -->
 Rayman Raving Rabbids (Nintendo DS)
 [![CI]][actions]
 =============
