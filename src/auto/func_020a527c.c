@@ -13,8 +13,8 @@ typedef struct {
     s32 unkC;
 } Out_020a527c;
 
-s32 func_020482a0(s32);                                 /* extern */
-void *func_02084450(s32, void *, Out_020a527c *);       /* extern */
+s32 func_020482a0(s32);
+void *func_02084450(s32, void *, Out_020a527c *);
 void func_020b1528(s32, s32, Rec_020a527c *, Rec_020a527c *, Rec_020a527c *);
 
 void *func_020a527c(s32 arg0, void *arg1) {

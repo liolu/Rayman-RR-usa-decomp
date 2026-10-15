@@ -3,7 +3,7 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_01ff8668();
 extern void func_02001588();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0201bdd0();
 extern void func_0201c454();
 extern void func_0201c67c();
@@ -508,7 +508,7 @@ L_02036678:
     mov r0, r8
     ldr r5, [r1, #0xc4]
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     add r0, r0, #0x800
     mov r6, r0, asr #0xc
     add r0, r10, #0x78
@@ -589,15 +589,15 @@ L_0203674c:
     mov r11, r6, lsl #0xc
     ldr r0, [r10, #0x6c]
     mov r1, r11
-    bl func_02014910
+    bl FX_Div
     str r0, [r10, #0x6c]
     ldr r0, [r10, #0x70]
     mov r1, r11
-    bl func_02014910
+    bl FX_Div
     str r0, [r10, #0x70]
     ldr r0, [r10, #0x74]
     mov r1, r11
-    bl func_02014910
+    bl FX_Div
     str r0, [r10, #0x74]
     mov r0, r10
     add r1, sp, #0x24
@@ -1067,15 +1067,15 @@ L_02036e24:
     mov r1, r8
     sub r2, r3, r2
     str r2, [sp, #0x90]
-    bl func_02014910
+    bl FX_Div
     str r0, [sp, #0x88]
     ldr r0, [sp, #0x8c]
     mov r1, r8
-    bl func_02014910
+    bl FX_Div
     str r0, [sp, #0x8c]
     ldr r0, [sp, #0x90]
     mov r1, r8
-    bl func_02014910
+    bl FX_Div
     str r0, [sp, #0x90]
     ldr r0, [sp, #0x10]
     add r1, sp, #0x20

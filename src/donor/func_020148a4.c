@@ -6,13 +6,13 @@ typedef unsigned short u16;
 typedef int s32;
 typedef volatile u16 vu16;
 extern s32 func_020148a4(s32 value);
-extern s32 func_02014718(void);
+extern s32 FX_GetSqrtResult(void);
 s32 func_020148a4(s32 value) {
     if (value > 0) {
         (*(vu16 *) 0x040002B0) = 1;
         (*(u64 *) 0x040002B8)  = (u64) value << 32;
-        return func_02014718();
+        return FX_GetSqrtResult();
     }
     return 0;
 }
-s32 func_02014718(void);
+s32 FX_GetSqrtResult(void);

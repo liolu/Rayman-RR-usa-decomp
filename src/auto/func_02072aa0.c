@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003de0();
+extern void strncpy();
 extern char data_020de0d4[];
 extern char data_020de0dd[];
 extern char data_020de0f8[];
@@ -20,12 +20,12 @@ asm void func_02072aa0(void) {
     mov r1, r7
     add r0, r0, r6
     mov r2, #0x9
-    bl func_02003de0
+    bl strncpy
     ldr r0, =data_020e4c41
     mov r1, r7
     add r0, r0, r6
     mov r2, #0x9
-    bl func_02003de0
+    bl strncpy
     b L_02072b88
 L_02072ae8:
     mul r2, r4, r0

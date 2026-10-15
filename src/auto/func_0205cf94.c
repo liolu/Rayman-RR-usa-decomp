@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_020424f8();                            /* extern */
-M2C_UNK func_0205cf90();                            /* extern */
+M2C_UNK func_020424f8();
+M2C_UNK func_0205cf90();
 extern M2C_UNK data_020dc19c;
 
 void func_0205cf94(void) {

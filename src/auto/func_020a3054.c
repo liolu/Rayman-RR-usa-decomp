@@ -1,10 +1,10 @@
 #include "m2c.h"
 
-M2C_UNK func_02068df4(s32, s32);                    /* extern */
-M2C_UNK func_02068dfc(s32, s32);                    /* extern */
-void *func_02084450(M2C_UNK, void *, s32 *);        /* extern */
-s32 func_020931d8(s32);                             /* extern */
-M2C_UNK func_0209c740(s32, M2C_UNK, void **);       /* extern */
+M2C_UNK func_02068df4(s32, s32);
+M2C_UNK func_02068dfc(s32, s32);
+void *func_02084450(M2C_UNK, void *, s32 *);
+s32 func_020931d8(s32);
+M2C_UNK func_0209c740(s32, M2C_UNK, void **);
 
 void *func_020a3054(M2C_UNK arg0, void *arg1) {
     s32 sp4[4];

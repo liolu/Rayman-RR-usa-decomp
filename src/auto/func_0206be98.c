@@ -3,8 +3,8 @@
 
 s8 func_0205e9e0(void *);
 
-M2C_UNK func_020650d4(void *, u8);                  /* extern */
-M2C_UNK func_0206defc(void *, s16);                 /* extern */
+M2C_UNK func_020650d4(void *, u8);
+M2C_UNK func_0206defc(void *, s16);
 
 void func_0206be98(void *arg0) {
     void *temp_r4;

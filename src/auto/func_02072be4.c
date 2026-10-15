@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020015f4();
+extern void memset();
 extern char data_020de0b4[];
 extern char data_020de0d4[];
 // clang-format off
@@ -19,7 +19,7 @@ L_02072c04:
     mov r1, r11
     mov r2, #0x9
     add r0, r8, r10
-    bl func_020015f4
+    bl memset
     add r0, r6, r10
     add r1, r0, #0x29
     add r0, r9, #0x1

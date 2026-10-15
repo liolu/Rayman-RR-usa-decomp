@@ -2,8 +2,8 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_02003cfc();
-extern void func_02003d18();
-extern void func_02003de0();
+extern void strcpy();
+extern void strncpy();
 extern void func_02008998();
 extern void func_02084450();
 extern void func_02088a04();
@@ -42,7 +42,7 @@ L_02096eec:
     mla r1, r2, r0, r1
     ldr r0, =data_020e4c10
     mov r2, #0x3
-    bl func_02003de0
+    bl strncpy
     ldr r2, =data_020e4c10
     mov r0, #0x0
     add r1, r2, #0x3
@@ -65,7 +65,7 @@ L_02096f44:
     ldr r1, =data_020de0d8
     ldr r0, =data_020e4c10
     add r1, r1, r5
-    bl func_02003d18
+    bl strcpy
     ldr r0, =data_020e4c10
     ldr r1, =data_020c0424
     bl func_02008998
@@ -89,7 +89,7 @@ L_02096fc4:
     ldr r1, =data_020de0d9
     ldr r0, =data_020e4c10
     add r1, r1, r5
-    bl func_02003d18
+    bl strcpy
     ldr r0, =data_020e4c10
     mov r2, #0x0
     add r1, r0, #0x4

@@ -59,7 +59,7 @@ typedef struct MICWork {
     void *fullArg;
     void *dst_buf;
 } MICWork;
-extern MICWork data_020c1000;
+extern MICWork micWork;
 extern BOOL func_0200f7c0(void *buf, u32 size, u32 span, u8 flags);
 MICResult func_0200fb34(const MICAutoParam *param, MICCallback callback, void *arg) {
     OSIntrMode enabled;
@@ -121,17 +121,17 @@ MICResult func_0200fb34(const MICAutoParam *param, MICCallback callback, void *a
     }
 
     enabled = OS_DisableIrq();
-    if (data_020c1000.lock != MIC_LOCK_OFF) {
+    if (micWork.lock != MIC_LOCK_OFF) {
         (void) OS_RestoreIrq(enabled);
         return MIC_RESULT_BUSY;
     }
-    data_020c1000.lock = MIC_LOCK_ON;
+    micWork.lock = MIC_LOCK_ON;
     (void) OS_RestoreIrq(enabled);
 
-    data_020c1000.callback    = callback;
-    data_020c1000.callbackArg = arg;
-    data_020c1000.full        = param->full_callback;
-    data_020c1000.fullArg     = param->full_arg;
+    micWork.callback    = callback;
+    micWork.callbackArg = arg;
+    micWork.full        = param->full_callback;
+    micWork.fullArg     = param->full_arg;
     if (func_0200f7c0(param->buffer, param->size, param->rate, flags)) {
         return MIC_RESULT_SUCCESS;
     }

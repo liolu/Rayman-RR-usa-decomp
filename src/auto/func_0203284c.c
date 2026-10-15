@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_0201bdd0(s32 *);                           /* extern */
+s32 func_0201bdd0(s32 *);
 
 s32 *func_0203284c(s32 *arg0) {
     s32 *p;

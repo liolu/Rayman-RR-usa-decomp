@@ -2,11 +2,11 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_01ff883c();
-extern void func_02003b14();
-extern void func_02009df4();
+extern void rand();
+extern void _fgeq();
 extern void func_0200a42c();
 extern void func_020148a4();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_020a60cc();
 // clang-format off
 asm void func_020a911c(void) {
@@ -56,12 +56,12 @@ L_020a9180:
     mov r6, r0
     bl func_0200a42c
     ldr r1, =0x3c23d70a
-    bl func_02009df4
+    bl _fgeq
     addlo sp, sp, #0x34
     ldmlofd sp!, {r4, r5, r6, r7, r8, r9, r10, r11, pc}
     ldr r0, =0x666
     mov r1, r6
-    bl func_02014910
+    bl FX_Div
     smull r1, r2, r7, r0
     adds r3, r1, #0x800
     smull r1, r0, r5, r0
@@ -72,10 +72,10 @@ L_020a9180:
     mov r5, r1, lsr #0xc
     orr r6, r6, r2, lsl #0x14
     orr r5, r5, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0xe66
     ldr r3, [sp, #0x28]
     mov lr, #0x0
@@ -108,10 +108,10 @@ L_020a9180:
     add r0, r7, r1
     str r2, [sp, #0x28]
     str r0, [sp, #0x2c]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r9, =0xe66
     ldr r1, =0xe66
     ldr r2, [sp, #0x10]

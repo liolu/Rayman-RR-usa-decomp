@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-M2C_UNK func_020015f4(M2C_UNK *, M2C_UNK, M2C_UNK); /* extern */
+M2C_UNK memset(M2C_UNK *, M2C_UNK, M2C_UNK);
 extern s32 data_020dd8d4;
 extern s32 data_020dd8d8;
 extern s32 data_020dd8dc;
@@ -14,7 +14,7 @@ void func_0206cf8c(void) {
 
     var_r5 = data_020ddce0;
     var_r4 = data_020dd8d4;
-    func_020015f4(&data_020dd8e0, 0, 0x400);
+    memset(&data_020dd8e0, 0, 0x400);
     temp_r0 = var_r5 + 0x783C;
     if (var_r5 != temp_r0) {
         do {

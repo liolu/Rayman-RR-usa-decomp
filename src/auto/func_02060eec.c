@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-s32 func_02060aac(s32, s32, M2C_UNK, u16);          /* extern */
-s32 func_02060e14(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, s32 *); /* extern */
+s32 func_02060aac(s32, s32, M2C_UNK, u16);
+s32 func_02060e14(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, s32 *);
 
 s32 func_02060eec(M2C_UNK arg0, M2C_UNK arg1, M2C_UNK arg2, M2C_UNK arg3, u16 arg4) {
     s32 sp4;

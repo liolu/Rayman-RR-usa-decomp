@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-s32 func_02093198(s32);                             /* extern */
-M2C_UNK func_0209c740(s32, M2C_UNK, void **);       /* extern */
+s32 func_02093198(s32);
+M2C_UNK func_0209c740(s32, M2C_UNK, void **);
 
 void *func_020964b4(M2C_UNK arg0, void *arg1, void *arg2) {
     void *sp0;

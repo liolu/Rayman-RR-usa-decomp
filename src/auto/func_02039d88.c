@@ -8,7 +8,7 @@ extern void func_01ff87ec();
 extern void func_01ff8878();
 extern void func_01ff88b4();
 extern void func_02001588();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0202dc64();
 extern void func_0202e19c();
 extern void func_02030c40();
@@ -40,7 +40,7 @@ asm void func_02039d88(void) {
     bl func_01ff88b4
     mov r1, r0
     mov r0, r5
-    bl func_02014910
+    bl FX_Div
     str r0, [sp, #0x20]
     ldr r0, [r4, #0xc]
     tst r0, #0x10

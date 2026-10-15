@@ -19,7 +19,7 @@ typedef union UnkPxiFifoMessage {
     } e;
     u32 raw;
 } UnkPxiFifoMessage;
-extern PxiCallback data_020c2058[32];
+extern PxiCallback FifoRecvCallbackTable[32];
 static inline s32 PxiSetToFifo(u32 data) {
     u32 enabled;
 
@@ -67,8 +67,8 @@ void func_02018300(void) {
         }
         tag = msg.e.tag;
         if (tag) {
-            if (data_020c2058[tag]) {
-                data_020c2058[tag](tag, msg.e.data, msg.e.err);
+            if (FifoRecvCallbackTable[tag]) {
+                FifoRecvCallbackTable[tag](tag, msg.e.data, msg.e.err);
             } else if (!msg.e.err) {
                 msg.e.err = 1;
                 PxiSetToFifo(msg.raw);

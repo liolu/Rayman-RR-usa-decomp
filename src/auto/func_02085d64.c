@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-void *func_0201a588(M2C_UNK);                       /* extern */
+void *func_0201a588(M2C_UNK);
 
 void func_02085d64(s32 arg0, s32 arg1, s32 arg2) {
     void *temp_r0;

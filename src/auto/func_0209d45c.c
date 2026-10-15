@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_02058bf4(s32, u16, M2C_UNK);           /* extern */
-void *func_02084450(void *, void *, s32 *);         /* extern */
+M2C_UNK func_02058bf4(s32, u16, M2C_UNK);
+void *func_02084450(void *, void *, s32 *);
 
 void *func_0209d45c(void *arg0, void *arg1) {
     s32 sp0[4];
@@ -13,7 +13,7 @@ void *func_0209d45c(void *arg0, void *arg1) {
     if (temp_r4 != 0x87) {
         var_r5 = func_02084450(arg0, arg1, sp0);
     }
-    switch (temp_r4) {                              /* irregular */
+    switch (temp_r4) {
         case 0x40:
             func_02058bf4(M2C_FIELD(arg0, s32 *, 4), (u16) sp0[0], 1);
             return var_r5;

@@ -1,8 +1,8 @@
 #include "m2c.h"
 
-M2C_UNK func_02001588(void *, void *, M2C_UNK);     /* extern */
-M2C_UNK func_0201c454(void *);                      /* extern */
-M2C_UNK func_0202e19c(void *, M2C_UNK);             /* extern */
+M2C_UNK func_02001588(void *, void *, M2C_UNK);
+M2C_UNK func_0201c454(void *);
+M2C_UNK func_0202e19c(void *, M2C_UNK);
 
 void func_020375f0(void *arg0, void *arg1, M2C_UNK arg2) {
     void *temp_r5;

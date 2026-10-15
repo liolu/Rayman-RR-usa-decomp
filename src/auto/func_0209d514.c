@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_02058200(M2C_UNK);                     /* extern */
-M2C_UNK func_020841dc(M2C_UNK);                     /* extern */
+M2C_UNK func_02058200(M2C_UNK);
+M2C_UNK func_020841dc(M2C_UNK);
 
 void *func_0209d514(s32 arg0, void *arg1) {
     if (M2C_FIELD(arg1, s32 *, -8) == 0x42) {

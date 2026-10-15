@@ -21,12 +21,12 @@ typedef struct {
     u16 subBgExtPltt;
     u16 subObjExtPltt;
 } UnkGxVramState;
-extern UnkGxVramState data_020c2000;
-extern UnkGxVramState data_020c2000;
-void func_02015f6c(u32 lcdc);
+extern UnkGxVramState gGXState;
+extern UnkGxVramState gGXState;
+void GX_VRAMCNT_SetLCDC_(u32 lcdc);
 void func_02015850(s32 texPltt) {
-    data_020c2000.lcdc    = ~texPltt & (data_020c2000.lcdc | data_020c2000.texPltt);
-    data_020c2000.texPltt = texPltt;
+    gGXState.lcdc    = ~texPltt & (gGXState.lcdc | gGXState.texPltt);
+    gGXState.texPltt = texPltt;
 
     switch (texPltt) {
         case 0x60:
@@ -48,5 +48,5 @@ void func_02015850(s32 texPltt) {
         default:
             break;
     }
-    func_02015f6c(data_020c2000.lcdc);
+    GX_VRAMCNT_SetLCDC_(gGXState.lcdc);
 }

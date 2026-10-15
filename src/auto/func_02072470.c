@@ -34,8 +34,8 @@
    func_02072470 has no such instruction, so that source shape cannot be reconstructed
    from the observable behaviour of the function. */
 
-M2C_UNK func_02042364(s32, s32, s32);               /* extern */
-s16 func_02072874(M2C_UNK, u16);                    /* extern */
+M2C_UNK func_02042364(s32, s32, s32);
+s16 func_02072874(M2C_UNK, u16);
 extern s32 data_020ddf40;
 extern void *data_020ddf70;
 extern s32 data_020ddf74;

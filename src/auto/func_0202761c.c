@@ -7,7 +7,7 @@ extern void func_0201fc74();
 extern void func_020b5324();
 extern void func_020b5394();
 extern void func_020b53e0();
-extern void func_020b540c();
+extern void NNS_SndArcStrmStart();
 extern char data_020bc420[];
 extern char data_020bc49c[];
 extern char data_020c57b4[];
@@ -97,7 +97,7 @@ L_02027734:
     ldr r0, =data_020c57d0
     mov r1, r4
     mov r2, #0x0
-    bl func_020b540c
+    bl NNS_SndArcStrmStart
     ldr r0, =data_020c57cc
     str r4, [r0, #0x0]
     bl func_0201fc34

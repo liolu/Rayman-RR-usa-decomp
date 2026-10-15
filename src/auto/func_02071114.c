@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0206f4d0();
 extern void func_02070438();
 extern void func_02070b7c();
@@ -105,7 +105,7 @@ L_020711c8:
     sub r1, r1, r2
     mov r0, r0, lsl #0xc
     mov r1, r1, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     b L_020712ac
 L_02071280:
     add r7, r8, #0x24
@@ -118,7 +118,7 @@ L_02071280:
     sub r0, r10, r0
     mov r0, r0, lsl #0xc
     mov r1, r1, lsl #0xc
-    bl func_02014910
+    bl FX_Div
 L_020712ac:
     ldrsh r1, [r8, #0x22]
     cmp r1, #0x0

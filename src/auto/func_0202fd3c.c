@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0202f99c();
+extern void OS_Exit();
 extern void func_0207ad9c();
 extern char data_020bc544[];
 extern char data_020cf6c8[];
@@ -106,7 +106,7 @@ L_0202fe7c:
     mov r3, #0x23
     bl func_0207ad9c
     mov r0, r6
-    bl func_0202f99c
+    bl OS_Exit
     add sp, sp, #0x18
     mov r0, #0x0
     ldmfd sp!, {r4, r5, r6, pc}
@@ -136,7 +136,7 @@ L_0202fec0:
     mov r3, #0x23
     bl func_0207ad9c
     mov r0, r6
-    bl func_0202f99c
+    bl OS_Exit
     add sp, sp, #0x18
     mov r0, #0x0
     ldmfd sp!, {r4, r5, r6, pc}

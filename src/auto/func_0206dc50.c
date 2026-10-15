@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200ad34();
+extern void _u32_div_f();
 extern void func_0205e9e0();
 extern void func_0205ea18();
 extern void func_0205ea20();
@@ -61,7 +61,7 @@ L_0206dccc:
     mul r0, r2, r7
     ldrh r1, [r1, #0x0]
     str r1, [sp, #0x0]
-    bl func_0200ad34
+    bl _u32_div_f
     mov r6, r0
     ldr r0, =data_020dc19c
     cmp r6, r7
@@ -71,7 +71,7 @@ L_0206dccc:
     sub r2, r8, r2
     mul r0, r2, r7
     subhs r6, r7, #0x1
-    bl func_0200ad34
+    bl _u32_div_f
     sub r1, r8, r0
     mov r0, r6, lsl #0x10
     str r1, [r4, #0xc0]
@@ -84,7 +84,7 @@ L_0206dccc:
     mov r2, #0x3e8
     mov r1, r0
     mul r0, r6, r2
-    bl func_0200ad34
+    bl _u32_div_f
     add r0, r7, r0
     str r0, [r4, #0xc8]
     add r1, r4, #0xcf

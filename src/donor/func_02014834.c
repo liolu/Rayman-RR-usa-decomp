@@ -25,12 +25,12 @@ static inline u32 CP_GetSqrtResult32(void) {
     return CP_GetSqrtResultImm32();
 }
 extern fx32 func_02014834(fx32 x);
-extern fx64c func_0201480c(void);
-extern void func_02014794(fx32 denom);
+extern fx64c FX_GetDivResultFx64c(void);
+extern void FX_InvAsync(fx32 denom);
 extern fx64c FX_GetInvResultFx64c(void);
-extern void func_02014744(fx32 x);
+extern void FX_SqrtAsync(fx32 x);
 static inline fx64c FX_GetInvResultFx64c(void) {
-    return func_0201480c();
+    return FX_GetDivResultFx64c();
 }
 fx32 func_02014834(fx32 x) {
     if (x > 0) {
@@ -38,8 +38,8 @@ fx32 func_02014834(fx32 x) {
         s64 sqrt_x;
         s64 tmp;
 
-        func_02014794(x);
-        func_02014744(x);
+        FX_InvAsync(x);
+        FX_SqrtAsync(x);
 
         inv_x  = FX_GetInvResultFx64c();
         sqrt_x = CP_GetSqrtResult32();
@@ -49,6 +49,6 @@ fx32 func_02014834(fx32 x) {
         return 0;
     }
 }
-fx64c func_0201480c(void);
-void func_02014794(fx32 denom);
-void func_02014744(fx32 x);
+fx64c FX_GetDivResultFx64c(void);
+void FX_InvAsync(fx32 denom);
+void FX_SqrtAsync(fx32 x);

@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-M2C_UNK func_0202e93c(void *, s16);                 /* extern */
+M2C_UNK func_0202e93c(void *, s16);
 
 void func_0206bf70(void *arg0) {
     s16 var_r5;

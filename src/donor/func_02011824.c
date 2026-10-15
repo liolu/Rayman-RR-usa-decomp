@@ -184,7 +184,7 @@ typedef struct CARDiCommon {
 
     u8 backup_cache_page_buf[256] __attribute__((aligned(32)));
 } CARDiCommon;
-extern CARDiCommon data_020c1100;
+extern CARDiCommon cardi_common;
 typedef struct CARDRomStat {
     void (*read_func)(struct CARDRomStat *);
     u32 ctrl;
@@ -193,25 +193,25 @@ typedef struct CARDRomStat {
     u8 cache_buf[512];
 } CARDRomStat;
 extern void func_02011824(CARDRomStat *p);
-extern BOOL func_02011c6c(CARDRomStat *p);
-extern void func_02011bcc(u32 cmd1, u32 cmd2);
+extern BOOL CARDi_ReadFromCache(CARDRomStat *p);
+extern void CARDi_SetRomOp(u32 cmd1, u32 cmd2);
 static inline BOOL CARDi_OnReadPageDirect(CARDRomStat *arg) {
 
 #pragma unused(arg)
 #line 25
-    CARDiCommon *p = &data_020c1100;
+    CARDiCommon *p = &cardi_common;
     p->src += 512;
     p->dst += 512;
     p->len -= 512;
     return (p->len > 0);
 }
-BOOL func_02011c6c(CARDRomStat *p);
-void func_02011bcc(u32 cmd1, u32 cmd2);
+BOOL CARDi_ReadFromCache(CARDRomStat *p);
+void CARDi_SetRomOp(u32 cmd1, u32 cmd2);
 static inline void CARDi_SetRomOpReadPage1(u32 src) {
-    func_02011bcc((u32) (0xB7000000 | (src >> 8)), (u32) (src << 24));
+    CARDi_SetRomOp((u32) (0xB7000000 | (src >> 8)), (u32) (src << 24));
 }
 void func_02011824(CARDRomStat *p) {
-    CARDiCommon *const c = &data_020c1100;
+    CARDiCommon *const c = &cardi_common;
     while (1) {
         const u32 len = 512;
         u32 src       = (((u32) (c->src)) & ~((512) - 1));
@@ -245,7 +245,7 @@ void func_02011824(CARDRomStat *p) {
                 break;
             }
         } else {
-            if (!func_02011c6c(p)) {
+            if (!CARDi_ReadFromCache(p)) {
                 break;
             }
         }

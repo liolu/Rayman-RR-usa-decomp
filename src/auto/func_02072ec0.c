@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020015f4();
+extern void memset();
 extern void func_0204757c();
 extern void func_020475dc();
 extern void func_02072ff0();
@@ -34,7 +34,7 @@ asm void func_02072ec0(void) {
     swpb r3, r3, [ip]
     mov r1, #0x20
     mov r2, #0x9
-    bl func_020015f4
+    bl memset
     ldr r1, =data_020de0d3
     mov r0, #0xa
     mla r1, r4, r0, r1

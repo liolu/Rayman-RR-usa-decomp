@@ -4,9 +4,9 @@
 extern void func_01ff84a0();
 extern void func_01ff8778();
 extern void func_01ff87d0();
-extern void func_02003b14();
+extern void rand();
 extern void func_02014834();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_020a60cc();
 extern void func_020affb8();
 extern char data_020b7490[];
@@ -38,10 +38,10 @@ asm void func_020a95b0(void) {
     add r1, sp, #0x24
     add r2, sp, #0x18
     bl func_020affb8
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r11, =0xc8f4
     mov r2, #0x0
     umull r10, r9, r0, r11

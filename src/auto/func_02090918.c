@@ -1,9 +1,9 @@
 #include "m2c.h"
 
-s32 func_02061248(s32, u8, u8, s32);                /* extern */
-s32 func_02061294(s32, s32);                        /* extern */
-s32 func_0206b3c4(s32);                             /* extern */
-void *func_02084450(M2C_UNK, void *, s32 *);        /* extern */
+s32 func_02061248(s32, u8, u8, s32);
+s32 func_02061294(s32, s32);
+s32 func_0206b3c4(s32);
+void *func_02084450(M2C_UNK, void *, s32 *);
 
 /* Type handler accessor.
    func_02084450() is the object's type handler: it fills the 4-word local buffer
@@ -31,7 +31,7 @@ void *func_02090918(M2C_UNK arg0, void *arg1, s32 *arg2) {
     temp_r4   = func_0206b3c4(M2C_FIELD(sp0[0], s32 *, 4));
     temp_r0   = func_02084450(arg0, temp_r5_2, sp0);
     temp_r5   = temp_r0;
-    switch (temp_r8_2) {                            /* irregular */
+    switch (temp_r8_2) {
         case 9:
             if (temp_r8_2 != 9) {
                 var_r8 = 1;

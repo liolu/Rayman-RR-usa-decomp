@@ -1,12 +1,12 @@
 #include "m2c.h"
 
-M2C_UNK func_0202c664();                   /* extern */
-M2C_UNK func_0202e19c();           /* extern */
-s32 func_02057748();                          /* extern */
-void *func_0205779c(); /* extern */
-void *func_02057dd8();                              /* extern */
-M2C_UNK func_0206b3c4();                         /* extern */
-void *func_02084450();       /* extern */
+M2C_UNK func_0202c664();
+M2C_UNK func_0202e19c();
+s32 func_02057748();
+void *func_0205779c();
+void *func_02057dd8();
+M2C_UNK func_0206b3c4();
+void *func_02084450();
 extern s32 data_020dc194;
 extern M2C_UNK data_020dc19c;
 
@@ -23,7 +23,7 @@ void *func_0209a9c8(M2C_UNK arg0, void *arg1, void *arg2) {
     void *var_r8;
 
     temp_r3 = M2C_FIELD(arg1, s32 *, -8);
-    switch (temp_r3) {                              /* irregular */
+    switch (temp_r3) {
         case 0x37:
             M2C_FIELD(arg2, void **, 0) = (void *) M2C_FIELD(&data_020dc19c, u8 *, 0xC7A);
             M2C_FIELD(arg2, s32 *, 0xC) = 6;

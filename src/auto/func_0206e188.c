@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020148f4();
+extern void FX_Inv();
 extern void func_020713b0();
 extern char data_020dd8a0[];
 extern char data_020dd8a4[];
@@ -73,7 +73,7 @@ L_0206e260:
     blt L_0206e218
 L_0206e274:
     mov r0, r7, lsl #0xc
-    bl func_020148f4
+    bl FX_Inv
     ldr r5, =data_020dd8a0
     ldr r1, [r5, #0x4]
     smull r2, r1, r0, r1

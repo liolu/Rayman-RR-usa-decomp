@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_0206e438();                                /* extern */
+s32 func_0206e438();
 
 s32 func_02088964(void) {
     if (func_0206e438() != 0) {

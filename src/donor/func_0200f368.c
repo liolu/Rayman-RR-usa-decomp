@@ -235,7 +235,7 @@ typedef struct NvTpData {
     s16 xDotSize;
     s16 yDotSize;
 } TPCalibrateParam;
-extern u32 func_0200ed08(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, u16 dy1, u16 raw_x2, u16 raw_y2,
+extern u32 TP_CalcCalibrateParam(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, u16 dy1, u16 raw_x2, u16 raw_y2,
                          u16 dx2, u16 dy2);
 extern BOOL func_0200f368(TPCalibrateParam *calibrate);
 extern const u16(*ctrdgi_fl_maxtime);
@@ -255,7 +255,7 @@ BOOL func_0200f368(TPCalibrateParam *calibrate) {
     dx2 = (u16) (info->ncd.tp.dx2);
     dy2 = (u16) (info->ncd.tp.dy2);
 #line 260
-    if ((x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0) || (func_0200ed08(calibrate, x1, y1, dx1, dy1, x2, y2, dx2, dy2) != 0)) {
+    if ((x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0) || (TP_CalcCalibrateParam(calibrate, x1, y1, dx1, dy1, x2, y2, dx2, dy2) != 0)) {
         calibrate->x0       = 0;
         calibrate->y0       = 0;
         calibrate->xDotSize = 0;
@@ -266,5 +266,5 @@ BOOL func_0200f368(TPCalibrateParam *calibrate) {
 
     return 1;
 }
-u32 func_0200ed08(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, u16 dy1, u16 raw_x2, u16 raw_y2, u16 dx2,
+u32 TP_CalcCalibrateParam(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, u16 dy1, u16 raw_x2, u16 raw_y2, u16 dx2,
                   u16 dy2);

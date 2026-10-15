@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02009f7c();
+extern void _fdiv();
 extern void func_0200a42c();
 extern void func_0202e1e0();
 extern void func_02078504();
@@ -40,22 +40,22 @@ L_0207a3e8:
     bne L_0207a420
     bl func_0200a42c
     mov r1, r6
-    bl func_02009f7c
+    bl _fdiv
     mov r7, r0
     ldr r0, [r8, #0x14]
     bl func_0200a42c
     mov r1, r6
-    bl func_02009f7c
+    bl _fdiv
     b L_0207a440
 L_0207a420:
     bl func_0200a42c
     mov r1, r6
-    bl func_02009f7c
+    bl _fdiv
     mov r7, r0
     ldr r0, [r8, #0x18]
     bl func_0200a42c
     mov r1, r6
-    bl func_02009f7c
+    bl _fdiv
 L_0207a440:
     add r3, r8, #0x8
     mov r2, r0

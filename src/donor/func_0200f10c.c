@@ -81,7 +81,7 @@ extern struct {
     vu16 state;
     vu16 err_flg;
     vu16 command_flg;
-} data_020c0fc4;
+} tpState;
 static inline BOOL TPi_AutoSamplingOn(u16 vCount, u8 frequency) {
     if (0 > func_02018424(PXI_FIFO_TAG_TOUCHPANEL, 0x02000000 | (0 << 16) | (0x0001 << 8) | (u32) frequency, 0)) {
         return 0;
@@ -94,10 +94,10 @@ static inline BOOL TPi_AutoSamplingOn(u16 vCount, u8 frequency) {
     return 1;
 }
 static inline void TPi_ErrorAtPxi(TPRequestCommand command) {
-    data_020c0fc4.err_flg |= (1 << command);
+    tpState.err_flg |= (1 << command);
 
-    if (data_020c0fc4.callback) {
-        (data_020c0fc4.callback)(command, TP_RESULT_PXI_BUSY, 0);
+    if (tpState.callback) {
+        (tpState.callback)(command, TP_RESULT_PXI_BUSY, 0);
     }
 }
 void func_0200f10c(u16 vcount, u16 frequence, TPData samplingBufs[], u16 bufSize) {
@@ -111,13 +111,13 @@ void func_0200f10c(u16 vcount, u16 frequence, TPData samplingBufs[], u16 bufSize
     ((void) 0);
     ((void) 0);
 
-    data_020c0fc4.samplingBufs = samplingBufs;
-    data_020c0fc4.index        = 0;
-    data_020c0fc4.frequence    = frequence;
-    data_020c0fc4.bufSize      = bufSize;
+    tpState.samplingBufs = samplingBufs;
+    tpState.index        = 0;
+    tpState.frequence    = frequence;
+    tpState.bufSize      = bufSize;
 
     for (i = 0; i < bufSize; i++) {
-        data_020c0fc4.samplingBufs[i].touch = 0;
+        tpState.samplingBufs[i].touch = 0;
     }
 
     enabled = OS_DisableIrq();
@@ -128,8 +128,8 @@ void func_0200f10c(u16 vcount, u16 frequence, TPData samplingBufs[], u16 bufSize
         return;
     }
 
-    data_020c0fc4.command_flg |= TP_REQUEST_COMMAND_FLAG_AUTO_ON;
-    data_020c0fc4.err_flg &= ~TP_REQUEST_COMMAND_FLAG_AUTO_ON;
+    tpState.command_flg |= TP_REQUEST_COMMAND_FLAG_AUTO_ON;
+    tpState.err_flg &= ~TP_REQUEST_COMMAND_FLAG_AUTO_ON;
 
     (void) OS_RestoreIrq(enabled);
 }

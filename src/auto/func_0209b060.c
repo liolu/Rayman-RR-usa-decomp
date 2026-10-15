@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02009f7c();
+extern void _fdiv();
 extern void func_0200a3b8();
 extern void func_0200a474();
 extern void func_0200a4bc();
@@ -18,7 +18,7 @@ asm void func_0209b060(void) {
     bl func_0200a474
     mov r1, r0
     ldr r0, =0x447a0000
-    bl func_02009f7c
+    bl _fdiv
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -37,7 +37,7 @@ asm void func_0209b060(void) {
     bl func_0200a474
     mov r1, r0
     ldr r0, =0x447a0000
-    bl func_02009f7c
+    bl _fdiv
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc

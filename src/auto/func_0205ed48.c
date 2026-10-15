@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200ad34();
+extern void _u32_div_f();
 extern void func_0205eab8();
 extern void func_0205ebc4();
 extern char data_020dceec[];
@@ -50,7 +50,7 @@ L_0205edc4:
     moveq r6, #0x1000
     beq L_0205edf4
     mov r0, r5
-    bl func_0200ad34
+    bl _u32_div_f
     ldr r0, =data_020dcef8
     ldr r6, [r0, r1, lsl #0x2]
 L_0205edf4:

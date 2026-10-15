@@ -1,8 +1,8 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200aae0();
-extern void func_0200e2cc();
+extern void _ll_udiv();
+extern void OS_GetTick();
 extern void func_02026944();
 extern void func_0202c1a0();
 extern void func_0202c334();
@@ -35,7 +35,7 @@ asm void func_02047bfc(void) {
     mov r0, #0x1
     swpb r0, r0, [r1]
     bl func_02026944
-    bl func_0200e2cc
+    bl OS_GetTick
     mov r3, #0x0
     mov ip, #0xfa00
     ldr r2, =0x82ea
@@ -44,7 +44,7 @@ asm void func_02047bfc(void) {
     mla lr, r1, ip, lr
     mov r0, r4
     mov r1, lr
-    bl func_0200aae0
+    bl _ll_udiv
     bl func_0202c1a0
     bl func_0202c334
     ldmfd sp!, {r4, pc}

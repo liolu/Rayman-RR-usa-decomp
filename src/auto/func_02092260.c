@@ -10,7 +10,7 @@ void *func_02092260(s32 arg0, void *arg1, s32 *arg2) {
     temp_r0 = M2C_FIELD(arg1, s32 *, -8);
     var_r3  = 0;
     *arg2   = 0;
-    switch (temp_r0) {                              /* irregular */
+    switch (temp_r0) {
         case 42:
             if (data_020de119 != 0) {
                 var_r3 = 1;

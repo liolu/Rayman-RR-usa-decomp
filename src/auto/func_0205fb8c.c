@@ -3,7 +3,7 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_02003fe4();
 extern void func_02004600();
-extern void func_02014910();
+extern void FX_Div();
 extern char data_020bd298[];
 extern char data_020bd29c[];
 extern char data_020dcfc0[];
@@ -16,7 +16,7 @@ asm void func_0205fb8c(void) {
     bl func_02004600
     mov r0, r0, lsl #0xc
     mov r1, #0x3e8000
-    bl func_02014910
+    bl FX_Div
     ldr r5, =data_020dcfc0
     mov r10, #0x1
     str r0, [r5, #0x0]
@@ -34,7 +34,7 @@ L_0205fbcc:
     bl func_02004600
     mov r1, r6
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     str r0, [r5, r10, lsl #0x2]
     sub r1, r9, #0x1
     swpb r0, r4, [r1]

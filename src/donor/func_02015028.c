@@ -6,22 +6,22 @@ typedef signed long s32;
 typedef s32 fx32;
 typedef s16 fx16;
 extern fx16 func_02015028(fx32 x);
-extern fx32 func_020148f4(fx32 denom);
-extern const fx16 data_020bb490[128 + 1];
+extern fx32 FX_Inv(fx32 denom);
+extern const fx16 FX_AtanTable_[128 + 1];
 fx16 func_02015028(fx32 x) {
     if (x >= 0) {
         if (x > ((fx32) 0x0000000000001000L)) {
-            return (fx16) (6434 - data_020bb490[func_020148f4(x) >> 5]);
+            return (fx16) (6434 - FX_AtanTable_[FX_Inv(x) >> 5]);
         } else if (x < ((fx32) 0x0000000000001000L)) {
-            return data_020bb490[x >> 5];
+            return FX_AtanTable_[x >> 5];
         } else {
             return (fx16) 3217;
         }
     } else {
         if (x < -((fx32) 0x0000000000001000L)) {
-            return (fx16) (-6434 + data_020bb490[func_020148f4(-x) >> 5]);
+            return (fx16) (-6434 + FX_AtanTable_[FX_Inv(-x) >> 5]);
         } else if (x > -((fx32) 0x0000000000001000L)) {
-            return (fx16) -data_020bb490[-x >> 5];
+            return (fx16) -FX_AtanTable_[-x >> 5];
         } else {
             return (fx16) -3217;
         }

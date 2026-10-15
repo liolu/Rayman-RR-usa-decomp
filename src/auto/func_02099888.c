@@ -6,13 +6,13 @@ extern void func_01ff84a0();
 extern void func_01ff8668();
 extern void func_01ff8878();
 extern void func_01ff88b4();
-extern void func_02009f7c();
+extern void _fdiv();
 extern void func_0200a3b8();
 extern void func_0200a474();
 extern void func_0200a4bc();
 extern void func_0200eb98();
-extern void func_020148f4();
-extern void func_02014910();
+extern void FX_Inv();
+extern void FX_Div();
 extern void func_0202c700();
 extern void func_0202e258();
 extern void func_0208429c();
@@ -341,7 +341,7 @@ L_02099d20:
     mov r1, r3, lsr #0xc
     mov r0, r0, lsl #0xc
     orr r1, r1, r2, lsl #0x14
-    bl func_02014910
+    bl FX_Div
     add r0, r0, #0x800
     mov r6, r0, asr #0xc
     cmp r6, #0x1
@@ -628,7 +628,7 @@ L_0209a15c:
     ldr r1, [r7, #0x78]
     cmp r0, r1
     blt L_0209a310
-    bl func_020148f4
+    bl FX_Inv
     ldr r1, =data_020dc19c
     ldr r2, [r7, #0x80]
     ldr r10, [r1, #0xd0]
@@ -664,7 +664,7 @@ L_0209a15c:
     bl func_0200a474
     mov r1, r0
     ldr r0, =0x447a0000
-    bl func_02009f7c
+    bl _fdiv
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -701,7 +701,7 @@ L_0209a15c:
     bl func_0200a474
     mov r1, r0
     ldr r0, =0x447a0000
-    bl func_02009f7c
+    bl _fdiv
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc

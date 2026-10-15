@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_0206b3c4(s32);                             /* extern */
+s32 func_0206b3c4(s32);
 
 s32 func_0208371c(s32 *arg0, s32 arg1, void **arg2) {
     s32 var_r0;

@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_0201d3cc(M2C_UNK, void *);             /* extern */
-M2C_UNK func_02021c8c(s32);                         /* extern */
+M2C_UNK func_0201d3cc(M2C_UNK, void *);
+M2C_UNK func_02021c8c(s32);
 
 void func_020226c4(void *arg0) {
     if (M2C_FIELD(arg0, s32 *, 4) != 0) {

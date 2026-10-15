@@ -2,7 +2,7 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_02001588();
-extern void func_020015f4();
+extern void memset();
 extern char data_020e39e8[];
 extern char data_020e39e9[];
 // clang-format off
@@ -49,7 +49,7 @@ L_02082f6c:
     mov r1, #0x0
     mov r2, #0x50
     mov r9, r4
-    bl func_020015f4
+    bl memset
     add r4, r4, #0x50
     b L_02082fd4
 L_02082fcc:
@@ -67,7 +67,7 @@ L_02082fd4:
     mov r1, #0x0
     mov r2, #0x48
     swpb r3, r3, [ip]
-    bl func_020015f4
+    bl memset
 L_02083004:
     str r9, [r8, #0x10]
 L_02083008:
@@ -122,7 +122,7 @@ L_02083074:
     mov r1, #0x0
     mov r2, #0x50
     mov r8, r4
-    bl func_020015f4
+    bl memset
     add r4, r4, #0x50
     b L_020830dc
 L_020830d4:
@@ -140,7 +140,7 @@ L_020830dc:
     mov r1, #0x0
     mov r2, #0x48
     swpb r3, r3, [r9]
-    bl func_020015f4
+    bl memset
 L_0208310c:
     str r8, [r7, #0x10]
 L_02083110:
@@ -192,7 +192,7 @@ L_02083134:
     mov r7, r4
     mov r0, r8
     add r4, r8, r2
-    bl func_020015f4
+    bl memset
     str r8, [r7, #0x8]
     str r7, [r5, #0xc]
     ldr r0, [r6, #0xc]
@@ -209,7 +209,7 @@ L_02083134:
     ldr r2, [r1, #0x8]
     mov r1, #0x0
     ldr r2, [r2, #0x8]
-    bl func_020015f4
+    bl memset
     ldr r0, [r5, #0xc]
     str r4, [r0, #0x4]
     ldr r0, [r5, #0x0]

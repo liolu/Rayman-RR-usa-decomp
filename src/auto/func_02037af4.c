@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_0201bdd0(void *);                          /* extern */
+s32 func_0201bdd0(void *);
 
 void func_02037af4(void *arg0, s32 arg1) {
     if (func_0201bdd0(M2C_FIELD(arg0, void **, 0x29C)) == 0) {

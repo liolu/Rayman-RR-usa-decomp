@@ -39,10 +39,10 @@ typedef struct {
     void *callbackArg;
     void *work;
 } PMiWork;
-extern PMiWork data_020c1034;
-extern PMData16 data_020c105c[5];
-extern volatile BOOL data_020c1020;
-extern volatile BOOL data_020c1024;
+extern PMiWork PMi_Work;
+extern PMData16 PMi_RegisterBuffer[5];
+extern volatile BOOL PMi_SyncFlag;
+extern volatile BOOL PMi_SleepEndFlag;
 void func_02010954(u32 result);
 void func_020107a4(PXIFifoTag tag, u32 data, BOOL err) {
 
@@ -61,20 +61,20 @@ void func_020107a4(PXIFifoTag tag, u32 data, BOOL err) {
     if (0x0070 <= command && command <= 0x0074) {
         int num     = (int) (command - 0x0070);
         u16 value   = (u16) (pxiResult & 0xff);
-        u16 *buffer = data_020c105c[num].buffer;
+        u16 *buffer = PMi_RegisterBuffer[num].buffer;
 
         if (buffer) {
             *buffer = value;
         }
-        data_020c105c[num].flag = 1;
+        PMi_RegisterBuffer[num].flag = 1;
         pxiResult               = 0;
     } else if (command == 0x0060) {
-        data_020c1020 = 1;
+        PMi_SyncFlag = 1;
     } else if (command == 0x0062) {
-        data_020c1024 = 1;
+        PMi_SleepEndFlag = 1;
     } else if (command == 0x0067) {
-        if (data_020c1034.work) {
-            *(u32 *) data_020c1034.work = pxiResult;
+        if (PMi_Work.work) {
+            *(u32 *) PMi_Work.work = pxiResult;
         }
         pxiResult = 0;
     }

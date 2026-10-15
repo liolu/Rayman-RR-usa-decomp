@@ -1,9 +1,9 @@
 #include "m2c.h"
 
-s32 func_0200fa2c();                                /* extern */
-M2C_UNK func_02074078(s32, s32);                    /* extern */
-M2C_UNK func_02074208();                            /* extern */
-M2C_UNK func_0207451c();                            /* extern */
+s32 func_0200fa2c();
+M2C_UNK func_02074078(s32, s32);
+M2C_UNK func_02074208();
+M2C_UNK func_0207451c();
 extern M2C_UNK data_020de26c;
 extern s32 data_020de658;
 

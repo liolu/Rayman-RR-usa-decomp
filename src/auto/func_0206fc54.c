@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_01ff8814(s32, s32, s32, s32, s32, s32);    /* extern */
+s32 func_01ff8814(s32, s32, s32, s32, s32, s32);
 
 void func_0206fc54(void *arg0, void *arg1, void *arg2) {
     M2C_FIELD(arg0, s32 *, 0) =

@@ -265,22 +265,22 @@ typedef struct FSFile {
     } arg;
 
 } FSFile;
-extern void func_020143a0(FSFile *p_file);
+extern void FS_InitFile(FSFile *p_file);
 extern BOOL func_02013e74(const char *path);
 extern FSResult (*const(fsi_default_command[]))(FSFile *);
-extern FSDirPos data_020c1f74;
-void func_020143a0(FSFile *p_file);
-BOOL func_02014240(FSFile *p_dir, const char *path, FSFileID *p_file_id, FSDirPos *p_dir_pos);
+extern FSDirPos current_dir_pos;
+void FS_InitFile(FSFile *p_file);
+BOOL FSi_FindPath(FSFile *p_dir, const char *path, FSFileID *p_file_id, FSDirPos *p_dir_pos);
 BOOL func_02013e74(const char *path) {
     FSDirPos pos;
     FSFile dir;
 
-    func_020143a0(&dir);
+    FS_InitFile(&dir);
 
-    if (!func_02014240(&dir, path, 0, &pos)) {
+    if (!FSi_FindPath(&dir, path, 0, &pos)) {
         return 0;
     }
 
-    data_020c1f74 = pos;
+    current_dir_pos = pos;
     return 1;
 }

@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200d6c4();
+extern void DC_InvalidateRange();
 extern char data_020bd568[];
 extern char data_020de26c[];
 extern char data_020de290[];
@@ -35,7 +35,7 @@ L_020740c0:
     cmp r10, r2
     movlo r10, r2
     bic r0, r10, #0x1f
-    bl func_0200d6c4
+    bl DC_InvalidateRange
     ldr r7, =data_020de26c
     cmp r10, r4
     ldrsh r0, [r7, #0x2]
@@ -70,7 +70,7 @@ L_02074104:
     bne L_02074164
     mov r0, r10
     mov r1, #0x20
-    bl func_0200d6c4
+    bl DC_InvalidateRange
 L_02074164:
     cmp r10, r4
     bne L_02074104

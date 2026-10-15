@@ -84,12 +84,12 @@ extern struct {
     vu16 state;
     vu16 err_flg;
     vu16 command_flg;
-} data_020c0fc4;
+} tpState;
 void func_0200f220(const TPCalibrateParam *param) {
     OSIntrMode enabled;
 
     if (param == 0) {
-        data_020c0fc4.calibrate_flg = 0;
+        tpState.calibrate_flg = 0;
         return;
     }
 
@@ -98,28 +98,28 @@ void func_0200f220(const TPCalibrateParam *param) {
     if (param->xDotSize != 0) {
         CP_SetDiv32_32(0x10000000, (u32) param->xDotSize);
 
-        data_020c0fc4.calibrate.x0          = param->x0;
-        data_020c0fc4.calibrate.xDotSize    = param->xDotSize;
-        data_020c0fc4.calibrate.xDotSizeInv = (s32) CP_GetDivResult32();
+        tpState.calibrate.x0          = param->x0;
+        tpState.calibrate.xDotSize    = param->xDotSize;
+        tpState.calibrate.xDotSizeInv = (s32) CP_GetDivResult32();
     } else {
-        data_020c0fc4.calibrate.x0          = 0;
-        data_020c0fc4.calibrate.xDotSize    = 0;
-        data_020c0fc4.calibrate.xDotSizeInv = 0;
+        tpState.calibrate.x0          = 0;
+        tpState.calibrate.xDotSize    = 0;
+        tpState.calibrate.xDotSizeInv = 0;
     }
 
     if (param->yDotSize != 0) {
         CP_SetDiv32_32(0x10000000, (u32) param->yDotSize);
 
-        data_020c0fc4.calibrate.y0          = param->y0;
-        data_020c0fc4.calibrate.yDotSize    = param->yDotSize;
-        data_020c0fc4.calibrate.yDotSizeInv = (s32) CP_GetDivResult32();
+        tpState.calibrate.y0          = param->y0;
+        tpState.calibrate.yDotSize    = param->yDotSize;
+        tpState.calibrate.yDotSizeInv = (s32) CP_GetDivResult32();
     } else {
-        data_020c0fc4.calibrate.y0          = 0;
-        data_020c0fc4.calibrate.yDotSize    = 0;
-        data_020c0fc4.calibrate.yDotSizeInv = 0;
+        tpState.calibrate.y0          = 0;
+        tpState.calibrate.yDotSize    = 0;
+        tpState.calibrate.yDotSizeInv = 0;
     }
 
     (void) OS_RestoreIrq(enabled);
 
-    data_020c0fc4.calibrate_flg = 1;
+    tpState.calibrate_flg = 1;
 }

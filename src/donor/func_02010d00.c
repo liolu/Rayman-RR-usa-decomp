@@ -83,7 +83,7 @@ typedef struct CARDRomStat {
 extern u32 data_020423e8;
 extern OSIntrMode OS_DisableIrq(void);
 extern OSIntrMode OS_RestoreIrq(OSIntrMode state);
-extern void func_0200ccbc(OSThreadQueue *queue);
+extern void OS_SleepThread(OSThreadQueue *queue);
 extern void OS_WakeupThread(OSThreadQueue *queue);
 extern void func_0200eb98(void);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
@@ -96,9 +96,9 @@ static inline u32 CARDi_GetRomFlag(u32 flag) {
 static inline void CARDi_SetRomOpReadPage1(u32 src) {
     CARDi_SetRomOp((u32) (0xB7000000 | (src >> 8)), (u32) (src << 24));
 }
-extern CARDiCommon data_020c1100 __attribute__((aligned(32)));
+extern CARDiCommon cardi_common __attribute__((aligned(32)));
 void func_02010d00(CARDiOwner owner, CARDTargetMode target) {
-    CARDiCommon *const p = &data_020c1100;
+    CARDiCommon *const p = &cardi_common;
     OSIntrMode bak_psr   = OS_DisableIrq();
 
     if (p->lock_owner == owner) {
@@ -107,7 +107,7 @@ void func_02010d00(CARDiOwner owner, CARDTargetMode target) {
         }
     } else {
         while (p->lock_owner != (-3)) {
-            func_0200ccbc(p->lock_queue);
+            OS_SleepThread(p->lock_queue);
         }
         p->lock_owner  = owner;
         p->lock_target = target;

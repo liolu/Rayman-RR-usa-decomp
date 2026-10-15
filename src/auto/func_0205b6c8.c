@@ -1,8 +1,8 @@
 #include "m2c.h"
 
-s32 func_0201bdd0(s32 *);                           /* extern */
-s32 *func_0201c2b8(s32 *);                          /* extern */
-M2C_UNK func_0201c488(s32 *, void *, M2C_UNK);      /* extern */
+s32 func_0201bdd0(s32 *);
+s32 *func_0201c2b8(s32 *);
+M2C_UNK func_0201c488(s32 *, void *, M2C_UNK);
 
 void func_0205b6c8(void *arg0) {
     s32 *var_r4;

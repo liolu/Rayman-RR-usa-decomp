@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-extern long func_02084450(long lArg0, void *p_vObject, long lArg2);     /* extern */
+extern long func_02084450(long lArg0, void *p_vObject, long lArg2);
 
 /* Fills a 4-word local buffer through func_02084450 (the object's type handler) and
    writes 1 to *arg2 when the first three words are each within +/-0x10, else 0.

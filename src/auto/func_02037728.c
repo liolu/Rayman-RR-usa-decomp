@@ -1,13 +1,13 @@
 #include "m2c.h"
 
-s32 func_01ff8878(s32);                             /* extern */
-s32 func_01ff88b4(s32);                             /* extern */
-void func_0202c664(void *);                         /* extern */
-void func_0202d1e8(void *, void *, void *);         /* extern */
-void func_0202d434(void *, void *, s32);            /* extern */
-void func_0202d964(void *, void *, void *, void *); /* extern */
-void func_0202e19c(void *, void *);                 /* extern */
-void func_0202e1e0(void *, void *);                 /* extern */
+s32 func_01ff8878(s32);
+s32 func_01ff88b4(s32);
+void func_0202c664(void *);
+void func_0202d1e8(void *, void *, void *);
+void func_0202d434(void *, void *, s32);
+void func_0202d964(void *, void *, void *, void *);
+void func_0202e19c(void *, void *);
+void func_0202e1e0(void *, void *);
 
 typedef struct {
     s32 x;

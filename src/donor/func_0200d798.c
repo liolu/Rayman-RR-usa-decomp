@@ -15,18 +15,18 @@ typedef enum {
     OS_ARENA_WRAM_SUBPRIV = 8,
     OS_ARENA_MAX          = 9
 } OSArenaId;
-extern void *func_0200da58(OSArenaId id);
-extern void *func_0200da44(OSArenaId id);
-extern void func_0200d814(OSArenaId id, void *newHi);
+extern void *OS_GetArenaHi(OSArenaId id);
+extern void *OS_GetArenaLo(OSArenaId id);
+extern void OS_SetArenaHi(OSArenaId id, void *newHi);
 extern void *func_0200d798(OSArenaId id, u32 size, u32 align);
-void *func_0200da58(OSArenaId id);
-void *func_0200da44(OSArenaId id);
-void func_0200d814(OSArenaId id, void *newHi);
+void *OS_GetArenaHi(OSArenaId id);
+void *OS_GetArenaLo(OSArenaId id);
+void OS_SetArenaHi(OSArenaId id, void *newHi);
 void *func_0200d798(OSArenaId id, u32 size, u32 align) {
     void *ptr;
     u8 *arenaHi;
 
-    arenaHi = func_0200da58(id);
+    arenaHi = OS_GetArenaHi(id);
     if (!arenaHi) {
         return ((void *) 0);
     }
@@ -35,11 +35,11 @@ void *func_0200d798(OSArenaId id, u32 size, u32 align) {
     arenaHi -= size;
     arenaHi = ptr = (void *) (((u32) (arenaHi)) & ~((align) -1));
 
-    if (arenaHi < (u8 *) func_0200da44(id)) {
+    if (arenaHi < (u8 *) OS_GetArenaLo(id)) {
         return ((void *) 0);
     }
 
-    func_0200d814(id, arenaHi);
+    OS_SetArenaHi(id, arenaHi);
 
     return ptr;
 }

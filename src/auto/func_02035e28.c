@@ -1,12 +1,12 @@
 #include "m2c.h"
 
-s32 *func_0205488c(M2C_UNK);                        /* extern */
+s32 *func_0205488c(M2C_UNK);
 
 s32 *func_02035e28(s32 arg0) {
     s32 *temp_r0;
     s32 *temp_r0_2;
 
-    switch (arg0) {                                 /* irregular */
+    switch (arg0) {
         case 0:
             temp_r0  = func_0205488c(0x10);
             *temp_r0 = 0;

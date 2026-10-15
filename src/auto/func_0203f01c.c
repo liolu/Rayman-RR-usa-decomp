@@ -3,7 +3,7 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void VEC_DotProduct();
 extern void func_01ff8668();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0202d434();
 extern void func_0202dc64();
 // clang-format off
@@ -40,7 +40,7 @@ asm void func_0203f01c(void) {
     adc r2, r0, #0x0
     mov r0, r3, lsr #0xc
     orr r0, r0, r2, lsl #0x14
-    bl func_02014910
+    bl FX_Div
     rsb r6, r4, #0x1000
     ldr r2, [r5, #0x200]
     smull r7, r6, r0, r6

@@ -3,7 +3,7 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_0200a3b8();
 extern void func_0200a4bc();
-extern void func_0200a6a8();
+extern void _fsub();
 extern void func_020413b4();
 extern void func_0204141c();
 extern void func_02041da8();
@@ -119,7 +119,7 @@ L_02049c44:
     bl func_0204a05c
     ldr r1, [r4, #0x34]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -127,7 +127,7 @@ L_02049c44:
     str r0, [sp, #0x28]
     ldr r1, [r4, #0x38]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -135,7 +135,7 @@ L_02049c44:
     str r0, [sp, #0x2c]
     mov r0, #0x0
     ldr r1, [r4, #0x3c]
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -148,7 +148,7 @@ L_02049c44:
     stmia r3, {r0, r1, r2}
     mov r0, #0x0
     ldr r1, [r4, #0x40]
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -156,7 +156,7 @@ L_02049c44:
     str r0, [sp, #0x1c]
     mov r0, #0x0
     ldr r1, [r4, #0x44]
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -164,7 +164,7 @@ L_02049c44:
     ldr r1, [r4, #0x48]
     str r0, [sp, #0x20]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -176,7 +176,7 @@ L_02049c44:
     stmia r3, {r0, r1, r2}
     ldr r1, [r4, #0x4c]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -184,7 +184,7 @@ L_02049c44:
     str r0, [sp, #0x10]
     ldr r1, [r4, #0x50]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -192,7 +192,7 @@ L_02049c44:
     str r0, [sp, #0x14]
     ldr r1, [r4, #0x54]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -204,7 +204,7 @@ L_02049c44:
     stmia r3, {r0, r1, r2}
     ldr r1, [r4, #0x58]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -212,7 +212,7 @@ L_02049c44:
     str r0, [sp, #0x4]
     ldr r1, [r4, #0x5c]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc
@@ -220,7 +220,7 @@ L_02049c44:
     str r0, [sp, #0x8]
     ldr r1, [r4, #0x60]
     mov r0, #0x0
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     ldr r0, =0x45800000
     bl func_0200a4bc

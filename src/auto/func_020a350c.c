@@ -2,8 +2,8 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_02003cfc();
-extern void func_02003d18();
-extern void func_02003e30();
+extern void strcpy();
+extern void strcat();
 extern void func_02084450();
 extern void func_02088a04();
 extern char data_020c04c8[];
@@ -43,10 +43,10 @@ asm void func_020a350c(void) {
     mov r1, r5
     add r0, sp, #0x10
     ldrb r5, [r2, #0x1]
-    bl func_02003d18
+    bl strcpy
     add r0, sp, #0x10
     mov r1, r4
-    bl func_02003e30
+    bl strcat
     add r0, sp, #0x10
     bl func_02003cfc
     cmp r0, r5
@@ -64,7 +64,7 @@ asm void func_020a350c(void) {
 L_020a35dc:
     add r1, sp, #0x10
     mov r0, r7
-    bl func_02003d18
+    bl strcpy
     mov r0, r7
     bl func_02003cfc
     add r0, r0, r7

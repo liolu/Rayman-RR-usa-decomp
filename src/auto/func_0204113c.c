@@ -1,10 +1,10 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200d6fc();
+extern void DC_FlushRange();
 extern void func_0200eb98();
-extern void func_02013ec8();
-extern void func_02013f34();
+extern void FS_SeekFile();
+extern void FS_ReadFile();
 extern void func_02041d5c();
 extern void func_02041da8();
 extern char data_020cf9ac[];
@@ -25,18 +25,18 @@ asm void func_0204113c(void) {
     ldr r0, =data_020cf9e4
     add r1, r1, #0x4
     mov r2, #0x0
-    bl func_02013ec8
+    bl FS_SeekFile
     cmp r0, #0x0
     bne L_0204117c
     bl func_0200eb98
 L_0204117c:
     mov r0, r4
     mov r1, #0x8
-    bl func_0200d6fc
+    bl DC_FlushRange
     ldr r0, =data_020cf9e4
     mov r1, r4
     mov r2, #0x8
-    bl func_02013f34
+    bl FS_ReadFile
     cmp r0, #0x8
     beq L_020411a4
     bl func_0200eb98
@@ -89,14 +89,14 @@ L_02041224:
     ldr r0, =data_020cf9e4
     mov r1, r6
     mov r2, #0x0
-    bl func_02013ec8
+    bl FS_SeekFile
     mov r0, r5
     mov r1, r7
-    bl func_0200d6fc
+    bl DC_FlushRange
     ldr r0, =data_020cf9e4
     mov r1, r5
     mov r2, r7
-    bl func_02013f34
+    bl FS_ReadFile
     ldr r0, =data_020cf9ac
     ldrsb r1, [r0, #0x10]
     cmp r1, #0x0
@@ -133,16 +133,16 @@ L_020412e8:
     ldr r0, =data_020cf9e4
     mov r1, r6
     mov r2, #0x0
-    bl func_02013ec8
+    bl FS_SeekFile
     ldr r0, =data_020cf9ac
     mov r1, r7
     ldr r0, [r0, #0x0]
-    bl func_0200d6fc
+    bl DC_FlushRange
     ldr r1, =data_020cf9ac
     ldr r0, =data_020cf9e4
     ldr r1, [r1, #0x0]
     mov r2, r7
-    bl func_02013f34
+    bl FS_ReadFile
 L_0204131c:
     ldr r0, =data_020cf9ac
     mov r2, #0x1

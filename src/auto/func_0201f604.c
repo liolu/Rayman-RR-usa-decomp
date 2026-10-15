@@ -1,12 +1,12 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020188d4();
-extern void func_02018a48();
-extern void func_02018aa4();
-extern void func_02018ad0();
-extern void func_02019568();
-extern void func_02019614();
+extern void SND_SetTrackMute();
+extern void SND_SetPlayerVolume();
+extern void SND_StopSeq();
+extern void SND_StartSeq();
+extern void SND_GetPlayerStatus();
+extern void SND_DestroyWaveArc();
 extern void func_0201ecb0();
 extern void func_0201fc34();
 extern void func_0201fc70();
@@ -49,18 +49,18 @@ L_0201f64c:
     beq L_0201f6c0
     mov r0, #0x0
     str r0, [r1, #0x10]
-    bl func_02019568
+    bl SND_GetPlayerStatus
     tst r0, #0x1
     beq L_0201f690
     mov r0, #0x0
-    bl func_02018aa4
+    bl SND_StopSeq
     bl func_0201fc34
 L_0201f690:
     ldr r0, =data_020c4a64
     ldr r0, [r0, #0x14]
     cmp r0, #0x0
     beq L_0201f6b4
-    bl func_02019614
+    bl SND_DestroyWaveArc
     bl func_0201fc34
     ldr r0, =data_020c4a64
     mov r1, #0x0
@@ -137,7 +137,7 @@ L_0201f794:
     mov r1, r1, asr #0x8
     mov r1, r1, lsl #0x1
     ldrsh r1, [r3, r1]
-    bl func_02018a48
+    bl SND_SetPlayerVolume
 L_0201f7c8:
     ldr r0, =data_020c4a8c
     ldr r1, [r0, #0x0]
@@ -149,7 +149,7 @@ L_0201f7c8:
     mov r0, #0x0
     ldr r3, [r2, #0x10]
     mov r2, r0
-    bl func_02018ad0
+    bl SND_StartSeq
     bl func_0201fc34
     ldr r0, =data_020c4a64
     ldr r1, =data_020bb604
@@ -159,20 +159,20 @@ L_0201f7c8:
     mov r2, r2, asr #0x8
     mov r2, r2, lsl #0x1
     ldrsh r1, [r1, r2]
-    bl func_02018a48
+    bl SND_SetPlayerVolume
     ldr r1, =data_020c4a64
     mov r0, #0x0
     ldr r1, [r1, #0x20]
     mov r2, #0x1
     ldrh r1, [r1, #0x40]
-    bl func_020188d4
+    bl SND_SetTrackMute
     ldr r1, =data_020c4a64
     mov r0, #0x0
     ldr r1, [r1, #0x20]
     mov r2, r0
     ldrh r1, [r1, #0x40]
     mvn r1, r1
-    bl func_020188d4
+    bl SND_SetTrackMute
     ldr r0, =data_020c4a64
     mov r2, #0x1
     ldr r1, [r0, #0x20]

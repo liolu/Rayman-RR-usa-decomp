@@ -5,8 +5,8 @@ extern void VEC_DotProduct();
 extern void func_01ff84a0();
 extern void func_01ff8668();
 extern void func_01ff87ec();
-extern void func_020148f4();
-extern void func_02014910();
+extern void FX_Inv();
+extern void FX_Div();
 extern void func_0202c664();
 extern void func_0202e19c();
 extern void func_0202e1e0();
@@ -287,7 +287,7 @@ L_020342fc:
     mov r0, r6
     bl VEC_DotProduct
     mov r1, r11
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0xfffff4cd
     cmp r0, r1
     bge L_020344c0
@@ -313,7 +313,7 @@ L_020342fc:
     add r0, sp, #0x1dc
     str r1, [r0, #0x8]
     mov r0, r11
-    bl func_020148f4
+    bl FX_Inv
     ldr r1, [sp, #0x1c]
     smull r2, r1, r0, r1
     adds r2, r2, #0x800
@@ -324,7 +324,7 @@ L_020342fc:
     str r1, [r6, #0x0]
     str r0, [sp, #0x18]
     mov r0, r11
-    bl func_020148f4
+    bl FX_Inv
     ldr r1, [sp, #0x18]
     smull r2, r1, r0, r1
     adds r2, r2, #0x800
@@ -334,7 +334,7 @@ L_020342fc:
     mov r0, r11
     ldr r11, [r6, #0x8]
     str r1, [r6, #0x4]
-    bl func_020148f4
+    bl FX_Inv
     smull r2, r1, r0, r11
     adds r2, r2, #0x800
     adc r0, r1, #0x0
@@ -377,15 +377,15 @@ L_020344c0:
     bl func_01ff8668
     mov r4, r0
     ldr r9, [r10, #0x30]
-    bl func_020148f4
+    bl FX_Inv
     str r0, [sp, #0x30]
     mov r0, r4
     ldr r5, [r10, #0x34]
-    bl func_020148f4
+    bl FX_Inv
     str r0, [sp, #0x34]
     mov r0, r4
     ldr r8, [r10, #0x38]
-    bl func_020148f4
+    bl FX_Inv
     ldr r1, [sp, #0x30]
     smull r11, r9, r1, r9
     ldr r1, [sp, #0x34]
@@ -633,7 +633,7 @@ L_020348cc:
     ldr r1, [sp, #0x40]
     str r0, [sp, #0x10]
     mov r0, r11
-    bl func_02014910
+    bl FX_Div
     ldr r1, [sp, #0x10]
     smull r2, r1, r0, r1
     adds r2, r2, #0x800
@@ -645,7 +645,7 @@ L_020348cc:
     str r0, [sp, #0xc]
     ldr r1, [sp, #0x40]
     mov r0, r11
-    bl func_02014910
+    bl FX_Div
     ldr r2, [sp, #0xc]
     ldr r1, [sp, #0x40]
     smull r3, r2, r0, r2
@@ -656,7 +656,7 @@ L_020348cc:
     mov r0, r11
     ldr r11, [r6, #0x8]
     str r2, [r6, #0x4]
-    bl func_02014910
+    bl FX_Div
     smull r2, r1, r0, r11
     adds r2, r2, #0x800
     adc r0, r1, #0x0

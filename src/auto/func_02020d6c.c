@@ -30,11 +30,11 @@
  *   - optimization levels -O2,p, -O3,p, -O4,p, -O4,s, -O3,s.
  */
 extern void func_0200eb98();
-extern s32 func_020140a8();
-extern void func_020143a0();
-extern void func_02018738();
-extern void func_02018798();
-extern void func_02018b2c();
+extern s32 FS_OpenFile();
+extern void FS_InitFile();
+extern void SND_ResetMasterPan();
+extern void SND_SetMasterVolume();
+extern void SND_Init();
 extern s32 func_0201d264();
 extern void func_02020bc8();
 extern char data_020bc060[];
@@ -65,19 +65,19 @@ asm void func_02020d6c(void) {
     str r0, [r1, #0x20]
     bl func_02020bc8
     ldr r0, =data_020c4ba4
-    bl func_020143a0
+    bl FS_InitFile
     ldr r1, =data_020bc060
     ldr r0, =data_020c4ba4
     ldr r1, [r1, #0x0]
-    bl func_020140a8
+    bl FS_OpenFile
     cmp r0, #0x0
     bne L_02020dd8
     bl func_0200eb98
 L_02020dd8:
-    bl func_02018b2c
+    bl SND_Init
     mov r0, #0x7f
-    bl func_02018798
-    bl func_02018738
+    bl SND_SetMasterVolume
+    bl SND_ResetMasterPan
     ldr r2, =data_020c4ba0
     mov r3, #0x0
     ldr r1, =data_020c4b9c

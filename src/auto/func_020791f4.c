@@ -1,10 +1,10 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020015f4();
-extern void func_02009f7c();
+extern void memset();
+extern void _fdiv();
 extern void func_0200a42c();
-extern void func_0200ab28();
+extern void _s32_div_f();
 extern void func_02078294();
 extern void func_02078594();
 extern void func_0207ab0c();
@@ -37,7 +37,7 @@ asm void func_020791f4(void) {
     bl func_0200a42c
     mov r1, r0
     mov r0, r7
-    bl func_02009f7c
+    bl _fdiv
     str r0, [r4, #0x60]
     ldr r0, [r4, #0xb8]
     cmp r0, #0x0
@@ -49,7 +49,7 @@ asm void func_020791f4(void) {
     strh r0, [r4, #0x14]
     ldrsh r0, [r5, #0x4]
     ldrsh r1, [r4, #0x4]
-    bl func_0200ab28
+    bl _s32_div_f
     ldrsh r0, [r4, #0x14]
     cmp r1, #0x0
     addeq r0, r0, #0x1
@@ -61,7 +61,7 @@ asm void func_020791f4(void) {
     strh r0, [r4, #0x16]
     ldrsh r0, [r5, #0x6]
     ldrsh r1, [r4, #0x6]
-    bl func_0200ab28
+    bl _s32_div_f
     ldrsh r0, [r4, #0x16]
     cmp r1, #0x0
     addeq r0, r0, #0x1
@@ -118,7 +118,7 @@ asm void func_020791f4(void) {
     str r0, [r4, #0x28]
     ldrsh r1, [r4, #0x12]
     mov r2, #0x20
-    bl func_020015f4
+    bl memset
     ldr r1, [r4, #0x28]
     ldr r0, =data_020dfe24
     mov r2, #0x20

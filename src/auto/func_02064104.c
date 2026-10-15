@@ -7,9 +7,9 @@ M2C_UNK func_02061a78(M2C_UNK);
 M2C_UNK func_02063b80(M2C_UNK, M2C_UNK);
 M2C_UNK func_0206697c(void);
 
-M2C_UNK func_02066e6c(s32, u8);                     /* extern */
-M2C_UNK func_02066e78(s32, u8);                     /* extern */
-M2C_UNK func_02066f94(s32, u8);                     /* extern */
+M2C_UNK func_02066e6c(s32, u8);
+M2C_UNK func_02066e78(s32, u8);
+M2C_UNK func_02066f94(s32, u8);
 
 s32 func_02064104(s32 arg0, s32 arg1) {
     s32 temp_r4;

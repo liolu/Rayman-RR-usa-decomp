@@ -9,8 +9,8 @@ typedef struct {
     M2C_UNK *obj;
 } M2C_OBJ;
 
-M2C_UNK func_020211d8(M2C_OBJ, u8 *, M2C_UNK, M2C_UNK, s32); /* extern */
-M2C_UNK func_02024200(M2C_UNK, u8 *);                        /* extern */
+M2C_UNK func_020211d8(M2C_OBJ, u8 *, M2C_UNK, M2C_UNK, s32);
+M2C_UNK func_02024200(M2C_UNK, u8 *);
 
 void func_02024e0c(M2C_OBJ arg0, M2C_UNK arg1, M2C_UNK arg2, M2C_UNK arg3, s32 arg4) {
     u8 sp0[8];

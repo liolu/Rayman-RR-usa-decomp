@@ -3,7 +3,7 @@
 
 s32 func_02067900(s32 *);
 
-s32 func_01ff8668(s32);                             /* extern */
+s32 func_01ff8668(s32);
 
 s32 func_020934a4(void *arg0, void *arg1) {
     s32 *temp_r0;

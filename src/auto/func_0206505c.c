@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_0202b864(s32, M2C_UNK);                /* extern */
+M2C_UNK FS_TryLoadTable(s32, M2C_UNK);
 
 void func_0206505c(s32 arg0) {
-    func_0202b864(arg0 + 0x18, 0x32);
+    FS_TryLoadTable(arg0 + 0x18, 0x32);
 }

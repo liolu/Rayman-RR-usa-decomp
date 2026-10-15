@@ -1,7 +1,7 @@
 #include "engine.h"
 #include "m2c.h"
 
-u16 func_02019530(void);
+u16 SND_GetChannelStatus(void);
 
 extern M2C_UNK data_020c4b38;
 
@@ -13,7 +13,7 @@ s32 func_0201fbac(void) {
     u32 var_r1;
 
     temp_r4 = M2C_FIELD(&data_020c4b38, s32 *, 0x10);
-    temp_r0 = temp_r4 | func_02019530();
+    temp_r0 = temp_r4 | SND_GetChannelStatus();
     if (temp_r0 != 0xFFFF) {
         var_r1   = temp_r0 >> 1;
         var_r0_2 = 1;

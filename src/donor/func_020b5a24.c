@@ -48,8 +48,8 @@ inline void *AddU32ToPtr(void *ptr, u32 val) {
 static inline NNSiFndFrmHeapHead *GetFrmHeapHeadPtrFromHeapHead(NNSiFndHeapHead *pHHead) {
     return AddU32ToPtr(pHHead, sizeof(NNSiFndHeapHead));
 }
-void *func_020b5b80(NNSiFndFrmHeapHead *pFrmHeapHd, u32 size, int alignment);
-void *func_020b5b0c(NNSiFndFrmHeapHead *pFrmHeapHd, u32 size, int alignment);
+void *AllocFromHead(NNSiFndFrmHeapHead *pFrmHeapHd, u32 size, int alignment);
+void *AllocFromTail(NNSiFndFrmHeapHead *pFrmHeapHd, u32 size, int alignment);
 void *func_020b5a24(NNSFndHeapHandle heap, u32 size, int alignment) {
     void *memory = 0;
     NNSiFndFrmHeapHead *pFrmHeapHd;
@@ -68,9 +68,9 @@ void *func_020b5a24(NNSFndHeapHandle heap, u32 size, int alignment) {
     size = (((size) + (4 - 1)) & ~(4 - 1));
 
     if (alignment >= 0) {
-        memory = func_020b5b80(pFrmHeapHd, size, alignment);
+        memory = AllocFromHead(pFrmHeapHd, size, alignment);
     } else {
-        memory = func_020b5b0c(pFrmHeapHd, size, -alignment);
+        memory = AllocFromTail(pFrmHeapHd, size, -alignment);
     }
 
     return memory;

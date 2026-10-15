@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_02003cfc(void *);                          /* extern */
+s32 func_02003cfc(void *);
 extern u8 data_020bbfa0;
 extern u8 data_020de0d4;
 

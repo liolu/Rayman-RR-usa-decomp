@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s16 *func_0205488c(M2C_UNK);                        /* extern */
+s16 *func_0205488c(M2C_UNK);
 
 void func_0204c600(s16 **arg0) {
     *arg0                         = func_0205488c(0x24);

@@ -2,7 +2,7 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_020148a4();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0202c700();
 extern void func_0204d0b8();
 extern char data_020dba38[];
@@ -68,7 +68,7 @@ asm void func_020503d4(void) {
     orr r1, r1, r2, lsl #0x14
     ldr r8, [r10, #0x0]
     ldr r7, [r10, #0x8]
-    bl func_02014910
+    bl FX_Div
     ldr r1, [sp, #0xc]
     ldr r2, =0x4000500
     mov r9, #0x3
@@ -109,7 +109,7 @@ L_020504f8:
     str r0, [sp, #0x20]
     ldr r0, [sp, #0x68]
     ldr r1, [sp, #0x20]
-    bl func_02014910
+    bl FX_Div
     smull r3, r2, r8, r0
     smull r1, r0, r7, r0
     adds r7, r3, #0x800

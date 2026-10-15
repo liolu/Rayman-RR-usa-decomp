@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-s32 func_0202b174(M2C_UNK);                         /* extern */
-void *func_0202b264(M2C_UNK *, M2C_UNK, s32);       /* extern */
+s32 func_0202b174(M2C_UNK);
+void *func_0202b264(M2C_UNK *, M2C_UNK, s32);
 extern M2C_UNK data_020c75bc;
 
 void *func_0202b884(M2C_UNK arg0, M2C_UNK arg1) {
@@ -13,7 +13,7 @@ void *func_0202b884(M2C_UNK arg0, M2C_UNK arg1) {
     temp_r0 = func_0202b264(&data_020c75bc, arg0, func_0202b174(arg1));
     if (temp_r0 != NULL) {
         temp_r1 = M2C_FIELD(temp_r0, u16 *, 0x10) & 0xFC00;
-        switch (temp_r1) {                          /* irregular */
+        switch (temp_r1) {
             case 0x1000:
                 var_r4 = temp_r0 + 8;
                 break;

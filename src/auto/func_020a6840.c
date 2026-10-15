@@ -1,9 +1,9 @@
 #include "m2c.h"
 
-M2C_UNK func_02001588(void *, void *, M2C_UNK);     /* extern */
-s32 func_0200a3b8();                                /* extern */
-s32 func_0200a42c(s32);                             /* extern */
-M2C_UNK func_0200a6a8(s32, s32);                    /* extern */
+M2C_UNK func_02001588(void *, void *, M2C_UNK);
+s32 func_0200a3b8();
+s32 func_0200a42c(s32);
+M2C_UNK _fsub(s32, s32);
 extern M2C_UNK data_020e4f10;
 extern s32 data_020e59bc;
 extern M2C_UNK data_020e59cc;
@@ -37,7 +37,7 @@ void func_020a6840(s32 arg0) {
         if (temp_r0 & 0x01000000) {
             M2C_FIELD(var_r5, s32 *, 0) -= 0x01000000;
         }
-        func_0200a6a8(func_0200a42c(M2C_FIELD(&data_020e4f10, volatile s32 *, 0x14)), 0x3BA3D70A);
+        _fsub(func_0200a42c(M2C_FIELD(&data_020e4f10, volatile s32 *, 0x14)), 0x3BA3D70A);
         M2C_FIELD(var_r5, volatile s32 *, 8)    = func_0200a3b8();
         M2C_FIELD(var_r5, volatile s32 *, 0x18) = (s32) M2C_FIELD(var_r5, volatile s32 *, 0xC);
         M2C_FIELD(var_r5, volatile s32 *, 0x1C) = (s32) M2C_FIELD(var_r5, volatile s32 *, 0x10);

@@ -62,10 +62,10 @@ typedef struct OSThread {
     void *userParam;
     s32 error;
 } OSThread;
-extern OSThreadInfo data_020c0c5c;
-extern void func_0200cc3c(OSThreadQueue *queue);
+extern OSThreadInfo OSi_ThreadInfo;
+extern void OS_WakeupThread(OSThreadQueue *queue);
 static inline OSThreadInfo *OS_GetThreadInfo(void) {
-    return &data_020c0c5c;
+    return &OSi_ThreadInfo;
 }
 static inline OSThread *OS_GetCurrentThread(void) {
     return OS_GetThreadInfo()->current;
@@ -77,7 +77,7 @@ typedef struct OSMutex {
     OSMutexLinkedList list;
 } OSMutex;
 extern void func_0200d578(OSMutex *mutex);
-extern void func_0200d474(OSThread *thread, OSMutex *mutex);
+extern void OSi_DequeueItem(OSThread *thread, OSMutex *mutex);
 void func_0200d578(OSMutex *mutex) {
     u32 prevIRQState = OS_DisableIrq();
 
@@ -85,12 +85,12 @@ void func_0200d578(OSMutex *mutex) {
 
     if (mutex->thread == currentThread) {
         if (--mutex->count == 0) {
-            func_0200d474(currentThread, mutex);
+            OSi_DequeueItem(currentThread, mutex);
             mutex->thread = 0;
-            func_0200cc3c(&mutex->queue);
+            OS_WakeupThread(&mutex->queue);
         }
     }
 
     OS_RestoreIrq(prevIRQState);
 }
-void func_0200d474(OSThread *thread, OSMutex *mutex);
+void OSi_DequeueItem(OSThread *thread, OSMutex *mutex);

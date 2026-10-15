@@ -83,7 +83,7 @@ struct _OSThread {
     void *userParameter;
     int systemErrno;
 };
-extern void func_0200ccbc(OSThreadQueue *queue);
+extern void OS_SleepThread(OSThreadQueue *queue);
 struct OSMutex {
     OSThreadQueue queue;
     OSThread *thread;
@@ -229,16 +229,16 @@ typedef struct CARDiCommon {
 
     u8 backup_cache_page_buf[256] __attribute__((aligned(32)));
 } CARDiCommon;
-extern CARDiCommon data_020c1100;
+extern CARDiCommon cardi_common;
 extern BOOL func_02010ab4(void);
 BOOL func_02010ab4(void) {
-    CARDiCommon *const p = &data_020c1100;
+    CARDiCommon *const p = &cardi_common;
     ((void) 0);
 
     {
         OSIntrMode bak_psr = OS_DisableIrq();
         while ((p->flag & CARD_STAT_BUSY) != 0) {
-            func_0200ccbc(p->busy_q);
+            OS_SleepThread(p->busy_q);
         }
         (void) OS_RestoreIrq(bak_psr);
     }

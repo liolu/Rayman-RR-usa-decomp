@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0207d158();
 extern char data_020be9e0[];
 extern char data_020be9ec[];
@@ -39,7 +39,7 @@ asm void func_0207d7f0(void) {
     ldr r0, [r10, #0x0]
     ldr r1, [r9, #0x0]
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x0]
     ldr r0, [r8, #0x0]
     mov r1, #0x0
@@ -102,7 +102,7 @@ L_0207d938:
     ldr r0, [r10, #0x0]
     ldr r1, [r9, #0x0]
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x0]
     ldr r0, [r7, #0x0]
     mov r1, #0x0
@@ -165,7 +165,7 @@ L_0207da28:
     ldr r0, [r10, #0x4]
     ldr r1, [r9, #0x4]
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x0]
     ldr r1, [r9, #0x0]
     smull r2, r0, r1, r0
@@ -227,7 +227,7 @@ L_0207db14:
     ldr r0, [r10, #0x4]
     ldr r1, [r9, #0x4]
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x0]
     ldr r1, [r9, #0x0]
     smull r2, r0, r1, r0
@@ -289,7 +289,7 @@ L_0207dc00:
     ldr r0, [r10, #0x8]
     ldr r1, [r9, #0x8]
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x0]
     ldr r1, [r9, #0x0]
     smull r2, r0, r1, r0
@@ -351,7 +351,7 @@ L_0207dcec:
     ldr r0, [r10, #0x8]
     ldr r1, [r9, #0x8]
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x0]
     ldr r1, [r9, #0x0]
     smull r2, r0, r1, r0

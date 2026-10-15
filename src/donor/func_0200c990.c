@@ -81,7 +81,7 @@ struct _OSThread {
     void *userParameter;
     int systemErrno;
 };
-extern void func_0200ccbc(OSThreadQueue *queue);
+extern void OS_SleepThread(OSThreadQueue *queue);
 extern void func_0200c990(u32 msec);
 struct OSMutex {
     OSThreadQueue queue;
@@ -102,11 +102,11 @@ struct OSiAlarm {
     OSTick period;
     OSTick start;
 };
-extern void func_0200e780(OSAlarm *alarm);
-extern void func_0200e5c8(OSAlarm *alarm, OSTick tick, OSAlarmHandler handler, void *arg);
-extern OSThread **data_020c0c54;
-extern void func_0200c970(void *arg);
-void func_0200ccbc(OSThreadQueue *queue);
+extern void OS_CreateAlarm(OSAlarm *alarm);
+extern void OS_SetAlarm(OSAlarm *alarm, OSTick tick, OSAlarmHandler handler, void *arg);
+extern OSThread **OSi_CurrentThreadPtr;
+extern void OSi_SleepAlarmCallback(void *arg);
+void OS_SleepThread(OSThreadQueue *queue);
 void func_0200c990(u32 msec) {
     OSAlarm alarm;
 
@@ -114,18 +114,18 @@ void func_0200c990(u32 msec) {
 
     ((void) 0);
 
-    func_0200e780(&alarm);
+    OS_CreateAlarm(&alarm);
     {
-        OSThread *volatile p_thread = (*data_020c0c54);
+        OSThread *volatile p_thread = (*OSi_CurrentThreadPtr);
         OSIntrMode bak_cpsr         = OS_DisableIrq();
 
         p_thread->alarmForSleep = &alarm;
 
-        func_0200e5c8(&alarm, ((OSTick) (((33514000 / 1000) * (u64) (msec)) / 64)), &func_0200c970, (void *) &p_thread);
+        OS_SetAlarm(&alarm, ((OSTick) (((33514000 / 1000) * (u64) (msec)) / 64)), &OSi_SleepAlarmCallback, (void *) &p_thread);
         while (p_thread != ((void *) 0)) {
-            func_0200ccbc(((void *) 0));
+            OS_SleepThread(((void *) 0));
         }
         (void) OS_RestoreIrq(bak_cpsr);
     }
 }
-void func_0200c970(void *arg);
+void OSi_SleepAlarmCallback(void *arg);

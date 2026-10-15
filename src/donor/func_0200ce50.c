@@ -27,7 +27,7 @@ typedef struct OSContext {
     CPContext cp_context;
 
 } OSContext;
-extern void func_0200d2ac(OSContext *context, u32 newpc, u32 newsp);
+extern void OS_InitContext(OSContext *context, u32 newpc, u32 newsp);
 typedef struct _OSThread OSThread;
 typedef struct _OSThreadQueue OSThreadQueue;
 typedef struct _OSThreadLink OSThreadLink;
@@ -88,7 +88,7 @@ static inline void OS_InitThreadQueue(OSThreadQueue *queue) {
 
     queue->head = queue->tail = ((void *) 0);
 }
-extern void func_0200c8b0(OSThread *thread, OSThreadDestructor dtor);
+extern void OS_SetThreadDestructor(OSThread *thread, OSThreadDestructor dtor);
 struct OSMutex {
     OSThreadQueue queue;
     OSThread *thread;
@@ -108,19 +108,19 @@ struct OSiAlarm {
     OSTick period;
     OSTick start;
 };
-extern void func_02017f34(u32 data, void *destp, u32 size);
+extern void MIi_CpuClear32(u32 data, void *destp, u32 size);
 static inline void MI_CpuFill32(void *dest, u32 data, u32 size) {
     ((void) 0);
     ((void) 0);
 
-    func_02017f34(data, dest, size);
+    MIi_CpuClear32(data, dest, size);
 }
 static inline void MI_CpuClear32(void *dest, u32 size) {
     MI_CpuFill32(dest, 0, size);
 }
-extern void func_0200d0fc(OSThread *thread);
-int func_0200d294(void);
-void func_0200d0fc(OSThread *thread);
+extern void OSi_InsertThreadToList(OSThread *thread);
+int OSi_GetUnusedThreadId(void);
+void OSi_InsertThreadToList(OSThread *thread);
 void func_0200ce50(OSThread *thread, void (*func)(void *), void *arg, void *stack, u32 stackSize, u32 prio) {
 
     OSIntrMode enable;
@@ -133,14 +133,14 @@ void func_0200ce50(OSThread *thread, void (*func)(void *), void *arg, void *stac
 
     enable = OS_DisableIrq();
 #line 401
-    index = func_0200d294();
+    index = OSi_GetUnusedThreadId();
 
     thread->priority = prio;
     thread->id       = (u32) index;
     thread->state    = OS_THREAD_STATE_WAITING;
     thread->profiler = ((void *) 0);
 
-    func_0200d0fc(thread);
+    OSi_InsertThreadToList(thread);
 
     thread->stackBottom        = (u32) stack;
     thread->stackTop           = (u32) stack - stackSize;
@@ -150,7 +150,7 @@ void func_0200ce50(OSThread *thread, void (*func)(void *), void *arg, void *stac
     *(u32 *) thread->stackTop                    = 0x7bf9dd5bUL;
 
     OS_InitThreadQueue(&thread->joinQueue);
-    func_0200d2ac(&thread->context, (u32) func, (u32) stack - sizeof(u32));
+    OS_InitContext(&thread->context, (u32) func, (u32) stack - sizeof(u32));
 
     thread->context.r[0] = (u32) arg;
     thread->context.lr   = (u32) func_0200ce24;
@@ -162,7 +162,7 @@ void func_0200ce50(OSThread *thread, void (*func)(void *), void *arg, void *stac
     thread->mutexQueue.head = ((void *) 0);
     thread->mutexQueue.tail = ((void *) 0);
 
-    func_0200c8b0(thread, ((void *) 0));
+    OS_SetThreadDestructor(thread, ((void *) 0));
 
     thread->queue     = ((void *) 0);
     thread->link.prev = thread->link.next = ((void *) 0);
@@ -172,4 +172,4 @@ void func_0200ce50(OSThread *thread, void (*func)(void *), void *arg, void *stac
     (void) OS_RestoreIrq(enable);
 }
 void func_0200ce24(void);
-void func_0200c8b0(OSThread *thread, OSThreadDestructor dtor);
+void OS_SetThreadDestructor(OSThread *thread, OSThreadDestructor dtor);

@@ -1,8 +1,8 @@
 #include "m2c.h"
 
-M2C_UNK func_02044d24();                            /* extern */
-M2C_UNK func_02044d78();                            /* extern */
-M2C_UNK func_02084ea0(M2C_UNK, M2C_UNK);            /* extern */
+M2C_UNK func_02044d24();
+M2C_UNK func_02044d78();
+M2C_UNK func_02084ea0(M2C_UNK, M2C_UNK);
 
 void *func_020a42ac(s32 arg0, void *arg1) {
     if (M2C_FIELD(arg1, s32 *, -8) == 0x108) {

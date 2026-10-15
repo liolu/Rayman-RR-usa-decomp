@@ -3,8 +3,8 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_01ff8878();
 extern void func_020148a4();
-extern void func_02014910();
-extern void func_02016ab8();
+extern void FX_Div();
+extern void G3i_OrthoW_();
 extern void func_0204d0b8();
 extern char data_020dba38[];
 extern char data_020dba39[];
@@ -78,7 +78,7 @@ asm void func_0204ff98(void) {
     mov r1, #0xc0000
     mov r3, #0x100000
     str r0, [sp, #0x10]
-    bl func_02016ab8
+    bl G3i_OrthoW_
     ldr r3, =0x4000440
     mov r0, #0x1
     str r0, [r3, #0x0]
@@ -88,7 +88,7 @@ asm void func_0204ff98(void) {
     ldr r0, =0x1922
     mov r1, r6, lsl #0xc
     str r2, [r3, #0xc0]
-    bl func_02014910
+    bl FX_Div
     sub r1, r6, #0x1
     str r0, [sp, #0x1c]
     mov r0, r1
@@ -139,7 +139,7 @@ L_020500f4:
     adc r2, r2, r0
     mov r0, r3, lsr #0xc
     orr r0, r0, r2, lsl #0x14
-    bl func_02014910
+    bl FX_Div
     ldr r1, [sp, #0x24]
     smull r6, r3, r1, r0
     smull r2, r1, r5, r0

@@ -1,12 +1,12 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020015f4();
+extern void memset();
 extern void func_02009f08();
-extern void func_02009f7c();
+extern void _fdiv();
 extern void func_0200a42c();
-extern void func_0200a6a8();
-extern void func_0200dd9c();
+extern void _fsub();
+extern void OS_FreeToHeap();
 extern void func_0200de10();
 extern void func_02017398();
 extern void func_02077f2c();
@@ -34,7 +34,7 @@ asm void func_02078e14(void) {
     mov r0, r7
     mov r2, #0xc4
     str r1, [r8, #0x4]
-    bl func_020015f4
+    bl memset
     mov r0, #0x0
     ldmfd sp!, {r4, r5, r6, r7, r8, pc}
 L_02078e58:
@@ -120,10 +120,10 @@ L_02078f48:
     mov r5, r0
     ldr r0, [r7, #0x44]
     ldr r1, [r7, #0x50]
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     mov r0, r5
-    bl func_02009f7c
+    bl _fdiv
 L_02078fac:
     str r0, [r7, #0x5c]
     ldr r0, [r7, #0x40]
@@ -139,10 +139,10 @@ L_02078fac:
     mov r5, r0
     ldr r0, [r7, #0x40]
     ldr r1, [r7, #0x4c]
-    bl func_0200a6a8
+    bl _fsub
     mov r1, r0
     mov r0, r5
-    bl func_02009f7c
+    bl _fdiv
     str r0, [r7, #0x58]
 L_02078ff8:
     ldr r0, [r7, #0xb8]
@@ -205,7 +205,7 @@ L_02078ff8:
     mov r0, #0x0
     mov r2, r5
     sub r1, r0, #0x1
-    bl func_0200dd9c
+    bl OS_FreeToHeap
     b L_0207913c
 L_020790f0:
     ldrsh r0, [r7, #0x0]
@@ -233,7 +233,7 @@ L_0207913c:
     mov r2, r6
     sub r1, r0, #0x1
     str r3, [r8, #0xa8]
-    bl func_0200dd9c
+    bl OS_FreeToHeap
     mov r0, #0x1
     ldmfd sp!, {r4, r5, r6, r7, r8, pc}
 }

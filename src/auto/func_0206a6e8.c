@@ -5,7 +5,7 @@ void func_02029f58(void *);
 void func_02029fcc(void *, void *);
 void func_0202a088(void *, void *);
 
-M2C_UNK func_0206a74c(void *, void *);              /* extern */
+M2C_UNK func_0206a74c(void *, void *);
 
 void func_0206a6e8(void *arg0, void *arg1) {
     void *temp_r1;

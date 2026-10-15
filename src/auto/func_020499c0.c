@@ -33,15 +33,15 @@
  * at these two call sites, which supports the scheduler-artifact diagnosis.
  */
 
-extern void func_0201745c();
+extern void GX_EndLoadTexPltt();
 extern void func_020174b4();
-extern void func_02017528();
-extern void func_02017570();
-extern void func_020175e0();
-extern void func_02017744();
-extern void func_02017ad8();
+extern void GX_BeginLoadTexPltt();
+extern void GX_EndLoadTex();
+extern void GX_LoadTex();
+extern void GX_BeginLoadTex();
+extern void MI_IsDmaBusy();
 extern void func_020491d0();
-extern char data_020bbfe0[];
+extern char GXi_DmaId[];
 extern char data_020d0e50[];
 extern char data_020d0e7c[];
 
@@ -54,22 +54,22 @@ asm void func_020499c0(void) {
     ldr r0, [r0, #0x20]
     adds r0, r1, r0
     ldmeqfd sp!, {r4, pc}
-    ldr r0, =data_020bbfe0
+    ldr r0, =GXi_DmaId
     ldr r0, [r0, #0x0]
-    bl func_02017ad8
+    bl MI_IsDmaBusy
     cmp r0, #0x0
     ldmnefd sp!, {r4, pc}
     ldr r0, =data_020d0e50
     ldr r0, [r0, #0x14]
     cmp r0, #0x0
     beq L_02049a38
-    bl func_02017744
+    bl GX_BeginLoadTex
     ldr r2, =data_020d0e50
     ldr r1, [r2, #0x18]
     ldr r0, [r2, #0x10]
     ldr r2, [r2, #0x14]
-    bl func_020175e0
-    bl func_02017570
+    bl GX_LoadTex
+    bl GX_EndLoadTex
     ldr r0, =data_020d0e50
     mov r1, #0x0
     ldr r3, [r0, #0x18]
@@ -82,13 +82,13 @@ L_02049a38:
     ldr r0, [r0, #0x20]
     cmp r0, #0x0
     beq L_02049a80
-    bl func_02017528
+    bl GX_BeginLoadTexPltt
     ldr r2, =data_020d0e50
     ldr r1, [r2, #0x24]
     ldr r0, [r2, #0x1c]
     ldr r2, [r2, #0x20]
     bl func_020174b4
-    bl func_0201745c
+    bl GX_EndLoadTexPltt
     ldr r0, =data_020d0e50
     mov r1, #0x0
     ldr r3, [r0, #0x24]

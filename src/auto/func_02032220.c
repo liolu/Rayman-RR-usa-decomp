@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-s32 VEC_DotProduct(void *, s32);                    /* extern */
-M2C_UNK func_0202dc64(s32, M2C_UNK *, s32 *, M2C_UNK *); /* extern */
+s32 VEC_DotProduct(void *, s32);
+M2C_UNK func_0202dc64(s32, M2C_UNK *, s32 *, M2C_UNK *);
 
 void func_02032220(s32 arg0, void *arg1, s32 arg2, s32 arg3) {
     M2C_UNK sp8;

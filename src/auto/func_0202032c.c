@@ -1,11 +1,11 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0201887c();
-extern void func_02018954();
-extern void func_02018ddc();
-extern void func_02018e1c();
-extern void func_02018eac();
+extern void SND_UnlockChannel();
+extern void SND_StopTimer();
+extern void SND_GetCurrentCommandTag();
+extern void SND_WaitForCommandProc();
+extern void SND_FlushCommand();
 extern void func_0201fc78();
 extern void func_02020208();
 extern char data_020c4b38[];
@@ -23,17 +23,17 @@ asm void func_0202032c(void) {
     ldrh r0, [r0, #0x4]
     mov r2, r1
     mov r3, r1
-    bl func_02018954
+    bl SND_StopTimer
     ldr r0, [r4, #0x20]
     mov r1, #0x0
     ldrh r0, [r0, #0x4]
-    bl func_0201887c
-    bl func_02018ddc
+    bl SND_UnlockChannel
+    bl SND_GetCurrentCommandTag
     mov r5, r0
     mov r0, #0x1
-    bl func_02018eac
+    bl SND_FlushCommand
     mov r0, r5
-    bl func_02018e1c
+    bl SND_WaitForCommandProc
     ldr r0, [r4, #0x20]
     ldr r2, =data_020c4b38
     ldrh r1, [r0, #0x4]

@@ -1,8 +1,8 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003b14();
-extern void func_02014910();
+extern void rand();
+extern void FX_Div();
 extern void func_020a6020();
 extern void func_020a6840();
 extern void func_020affb8();
@@ -185,10 +185,10 @@ L_020a6320:
     streq r0, [r4, #0x54]
     cmp r6, #0x6
     bne L_020a6410
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x6488
     mov r2, #0x0
     umull r10, r3, r0, r1
@@ -202,10 +202,10 @@ L_020a6320:
     ldr r0, =0xffffcdbc
     add r0, r2, r0
     str r0, [r4, #0xc]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     ldr r1, =0x7fff000
-    bl func_02014910
+    bl FX_Div
     mov r10, r0, asr #0x1f
     mov r2, #0x0
     ldr r1, =0x6488
@@ -219,10 +219,10 @@ L_020a6320:
     orr r1, r1, r0, lsl #0x14
     add r0, r1, r3
     str r0, [r4, #0x10]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     ldr r1, =0x7fff000
-    bl func_02014910
+    bl FX_Div
     mov r10, r0, asr #0x1f
     mov r2, #0x0
     ldr r1, =0x6488
@@ -242,10 +242,10 @@ L_020a6410:
     bne L_020a651c
     cmp r5, #0x0
     beq L_020a64ac
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x3244
     mov r2, #0x0
     umull r5, r3, r0, r1
@@ -259,10 +259,10 @@ L_020a6410:
     orr r2, r2, r1, lsl #0x14
     add r0, r2, r0
     str r0, [r4, #0xc]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     ldr r1, =0x7fff000
-    bl func_02014910
+    bl FX_Div
     mov r3, r0, asr #0x1f
     mov r2, #0x0
     mov r1, #0x3000
@@ -277,10 +277,10 @@ L_020a6410:
     str r0, [r4, #0x14]
     b L_020a651c
 L_020a64ac:
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xc
     mov r1, #0x800
@@ -291,10 +291,10 @@ L_020a64ac:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x800
     str r0, [r4, #0xc]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xc
     orr r2, r2, r0, lsr #0x14
@@ -308,10 +308,10 @@ L_020a64ac:
 L_020a651c:
     cmp r6, #0x8
     bne L_020a65e0
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x14
     umull r5, r3, r0, r1
     mov r2, #0x0
@@ -323,10 +323,10 @@ L_020a651c:
     mov r1, r5, lsr #0xc
     orr r1, r1, r0, lsl #0x14
     str r1, [r4, #0xc]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     ldr r1, =0x7fff000
-    bl func_02014910
+    bl FX_Div
     mov r3, r0, asr #0x1f
     mov r2, #0x0
     mov r1, #0x198
@@ -339,10 +339,10 @@ L_020a651c:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0xcc
     str r0, [r4, #0x10]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     ldr r1, =0x7fff000
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xc
     orr r2, r2, r0, lsr #0x14
@@ -362,19 +362,19 @@ L_020a65e0:
     ldr r0, [r4, #0x18]
     mov r1, #0x9000
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r4, #0xc]
     ldr r2, [r4, #0x28]
     ldr r0, [r4, #0x1c]
     mov r1, #0x9000
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r4, #0x10]
     ldr r2, [r4, #0x2c]
     ldr r0, [r4, #0x20]
     mov r1, #0x9000
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     str r0, [r4, #0x14]
 L_020a6630:
     cmp r6, #0xc
@@ -396,10 +396,10 @@ L_020a6644:
     add r2, sp, #0x0
     mov r0, r8
     bl func_020affb8
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x6488
     mov r2, #0x0
     umull r5, r3, r0, r1
@@ -411,10 +411,10 @@ L_020a6644:
     mov r5, r5, lsr #0xc
     orr r5, r5, r0, lsl #0x14
     str r5, [r4, #0x38]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r1, r5, lsl #0x13
     mov r1, r1, lsr #0x10
     mov r1, r1, asr #0x4

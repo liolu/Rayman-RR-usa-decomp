@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-M2C_UNK func_0208cf1c(M2C_UNK *, M2C_UNK *, M2C_UNK); /* extern */
+M2C_UNK func_0208cf1c(M2C_UNK *, M2C_UNK *, M2C_UNK);
 extern M2C_UNK data_020dd724;
 extern M2C_UNK data_020dd7a4;
 
@@ -8,7 +8,7 @@ void *func_0208cb10(s32 arg0, void *arg1) {
     s32 temp_r1;
 
     temp_r1 = M2C_FIELD(arg1, s32 *, -8);
-    switch (temp_r1) {                              /* irregular */
+    switch (temp_r1) {
         case 0x145:
             func_0208cf1c(&data_020dd724, &data_020dd7a4, 0x80);
             break;

@@ -347,7 +347,7 @@ static inline BOOL FSi_IsArchiveSync(const volatile FSArchive *p_arc) {
 }
 extern OSIntrMode OS_DisableIrq(void);
 extern OSIntrMode OS_RestoreIrq(OSIntrMode state);
-extern void func_0200ccbc(OSThreadQueue *queue);
+extern void OS_SleepThread(OSThreadQueue *queue);
 extern void OS_WakeupThread(OSThreadQueue *queue);
 typedef struct {
     FSArchive *arc;
@@ -363,7 +363,7 @@ extern FSResult FSi_ReadTable(FSiSyncReadParam *p, void *dst, u32 len);
 extern void FSi_SeekDirDirect(FSFile *p_dir, u32 id);
 extern int FSi_StrNICmp(const char *str1, const char *str2, u32 len);
 extern FSResult func_02012ab0(FSFile *p_file, FSCommandType command);
-extern void func_02012c2c(FSFile *p_file, FSResult ret);
+extern void FSi_ReleaseCommand(FSFile *p_file, FSResult ret);
 extern void FSi_ExecuteAsyncCommand(FSFile *p_file);
 extern FSFile *FSi_NextCommand(FSArchive *p_arc);
 extern BOOL FSi_SendCommand(FSFile *p_file, FSCommandType command);
@@ -376,7 +376,7 @@ extern BOOL FS_WaitAsync(FSFile *p_file);
 extern FSArchive *FS_FindArchive(const char *name, int name_len);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void MI_CpuFill8(void *dst, u8 data, u32 size);
-extern FSResult (*const data_020b746c[])(FSFile *);
+extern FSResult (*const fsi_default_command[])(FSFile *);
 FSResult func_02012ab0(FSFile *p_file, FSCommandType command) {
     FSResult ret;
     FSArchive *const p_arc = p_file->arc;
@@ -407,7 +407,7 @@ FSResult func_02012ab0(FSFile *p_file, FSCommandType command) {
     }
 
     if (ret == FS_RESULT_PROC_DEFAULT) {
-        ret = (*data_020b746c[command])(p_file);
+        ret = (*fsi_default_command[command])(p_file);
     }
 
     if (ret == FS_RESULT_PROC_ASYNC) {
@@ -415,7 +415,7 @@ FSResult func_02012ab0(FSFile *p_file, FSCommandType command) {
             OSIntrMode bak_psr = OS_DisableIrq();
 
             while (FSi_IsArchiveSync(p_arc)) {
-                func_0200ccbc(&p_arc->sync_q);
+                OS_SleepThread(&p_arc->sync_q);
             }
 
             ret = p_file->error;
@@ -423,7 +423,7 @@ FSResult func_02012ab0(FSFile *p_file, FSCommandType command) {
         }
     } else if (!FS_IsFileSyncMode(p_file)) {
         p_arc->flag &= ~0x00000100;
-        func_02012c2c(p_file, ret);
+        FSi_ReleaseCommand(p_file, ret);
     } else {
         p_arc->flag &= ~0x00000200;
         p_file->error = ret;

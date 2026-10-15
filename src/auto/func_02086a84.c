@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_02085cdc(s32);                             /* extern */
+s32 func_02085cdc(s32);
 
 s32 func_02086a84(void *arg0, s32 arg1) {
     if ((arg0 != NULL) && (arg1 != 0)) {

@@ -33,8 +33,8 @@ typedef enum {
     PXI_MAX_FIFO_TAG = 32
 } PXIFifoTag;
 typedef void (*PXIFifoCallback)(PXIFifoTag tag, u32 data, BOOL err);
-extern void func_02018500(int fifotag, PXIFifoCallback callback);
-extern BOOL func_020184d8(int fifotag, PXIProc proc);
+extern void PXI_SetFifoRecvCallback(int fifotag, PXIFifoCallback callback);
+extern BOOL PXI_IsCallbackReady(int fifotag, PXIProc proc);
 typedef void (*PMCallback)(u32 result, void *arg);
 typedef struct {
     u16 flag;
@@ -43,7 +43,7 @@ typedef struct {
 } PMData16;
 extern void func_02010890(void);
 extern void func_020107a4(PXIFifoTag tag, u32 data, BOOL err);
-extern void func_020182f4(void);
+extern void PXI_Init(void);
 typedef struct CPContext {
     u64 div_numer;
     u64 div_denom;
@@ -127,7 +127,7 @@ struct OSMutex {
 
     OSMutexLink link;
 };
-extern void func_0200d674(OSMutex *mutex);
+extern void OS_InitMutex(OSMutex *mutex);
 typedef u64 OSTick;
 typedef void (*OSAlarmHandler)(void *);
 struct OSiAlarm {
@@ -147,34 +147,34 @@ typedef struct {
     void *callbackArg;
     void *work;
 } PMiWork;
-extern u16 data_020c101c;
-extern PMiWork data_020c1034;
-extern PMData16 data_020c105c[5];
-extern OSMutex data_020c1044;
-extern u32 data_020c102c;
+extern u16 PMi_IsInit;
+extern PMiWork PMi_Work;
+extern PMData16 PMi_RegisterBuffer[5];
+extern OSMutex PMi_Mutex;
+extern u32 PMi_LCDCount;
 void func_02010890(void) {
     int i;
 
-    if (data_020c101c) {
+    if (PMi_IsInit) {
         return;
     }
 
-    data_020c101c          = 1;
-    data_020c1034.lock     = 0;
-    data_020c1034.callback = 0;
+    PMi_IsInit          = 1;
+    PMi_Work.lock     = 0;
+    PMi_Work.callback = 0;
 
-    func_020182f4();
-    while (!func_020184d8(PXI_FIFO_TAG_PM, PXI_PROC_ARM7)) {
+    PXI_Init();
+    while (!PXI_IsCallbackReady(PXI_FIFO_TAG_PM, PXI_PROC_ARM7)) {
     }
 
-    func_02018500(PXI_FIFO_TAG_PM, func_020107a4);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_PM, func_020107a4);
 
     for (i = 0; i < 5; i++) {
-        data_020c105c[i].flag = 0;
+        PMi_RegisterBuffer[i].flag = 0;
     }
 
-    func_0200d674(&data_020c1044);
+    OS_InitMutex(&PMi_Mutex);
 
-    data_020c102c = OS_GetVBlankCount();
+    PMi_LCDCount = OS_GetVBlankCount();
 }
 void func_020107a4(PXIFifoTag tag, u32 data, BOOL err);

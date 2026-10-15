@@ -3,7 +3,7 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_01ff87a0();
 extern void func_020148a4();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_02067900();
 extern void func_02084450();
 extern void func_02093198();
@@ -228,19 +228,19 @@ L_0209862c:
     mov r1, r1, lsr #0xc
     sub r0, r3, r0
     orr r1, r1, r2, lsl #0x14
-    bl func_02014910
+    bl FX_Div
     mov r6, r0
     ldr r2, [sp, #0x1c]
     ldr r0, [sp, #0x28]
     mov r1, r6
     sub r0, r2, r0
-    bl func_02014910
+    bl FX_Div
     ldr r3, [sp, #0x20]
     ldr r2, [sp, #0x2c]
     str r0, [sp, #0x10]
     mov r1, r6
     sub r0, r3, r2
-    bl func_02014910
+    bl FX_Div
     add r6, sp, #0x10
     mov r3, r5
     str r0, [sp, #0x14]

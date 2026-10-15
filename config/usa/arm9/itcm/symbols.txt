@@ -1,9 +1,9 @@
-func_01ff8000 kind:function(arm,size=0x58) addr:0x01ff8000
-func_01ff8058 kind:function(arm,size=0x15c) addr:0x01ff8058
-func_01ff81b4 kind:function(arm,size=0x60) addr:0x01ff81b4
+OS_IrqHandler kind:function(arm,size=0x58) addr:0x01ff8000
+OS_IrqHandler_ThreadSwitch kind:function(arm,size=0x15c) addr:0x01ff8058
+Dma_LoadChannelAndSettle kind:function(arm,size=0x60) addr:0x01ff81b4
 func_01ff8214 kind:function(arm,size=0x38) addr:0x01ff8214
-func_01ff824c kind:function(arm,size=0x74) addr:0x01ff824c
-func_01ff82c0 kind:function(arm,size=0x50) addr:0x01ff82c0
+MIi_DmaSetParams_wait kind:function(arm,size=0x74) addr:0x01ff824c
+MIi_DmaSetParams kind:function(arm,size=0x50) addr:0x01ff82c0
 func_01ff8310 kind:function(arm,size=0x6c) addr:0x01ff8310
 func_01ff837c kind:function(arm,size=0x2c) addr:0x01ff837c
 func_01ff83a8 kind:function(arm,size=0x5c) addr:0x01ff83a8

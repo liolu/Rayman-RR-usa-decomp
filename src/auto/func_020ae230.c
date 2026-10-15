@@ -4,10 +4,10 @@
 extern void func_01ff84a0();
 extern void func_01ff8778();
 extern void func_01ff87d0();
-extern void func_02003b14();
+extern void rand();
 extern void func_0200eb98();
 extern void func_02014834();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_02050e7c();
 extern void func_02076c40();
 extern void func_02076d60();
@@ -202,10 +202,10 @@ L_020ae4e8:
     mov r5, #0x6
     rsb r8, r0, #0x4000
 L_020ae4f8:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800
@@ -217,10 +217,10 @@ L_020ae4f8:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x1000
     str r0, [sp, #0xb4]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800
@@ -232,10 +232,10 @@ L_020ae4f8:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x1000
     str r0, [sp, #0xb8]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x4333
     mov r2, r0, asr #0x1f
     umull r9, r3, r0, r1
@@ -250,10 +250,10 @@ L_020ae4f8:
     orr r9, r9, r0, lsl #0x14
     add r0, r9, r8
     str r0, [sp, #0xbc]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     ldr r10, =0x11f
     mov r9, r0, asr #0x1f
     umull ip, r10, r0, r10
@@ -348,10 +348,10 @@ L_020ae62c:
     add r0, r10, r1
     str r0, [sp, #0xc4]
 L_020ae738:
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x3000
     mov r2, #0x0
     umull r5, r3, r0, r1
@@ -366,10 +366,10 @@ L_020ae738:
     sub r0, r2, #0x1800
     add r0, r5, r0
     str r0, [sp, #0xb4]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x3000
     mov r2, #0x0
     umull r6, r5, r0, r1
@@ -384,10 +384,10 @@ L_020ae738:
     sub r0, r1, #0x1800
     add r0, r8, r0
     str r0, [sp, #0xb8]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     mov r6, #0x3000
     umull r11, r10, r0, r6
     mov r2, #0x0
@@ -514,10 +514,10 @@ L_020ae87c:
     adc r0, r0, #0x0
     mov r4, r1, lsr #0xc
     orr r4, r4, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     sub r1, r4, r4
     smull r2, r1, r0, r1
     adds r2, r2, #0x800
@@ -553,10 +553,10 @@ L_020aea2c:
     bne L_020aea2c
     mov r4, #0x0
 L_020aea54:
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0xe67
     ldr r10, [r9, #0x0]
     umull r5, r3, r0, r1
@@ -604,10 +604,10 @@ L_020aea54:
     orr r2, r2, r1, lsl #0x14
     add r0, r0, r2
     str r0, [sp, #0x74]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r10, =0xccd
     mov r5, r0, asr #0x1f
     umull ip, r10, r0, r10
@@ -643,10 +643,10 @@ L_020aeb98:
     add sp, sp, #0xcc
     ldmfd sp!, {r4, r5, r6, r7, r8, r9, r10, r11, pc}
 L_020aebb4:
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x4cc
     mov r2, #0x0
     umull r3, r4, r0, r1
@@ -673,10 +673,10 @@ L_020aebb4:
     ldr r4, =0x7fff000
     rsb r8, r0, #0x6000
 L_020aec28:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xe
     mov r1, #0x800
@@ -688,10 +688,10 @@ L_020aec28:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x2000
     str r0, [sp, #0xb4]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xe
     mov r1, #0x800
@@ -703,10 +703,10 @@ L_020aec28:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x2000
     str r0, [sp, #0xb8]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x6333
     mov r2, r0, asr #0x1f
     umull r9, r3, r0, r1
@@ -721,10 +721,10 @@ L_020aec28:
     orr r9, r9, r0, lsl #0x14
     add r0, r9, r8
     str r0, [sp, #0xbc]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     ldr r10, =0x28f
     mov r9, r0, asr #0x1f
     umull ip, r10, r0, r10
@@ -805,10 +805,10 @@ L_020aedd8:
     mov r5, r10
     mov r4, #0x800
 L_020aee18:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r9
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800
@@ -820,10 +820,10 @@ L_020aee18:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x1000
     str r0, [sp, #0x60]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r9
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800
@@ -835,10 +835,10 @@ L_020aee18:
     sub r0, r1, #0x1000
     str r8, [sp, #0x68]
     str r0, [sp, #0x64]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r9
-    bl func_02014910
+    bl FX_Div
     mov ip, r0
     mov r3, ip, asr #0x1f
     mov r3, r3, lsl #0xd
@@ -1067,10 +1067,10 @@ L_020af1cc:
     adc r0, r2, #0x0
     mov r4, r1, lsr #0xc
     orr r4, r4, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =data_020e4f10
     ldr r3, =data_020b7490
     ldr r1, [r1, #0x60]
@@ -1220,10 +1220,10 @@ L_020af1cc:
     add sp, sp, #0xcc
     ldmfd sp!, {r4, r5, r6, r7, r8, r9, r10, r11, pc}
 L_020af454:
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x667
     mov r2, #0x0
     umull r3, r4, r0, r1
@@ -1260,10 +1260,10 @@ L_020af4c8:
     mov r9, r6, lsl #0x1
     mov r8, r9, asr #0x1f
 L_020af4ec:
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     umull r4, r3, r0, r9
     adds r1, r4, #0x800
     mla r3, r0, r8, r3
@@ -1275,10 +1275,10 @@ L_020af4ec:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, r6
     str r0, [sp, #0xb4]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     umull r4, r3, r0, r9
     adds r1, r4, #0x800
     mla r3, r0, r8, r3
@@ -1290,10 +1290,10 @@ L_020af4ec:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, r6
     str r0, [sp, #0xb8]
-    bl func_02003b14
+    bl rand
     ldr r1, =0x7fff000
     mov r0, r0, lsl #0xc
-    bl func_02014910
+    bl FX_Div
     umull ip, r4, r0, r9
     adds r5, ip, #0x800
     mla r4, r0, r8, r4
@@ -1347,10 +1347,10 @@ L_020af62c:
     ldr r5, =0x7fff000
     str r0, [sp, #0x18]
 L_020af638:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     ldr r1, =0x2ccd
     mov r2, r0, asr #0x1f
     umull r4, r3, r0, r1
@@ -1367,10 +1367,10 @@ L_020af638:
     add r1, r0, #0x300
     ldr r0, =data_020e59c8
     str r1, [r0, #0x0]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x2800
     umull r4, r3, r0, r1
     adds r1, r4, #0x800
@@ -1383,10 +1383,10 @@ L_020af638:
     mov r0, r1
     adc r0, r3, r0
     orr r4, r4, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     mov r10, r0
     mov r3, #0x3000
     umull lr, ip, r10, r3
@@ -1405,10 +1405,10 @@ L_020af638:
     sub r3, r10, #0x1800
     bl func_01ff87d0
     str r0, [sp, #0x48]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     mov ip, r0
     mov r3, #0x3000
     umull r11, r10, ip, r3
@@ -1427,10 +1427,10 @@ L_020af638:
     sub r3, r10, #0x1800
     bl func_01ff87d0
     str r0, [sp, #0x4c]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     mov ip, r0
     mov r3, #0x3000
     umull r11, r10, ip, r3
@@ -1450,10 +1450,10 @@ L_020af638:
     bl func_01ff87d0
     str r0, [sp, #0x50]
     ldr r10, [r8, #0x0]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     ldr r2, =0x4cc
     mov r1, r0, asr #0x1f
     umull ip, r2, r0, r2
@@ -1477,10 +1477,10 @@ L_020af638:
     add r0, r11, r1
     str r0, [sp, #0x3c]
     ldr r10, [r8, #0x4]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     ldr r2, =0x4cc
     mov r1, r0, asr #0x1f
     umull ip, r2, r0, r2
@@ -1505,10 +1505,10 @@ L_020af638:
     str r0, [sp, #0x40]
     ldr r0, [r8, #0x8]
     str r0, [sp, #0x14]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r5
-    bl func_02014910
+    bl FX_Div
     ldr r10, =0x4cc
     add r3, r4, #0x4000
     umull ip, r11, r0, r10
@@ -1724,10 +1724,10 @@ L_020afb34:
     mov r0, #0x0
     str r0, [sp, #0x1c]
 L_020afbec:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0x10
     mov r1, #0x800
@@ -1746,10 +1746,10 @@ L_020afbec:
     adc r0, r1, r0
     mov r5, r2, lsr #0xc
     orr r5, r5, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0x10
     mov r1, #0x800
@@ -1770,10 +1770,10 @@ L_020afbec:
     orr r1, r1, r0, lsl #0x14
     add r0, r1, r5
     str r0, [sp, #0x90]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0x10
     mov r1, #0x800
@@ -1792,10 +1792,10 @@ L_020afbec:
     adc r0, r1, r0
     mov r5, r2, lsr #0xc
     orr r5, r5, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0x10
     mov r1, #0x800
@@ -1816,10 +1816,10 @@ L_020afbec:
     orr r1, r1, r0, lsl #0x14
     add r0, r1, r5
     str r0, [sp, #0x94]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0x10
     mov r1, #0x800
@@ -1838,10 +1838,10 @@ L_020afbec:
     adc r0, r1, r0
     mov r5, r2, lsr #0xc
     orr r5, r5, r0, lsl #0x14
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0x10
     mov r1, #0x800
@@ -1912,10 +1912,10 @@ L_020afbec:
     add r0, r2, r1
     str r0, [sp, #0x98]
 L_020afed8:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r4
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xa
     mov r1, #0x800

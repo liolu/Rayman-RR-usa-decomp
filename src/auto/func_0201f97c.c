@@ -9,8 +9,8 @@ typedef struct {
     s32 f0;
 } M2C_S4;
 
-void func_0201fc70(void);                           /* extern */
-void func_0201fc74(void);                           /* extern */
+void func_0201fc70(void);
+void func_0201fc74(void);
 extern M2C_UNK data_020c4a64;
 
 s32 func_0201f97c(void *arg0, M2C_S4 arg1) {

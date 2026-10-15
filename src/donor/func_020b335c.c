@@ -9,7 +9,7 @@ typedef enum {
     SND_CHANNEL_DATASHIFT_2BIT,
     SND_CHANNEL_DATASHIFT_4BIT
 } SNDChannelDataShift;
-extern void func_02018848(u32 chBitMask, int volume, SNDChannelDataShift shift);
+extern void SND_SetChannelVolume(u32 chBitMask, int volume, SNDChannelDataShift shift);
 typedef enum {
     NNS_SND_CAPTURE_FORMAT_PCM16,
     NNS_SND_CAPTURE_FORMAT_PCM8
@@ -21,16 +21,16 @@ typedef enum {
 } NNSSndCaptureType;
 typedef void (*NNSSndCaptureCallback)(void *bufferL, void *bufferR, u32 len, NNSSndCaptureFormat format, void *arg);
 extern void func_020b335c(void);
-extern void func_020b3260(void);
+extern void NNSi_SndCaptureStop(void);
 typedef struct NNSSndFader {
     int origin;
     int target;
     int counter;
     int frame;
 } NNSSndFader;
-extern int func_020b56cc(const NNSSndFader *fader);
-extern void func_020b56b4(NNSSndFader *fader);
-extern BOOL func_020b569c(const NNSSndFader *fader);
+extern int NNSi_SndFaderGet(const NNSSndFader *fader);
+extern void NNSi_SndFaderUpdate(NNSSndFader *fader);
+extern BOOL NNSi_SndFaderIsFinished(const NNSSndFader *fader);
 typedef struct CaptureParam {
     BOOL activeFlag;
     NNSSndCaptureType type;
@@ -51,33 +51,33 @@ typedef struct CaptureParam {
     BOOL fadeOutFlag;
     int volume;
 } CaptureParam;
-extern CaptureParam data_020e9c48;
+extern CaptureParam sCapParam;
 void func_020b335c(void) {
     CaptureParam *cap;
     NNSSndFader *fader;
     int volume;
 
-    cap = &data_020e9c48;
+    cap = &sCapParam;
 
     if (cap->activeFlag && cap->type == NNS_SND_CAPTURE_TYPE_REVERB) {
         fader = &cap->fader;
 
-        func_020b56b4(fader);
+        NNSi_SndFaderUpdate(fader);
 
         if (cap->fadeOutFlag) {
-            if (func_020b569c(fader)) {
-                func_020b3260();
+            if (NNSi_SndFaderIsFinished(fader)) {
+                NNSi_SndCaptureStop();
                 return;
             }
         }
 
-        volume = (func_020b56cc(fader) >> 8);
+        volume = (NNSi_SndFaderGet(fader) >> 8);
 
         if (volume != cap->volume) {
-            func_02018848(cap->playChBitMask, volume, SND_CHANNEL_DATASHIFT_NONE);
+            SND_SetChannelVolume(cap->playChBitMask, volume, SND_CHANNEL_DATASHIFT_NONE);
 
             cap->volume = volume;
         }
     }
 }
-void func_020b3260(void);
+void NNSi_SndCaptureStop(void);

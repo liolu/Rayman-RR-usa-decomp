@@ -16,7 +16,7 @@
  *    end-pointer forms, constant and variable counts) are never unrolled by mwccarm.
  *  - the `__memcpy` intrinsic expands to a byte loop, a `memcpy` call to a `bx ip` tail call.
  * The routine is hand-written assembly, exactly like its neighbours in the same SDK block
- * func_02017f34 / func_02017f48 / func_02017fc8 (3-register `ldm`/`stm` block transfer with
+ * MIi_CpuClear32 / MIi_CpuCopy32 / func_02017fc8 (3-register `ldm`/`stm` block transfer with
  * r2, r3 and ip as the transfer registers and the post-incrementing base pointers r0/r1).
  */
 // clang-format off

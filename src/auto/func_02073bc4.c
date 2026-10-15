@@ -1,10 +1,10 @@
 #include "m2c.h"
 
-M2C_UNK func_02016920(M2C_UNK *, M2C_UNK *, M2C_UNK *, M2C_UNK, s32); /* extern */
-M2C_UNK func_02073c98();                            /* extern */
-M2C_UNK func_02073d44();                            /* extern */
-M2C_UNK func_02073e08();                            /* extern */
-M2C_UNK func_02073ed0();                            /* extern */
+M2C_UNK G3i_LookAt_(M2C_UNK *, M2C_UNK *, M2C_UNK *, M2C_UNK, s32);
+M2C_UNK func_02073c98();
+M2C_UNK func_02073d44();
+M2C_UNK func_02073e08();
+M2C_UNK func_02073ed0();
 extern M2C_UNK data_020bd574;
 extern M2C_UNK data_020bd580;
 extern M2C_UNK data_020de26c;
@@ -14,7 +14,7 @@ void func_02073bc4(void) {
     if ((M2C_FIELD(&data_020de26c, volatile s32 *, 8) != 0) && (M2C_FIELD(&data_020de26c, volatile s32 *, 0xC) != 0)) {
         M2C_FIELD((void *) 0x04000440, volatile s32 *, 0)    = 2;
         M2C_FIELD((void *) 0x04000440, volatile s32 *, 0x14) = 0;
-        func_02016920(&data_020bd574, &data_020bd580, &data_020de280, 1, 0);
+        G3i_LookAt_(&data_020bd574, &data_020bd580, &data_020de280, 1, 0);
         M2C_FIELD((void *) 0x04000444, volatile s32 *, 0)    = 0;
         M2C_FIELD((void *) 0x04000444, volatile s32 *, 0x2C) = -0x1000;
         M2C_FIELD((void *) 0x04000444, volatile s32 *, 0x2C) = -0x800;

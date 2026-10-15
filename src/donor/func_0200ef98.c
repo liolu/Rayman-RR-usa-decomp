@@ -47,7 +47,7 @@ extern struct {
     vu16 state;
     vu16 err_flg;
     vu16 command_flg;
-} data_020c0fc4;
+} tpState;
 void func_0200ef98(TPData *result) {
     s32 i, curr_index;
     TPData *tp;
@@ -57,22 +57,22 @@ void func_0200ef98(TPData *result) {
 
     result->validity = (1 | 2);
 
-    curr_index = data_020c0fc4.index;
+    curr_index = tpState.index;
 
-    if (data_020c0fc4.frequence == 1 || data_020c0fc4.bufSize == 1) {
-        *result = data_020c0fc4.samplingBufs[curr_index];
+    if (tpState.frequence == 1 || tpState.bufSize == 1) {
+        *result = tpState.samplingBufs[curr_index];
         return;
     }
 
-    for (i = 0; i < data_020c0fc4.frequence && i < data_020c0fc4.bufSize - 1; i++) {
+    for (i = 0; i < tpState.frequence && i < tpState.bufSize - 1; i++) {
         s32 index;
 
         index = curr_index - i;
         if (index < 0) {
-            index += data_020c0fc4.bufSize;
+            index += tpState.bufSize;
         }
 
-        tp = &data_020c0fc4.samplingBufs[index];
+        tp = &tpState.samplingBufs[index];
 
         if (!tp->touch) {
             *result = *tp;

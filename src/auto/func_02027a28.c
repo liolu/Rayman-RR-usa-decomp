@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_020b24c8();                            /* extern */
+M2C_UNK NNS_SndMain();
 
 void func_02027a28(void) {
-    func_020b24c8();
+    NNS_SndMain();
 }

@@ -13,7 +13,7 @@
  * destinations, fixed-destination double copies, unrolled loops, scalar word stores and
  * memcpy (never inlined), with all 25 installed mwccarm profiles; none emits either a
  * non-writeback `stm` of the same register list, or more than 4 data registers.  Neighbours
- * func_02017f34 and func_02017f48 are in assembly for the same reason.
+ * MIi_CpuClear32 and MIi_CpuCopy32 are in assembly for the same reason.
  */
 // clang-format off
 asm void func_02017894(void) {

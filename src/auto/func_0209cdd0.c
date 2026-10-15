@@ -1,8 +1,8 @@
 #include "m2c.h"
 
-M2C_UNK func_0205e1f8(s32, s32);                    /* extern */
-s32 func_0206b3c4(s32);                             /* extern */
-void *func_02084450(M2C_UNK, void *, void **);      /* extern */
+M2C_UNK func_0205e1f8(s32, s32);
+s32 func_0206b3c4(s32);
+void *func_02084450(M2C_UNK, void *, void **);
 
 void *func_0209cdd0(M2C_UNK arg0, void *arg1) {
     u8 sp10[16];

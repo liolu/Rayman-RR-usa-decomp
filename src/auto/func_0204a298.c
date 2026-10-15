@@ -1,9 +1,9 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200ab28();
+extern void _s32_div_f();
 extern void func_0200eb98();
-extern void func_02014910();
+extern void FX_Div();
 extern char data_020bc96c[];
 extern char data_020bc990[];
 extern char data_020c75b9[];
@@ -82,7 +82,7 @@ L_0204a310:
     mov r0, r0, lsr #0xc
     orr r0, r0, r1, lsl #0x14
     sub r1, r5, r10
-    bl func_02014910
+    bl FX_Div
     sub r6, r6, r0
     mov r10, #0x0
 L_0204a38c:
@@ -98,7 +98,7 @@ L_0204a38c:
     mov r0, r2, lsr #0xc
     orr r0, r0, r1, lsl #0x14
     sub r1, r5, r10
-    bl func_02014910
+    bl FX_Div
     sub r4, r4, r0
     mov r5, #0x7f000
 L_0204a3c8:
@@ -160,7 +160,7 @@ L_0204a484:
     mov r1, r2, asr r6
     sub r0, r7, r0
     mov r5, r5, asr #0xc
-    bl func_0200ab28
+    bl _s32_div_f
     mov r4, #0x0
     ldr r1, =data_020bc990
     ldr r7, =data_020db958
@@ -176,7 +176,7 @@ L_0204a4c8:
     bge L_0204a4e4
     mov r0, r8
     mov r1, r6
-    bl func_0200ab28
+    bl _s32_div_f
     add r0, r0, r10, asr #0xc
 L_0204a4e4:
     cmp r0, #0x0
@@ -245,7 +245,7 @@ L_0204a54c:
     mov r3, r3, lsr #0xc
     orr r3, r3, r2, lsl #0x14
     str r3, [r4, #0x8]
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x1000
     rsb r1, r1, #0x0
     and r1, r0, r1
@@ -261,7 +261,7 @@ L_0204a54c:
     str r2, [r0, #0x0]
     ldr r0, [r0, #0x4]
     mov r1, #0x8000
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x1000
     rsb r1, r1, #0x0
     and r1, r0, r1
@@ -277,7 +277,7 @@ L_0204a54c:
     str r2, [r0, #0x4]
     ldr r0, [r0, #0x8]
     mov r1, #0x8000
-    bl func_02014910
+    bl FX_Div
     mov r1, #0x1000
     rsb r1, r1, #0x0
     and r1, r0, r1

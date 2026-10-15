@@ -5,7 +5,7 @@ typedef unsigned short int u16;
 typedef unsigned long u32;
 typedef int BOOL;
 typedef void (*PMCallback)(u32 result, void *arg);
-extern void func_020101d4(u32 data);
+extern void PMi_SendPxiData(u32 data);
 extern u32 func_02010544(u16 registerAddr, u16 data, PMCallback callback, void *arg);
 extern const u16(*ctrdgi_fl_maxtime);
 typedef struct {
@@ -20,27 +20,27 @@ inline u32 PMi_MakeData1(u32 bit, u32 seq, u32 command, u32 data) {
 inline u32 PMi_MakeData2(u32 bit, u32 seq, u32 data) {
     return (bit) | ((seq) << 16) | ((data) & 0xffff);
 }
-extern BOOL func_020109f0(void);
-extern PMiWork data_020c1034;
-BOOL func_020109f0(void);
+extern BOOL PMi_Lock(void);
+extern PMiWork PMi_Work;
+BOOL PMi_Lock(void);
 u32 func_02010544(u16 registerAddr, u16 data, PMCallback callback, void *arg) {
     u32 pxi_send_data;
 
-    if (!func_020109f0()) {
+    if (!PMi_Lock()) {
         return 1;
     }
 
     do {
-        data_020c1034.callback    = (callback);
-        data_020c1034.callbackArg = (arg);
+        PMi_Work.callback    = (callback);
+        PMi_Work.callbackArg = (arg);
     } while (0);
 
     pxi_send_data = PMi_MakeData1(0x02000000, 0, 0x0064, registerAddr);
-    func_020101d4(pxi_send_data);
+    PMi_SendPxiData(pxi_send_data);
 
     pxi_send_data = PMi_MakeData2(0x01000000, 1, data);
-    func_020101d4(pxi_send_data);
+    PMi_SendPxiData(pxi_send_data);
 
     return 0;
 }
-void func_020101d4(u32 data);
+void PMi_SendPxiData(u32 data);

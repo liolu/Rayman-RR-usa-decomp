@@ -1,8 +1,8 @@
 /* compiler: 1.2/sp2p3  */
 #include "m2c.h"
 
-M2C_UNK OS_DisableIrq();                            /* extern */
-M2C_UNK OS_RestoreIrq();                            /* extern */
+M2C_UNK OS_DisableIrq();
+M2C_UNK OS_RestoreIrq();
 
 void func_02013f44(void *arg0) {
     M2C_UNK m2c_irq;

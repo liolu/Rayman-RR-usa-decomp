@@ -6,7 +6,7 @@ typedef struct {
     s32 unk8;
 } UnkBuf;
 
-void func_0202e1e0(s32, UnkBuf *);     /* extern */
+void func_0202e1e0(s32, UnkBuf *);
 
 s32 func_0205d120(void *arg0) {
     UnkBuf buf;

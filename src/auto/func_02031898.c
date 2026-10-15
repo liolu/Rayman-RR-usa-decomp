@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-M2C_UNK func_02001588(void *, void *, M2C_UNK);     /* extern */
+M2C_UNK func_02001588(void *, void *, M2C_UNK);
 
 void func_02031898(void *arg0) {
     if (M2C_FIELD(arg0, s32 *, 0xC) & 4) {

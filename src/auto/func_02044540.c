@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_020424d8(s32);                             /* extern */
+s32 func_020424d8(s32);
 extern void *data_020cfc78;
 
 u8 func_02044540(s32 arg0) {

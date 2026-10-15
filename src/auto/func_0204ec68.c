@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-M2C_UNK func_02017a68();                            /* extern */
+M2C_UNK MI_WaitDma();
 extern M2C_UNK data_020dba6c;
 
 void func_0204ec68(void *arg0) {
@@ -15,7 +15,7 @@ void func_0204ec68(void *arg0) {
         temp_r5 = (s32) ((((s64) -M2C_FIELD(temp_r6, s32 *, 0x38)) * (M2C_FIELD(temp_r6, s32 *, 8) - 1) + 0x800) >> 0xC);
         scale_x = (s32) (((s64) temp_r5 * M2C_FIELD(temp_r6, s32 *, 0x4C) + 0x80000) >> 0x14);
         scale_y = (s32) (((s64) temp_r5 * M2C_FIELD(temp_r6, s32 *, 0x50) + 0x80000) >> 0x14);
-        func_02017a68(0);
+        MI_WaitDma(0);
         M2C_FIELD((void *) 0x040004A4, volatile s32 *, 0)     = 0x011F0880;
         M2C_FIELD((void *) 0x040004A4, volatile s32 *, 4)     = 0;
         M2C_FIELD((void *) 0x040004A4, volatile s32 *, -0x64) = 2;

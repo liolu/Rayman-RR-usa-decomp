@@ -1,12 +1,12 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern char data_020db984[];
+extern char sIsThreadCreated[];
 extern char data_020db988[];
 // clang-format off
 asm void func_0204a908(void) {
     stmfd sp!, {r3, lr}
-    ldr r1, =data_020db984
+    ldr r1, =sIsThreadCreated
     mov lr, #0x0
     ldr ip, [r1, #0x0]
     cmp ip, #0x0

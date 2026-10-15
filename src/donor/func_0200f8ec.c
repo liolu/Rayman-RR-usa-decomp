@@ -203,7 +203,7 @@ typedef struct MICWork {
     void *fullArg;
     void *dst_buf;
 } MICWork;
-extern MICWork data_020c1000;
+extern MICWork micWork;
 extern void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err);
 void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err) {
 
@@ -214,13 +214,13 @@ void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err) {
     MICCallback cb;
 
     if (err) {
-        if (data_020c1000.lock != MIC_LOCK_OFF) {
-            data_020c1000.lock = MIC_LOCK_OFF;
+        if (micWork.lock != MIC_LOCK_OFF) {
+            micWork.lock = MIC_LOCK_OFF;
         }
-        if (data_020c1000.callback) {
-            cb                     = data_020c1000.callback;
-            data_020c1000.callback = ((void *) 0);
-            cb(MIC_RESULT_FATAL_ERROR, data_020c1000.callbackArg);
+        if (micWork.callback) {
+            cb                     = micWork.callback;
+            micWork.callback = ((void *) 0);
+            cb(MIC_RESULT_FATAL_ERROR, micWork.callbackArg);
         }
     }
 
@@ -248,24 +248,24 @@ void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err) {
     }
 
     if (command == 0x0051) {
-        if (data_020c1000.full) {
-            data_020c1000.full(result, data_020c1000.fullArg);
+        if (micWork.full) {
+            micWork.full(result, micWork.fullArg);
         }
     } else {
         if (command == 0x0040) {
-            if (data_020c1000.dst_buf) {
-                *(u16 *) (data_020c1000.dst_buf) = ((OSSystemWork *) (0x02000000 + 0x007ffc00))->mic_sampling_data;
+            if (micWork.dst_buf) {
+                *(u16 *) (micWork.dst_buf) = ((OSSystemWork *) (0x02000000 + 0x007ffc00))->mic_sampling_data;
             }
         }
 
-        if (data_020c1000.lock != MIC_LOCK_OFF) {
-            data_020c1000.lock = MIC_LOCK_OFF;
+        if (micWork.lock != MIC_LOCK_OFF) {
+            micWork.lock = MIC_LOCK_OFF;
         }
 
-        if (data_020c1000.callback) {
-            cb                     = data_020c1000.callback;
-            data_020c1000.callback = ((void *) 0);
-            cb(result, data_020c1000.callbackArg);
+        if (micWork.callback) {
+            cb                     = micWork.callback;
+            micWork.callback = ((void *) 0);
+            cb(result, micWork.callbackArg);
         }
     }
 }

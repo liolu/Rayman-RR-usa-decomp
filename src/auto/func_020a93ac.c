@@ -1,8 +1,8 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003b14();
-extern void func_02014910();
+extern void rand();
+extern void FX_Div();
 extern void func_020a60cc();
 extern char data_020e4f10[];
 // clang-format off
@@ -41,10 +41,10 @@ L_020a93ec:
     ldr r11, =data_020e4f10
     mov r6, r8
 L_020a9428:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r7
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800
@@ -56,10 +56,10 @@ L_020a9428:
     orr r1, r1, r0, lsl #0x14
     sub r0, r1, #0x1000
     str r0, [sp, #0xc]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r7
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800
@@ -72,10 +72,10 @@ L_020a9428:
     sub r0, r1, #0x1000
     str r6, [sp, #0x14]
     str r0, [sp, #0x10]
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r7
-    bl func_02014910
+    bl FX_Div
     mov r9, #0x0
     umull r3, r2, r0, r5
     mla r2, r0, r9, r2
@@ -91,10 +91,10 @@ L_020a9428:
     orr r1, r1, r0, lsl #0x14
     add r9, r1, #0x28
     beq L_020a9538
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r7
-    bl func_02014910
+    bl FX_Div
     mov r3, #0x0
     umull r2, r1, r0, r4
     mla r1, r0, r3, r1
@@ -110,10 +110,10 @@ L_020a9428:
     add r3, r0, #0x300
     b L_020a9570
 L_020a9538:
-    bl func_02003b14
+    bl rand
     mov r0, r0, lsl #0xc
     mov r1, r7
-    bl func_02014910
+    bl FX_Div
     mov r1, r0, asr #0x1f
     mov r2, r1, lsl #0xd
     mov r1, #0x800

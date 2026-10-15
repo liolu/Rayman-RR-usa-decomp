@@ -1,18 +1,18 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02008a0c();
+extern void _dadd();
 extern void func_02008d24();
-extern void func_02008f00();
-extern void func_02008f40();
-extern void func_02008f7c();
+extern void _dflt();
+extern void _dfltu();
+extern void _dmul();
 extern void func_02009848();
-extern void func_02009e50();
-extern void func_02009eac();
-extern void func_0200a334();
+extern void _fgr();
+extern void _fls();
+extern void _f2d();
 extern void func_0200a3b8();
 extern void func_0200a4bc();
-extern void func_0200a6a8();
+extern void _fsub();
 extern void func_02075388();
 extern void func_02075554();
 extern char data_020bd8c7[];
@@ -53,37 +53,37 @@ asm void func_02076900(void) {
     mov r1, #0x0
     str r1, [r0, #0x18c]
     ldr r0, [r0, #0x17c]
-    bl func_0200a334
+    bl _f2d
     ldr r2, =data_020be594
     mov r4, r0
     ldr r0, [r2, #0x180]
     mov r7, r1
-    bl func_02008f00
+    bl _dflt
     mov r2, r0
     mov r3, r1
     ldr r0, =0xbc6a7efa
     ldr r1, =0x3f789374
-    bl func_02008f7c
+    bl _dmul
     mov r11, r0
     ldr r0, =data_020dc19c
     mov r8, r1
     ldr r0, [r0, #0xbc]
-    bl func_02008f40
+    bl _dfltu
     mov r2, r0
     mov r3, r1
     mov r0, r11
     mov r1, r8
-    bl func_02008f7c
+    bl _dmul
     mov r2, r0
     mov r3, r1
     mov r0, r4
     mov r1, r7
-    bl func_02008a0c
+    bl _dadd
     bl func_02008d24
     ldr r1, =data_020be594
     str r0, [r1, #0x17c]
     ldr r1, [r1, #0x184]
-    bl func_02009e50
+    bl _fgr
     bls L_020769fc
     ldr r0, =data_020be594
     mvn r1, #0x0
@@ -95,7 +95,7 @@ L_020769fc:
     ldr r1, =data_020be594
     ldr r0, [r1, #0x17c]
     ldr r1, [r1, #0x188]
-    bl func_02009eac
+    bl _fls
     bhs L_02076a24
     ldr r0, =data_020be594
     mov r1, #0x1
@@ -106,7 +106,7 @@ L_02076a24:
     ldr r0, =data_020be594
     mov r1, #0x0
     ldr r0, [r0, #0x17c]
-    bl func_02009e50
+    bl _fgr
     ldr r0, =0x45800000
     bls L_02076a58
     ldr r1, =data_020be594
@@ -121,7 +121,7 @@ L_02076a58:
     ldr r1, [r1, #0x17c]
     bl func_0200a4bc
     mov r1, #0x3f000000
-    bl func_0200a6a8
+    bl _fsub
 L_02076a6c:
     bl func_0200a3b8
     ldr r2, =data_020de6a0
@@ -131,7 +131,7 @@ L_02076a6c:
     ldr r0, =data_020be594
     str r1, [r2, #0x68]
     ldr r0, [r0, #0x17c]
-    bl func_02009e50
+    bl _fgr
     ldr r0, =0x45800000
     bls L_02076ab4
     ldr r1, =data_020be594
@@ -146,7 +146,7 @@ L_02076ab4:
     ldr r1, [r1, #0x17c]
     bl func_0200a4bc
     mov r1, #0x3f000000
-    bl func_0200a6a8
+    bl _fsub
 L_02076ac8:
     bl func_0200a3b8
     ldr r2, =data_020de6a0

@@ -38,9 +38,9 @@ typedef struct {
     void *arenaEnd;
     HeapDesc *heapArray;
 } OSHeapInfo;
-extern void *data_020c0ebc[OS_ARENA_MAX];
+extern void *OSiHeapInfo[OS_ARENA_MAX];
 Cell *func_0200e02c(Cell *list, Cell *cell);
-Cell *func_0200e004(Cell *list, Cell *cell);
+Cell *DLExtract(Cell *list, Cell *cell);
 void *func_0200de10(OSArenaId id, OSHeapHandle heap, u32 size) {
     OSHeapInfo *heapInfo;
     HeapDesc *hd;
@@ -51,7 +51,7 @@ void *func_0200de10(OSArenaId id, OSHeapHandle heap, u32 size) {
 
     ((void) 0);
     ((void) 0);
-    heapInfo = data_020c0ebc[id];
+    heapInfo = OSiHeapInfo[id];
 
     if (!heapInfo) {
         (void) OS_RestoreIrq(enabled);
@@ -90,7 +90,7 @@ void *func_0200de10(OSArenaId id, OSHeapHandle heap, u32 size) {
     leftoverSize = cell->size - (long) size;
 
     if (leftoverSize < ((((u32) (sizeof(Cell)) + (32) - 1) & ~((32) - 1)) + 32)) {
-        hd->free = func_0200e004(hd->free, cell);
+        hd->free = DLExtract(hd->free, cell);
     } else {
         cell->size    = (long) size;
         newCell       = (Cell *) ((char *) cell + size);

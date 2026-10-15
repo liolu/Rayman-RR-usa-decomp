@@ -1,8 +1,8 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020015f4();
-extern void func_0200ab28();
+extern void memset();
+extern void _s32_div_f();
 extern void func_0200de10();
 extern void func_0200fa2c();
 extern void func_0200fca4();
@@ -57,7 +57,7 @@ asm void func_020739c4(void) {
     blt L_02073a74
     mov r1, r5
     ldr r6, =data_020de681
-    bl func_0200ab28
+    bl _s32_div_f
 L_02073a58:
     ldrb r1, [r6, #-0x1]
     add r4, r4, #0x1
@@ -75,7 +75,7 @@ L_02073a74:
     ldrsh r2, [r0, #0x4]
     ldr r0, =data_020de290
     add r2, r2, r2, lsl #0x2
-    bl func_020015f4
+    bl memset
     ldr r3, =data_020de290
     mov r5, #0x80
     ldrb r0, [r3, #0x0]

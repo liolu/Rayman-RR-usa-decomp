@@ -2,7 +2,7 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_020045ec();
-extern void func_02014910();
+extern void FX_Div();
 extern char data_020dceec[];
 // clang-format off
 asm void func_0205ebc4(void) {
@@ -70,7 +70,7 @@ L_0205ec90:
     bl func_020045ec
     mov r0, r0, lsl #0xc
     mov r1, #0x3e8000
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x18]
     b L_0205ed20
 L_0205ecac:
@@ -90,7 +90,7 @@ L_0205ecd8:
     bl func_020045ec
     mov r0, r0, lsl #0xc
     mov r1, #0x3e8000
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x14]
     b L_0205ed20
 L_0205ecf4:
@@ -98,7 +98,7 @@ L_0205ecf4:
     bl func_020045ec
     mov r0, r0, lsl #0xc
     mov r1, #0x3e8000
-    bl func_02014910
+    bl FX_Div
     str r0, [r6, #0x1c]
     b L_0205ed20
 L_0205ed10:

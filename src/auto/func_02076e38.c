@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003984();
+extern void sprintf();
 extern void func_0207574c();
 extern void func_02075cb4();
 extern char data_020be610[];
@@ -58,14 +58,14 @@ L_02076eb8:
     ldr r1, =data_020be79c
     mov r2, r5
     swpb r3, r3, [ip]
-    bl func_02003984
+    bl sprintf
     ldr r2, [sp, #0x20]
     mvn r0, #0x0
     cmp r2, r0
     beq L_02076f1c
     ldr r0, =data_020dfba5
     ldr r1, =data_020be7a0
-    bl func_02003984
+    bl sprintf
     ldr r1, [sp, #0x24]
     ldr r0, =data_020de6e8
     str r1, [sp, #0x0]

@@ -1,6 +1,6 @@
 #include "m2c.h"
 
-s32 func_0206b3f4();                                /* extern */
+s32 func_0206b3f4();
 
 u8 func_02032af8(void) {
     u8 var_r0;

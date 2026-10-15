@@ -81,7 +81,7 @@ struct _OSThread {
     void *userParameter;
     int systemErrno;
 };
-extern void func_0200cc3c(OSThreadQueue *queue);
+extern void OS_WakeupThread(OSThreadQueue *queue);
 struct OSMutex {
     OSThreadQueue queue;
     OSThread *thread;
@@ -101,9 +101,9 @@ struct OSiAlarm {
     OSTick period;
     OSTick start;
 };
-extern void func_02017fe4(void *dest, u8 data, u32 size);
+extern void MI_CpuFill8(void *dest, u8 data, u32 size);
 static inline void MI_CpuClear8(void *dest, u32 size) {
-    func_02017fe4(dest, 0, size);
+    MI_CpuFill8(dest, 0, size);
 }
 typedef struct {
     void *prevObject;
@@ -115,9 +115,9 @@ typedef struct {
     u16 numObjects;
     u16 offset;
 } NNSFndList;
-extern void func_020b57f0(NNSFndList *list, void *object);
-extern void func_020b5784(NNSFndList *list, void *object);
-extern void *func_020b576c(NNSFndList *list, void *object);
+extern void NNS_FndAppendListObject(NNSFndList *list, void *object);
+extern void NNS_FndRemoveListObject(NNSFndList *list, void *object);
+extern void *NNS_FndGetNextListObject(NNSFndList *list, void *object);
 enum {
     FS_ARCHIVE_NAME_LEN_MAX = 3
 };
@@ -436,14 +436,14 @@ typedef struct LoadCommand {
     void *buffer[6];
     u32 bufLen;
 } LoadCommand;
-extern NNSSndStrmThread data_020ea060;
-extern NNSSndStrmThread *data_020e9ca4;
-extern LoadCommand *func_020b4ac0(void);
-extern void func_020b4a88(LoadCommand *command);
+extern NNSSndStrmThread sStrmThread;
+extern NNSSndStrmThread *sPrepareThread;
+extern LoadCommand *AllocCommandBuffer(void);
+extern void FreeCommandBuffer(LoadCommand *command);
 extern void func_020b4898(NNSSndStrmCallbackStatus status, int numChannels, void *buffer[], u32 len, NNSSndStrmFormat format,
                           void *arg);
-LoadCommand *func_020b4ac0(void);
-void func_020b4a88(LoadCommand *command);
+LoadCommand *AllocCommandBuffer(void);
+void FreeCommandBuffer(LoadCommand *command);
 void func_020b4898(NNSSndStrmCallbackStatus status, int numChannels, void *buffer[], u32 len, NNSSndStrmFormat, void *arg) {
     NNSSndStrmPlayer *player = (NNSSndStrmPlayer *) arg;
     LoadCommand *command;
@@ -454,7 +454,7 @@ void func_020b4898(NNSSndStrmCallbackStatus status, int numChannels, void *buffe
 
     if (player->commandCount >= 4 - 2) {
         command = ((void *) 0);
-        while ((command = (LoadCommand *) func_020b576c(&data_020ea060.commandList, command)) != ((void *) 0)) {
+        while ((command = (LoadCommand *) NNS_FndGetNextListObject(&sStrmThread.commandList, command)) != ((void *) 0)) {
             if (command->player == player) {
                 break;
             }
@@ -465,12 +465,12 @@ void func_020b4898(NNSSndStrmCallbackStatus status, int numChannels, void *buffe
             MI_CpuClear8(command->buffer[ch], command->bufLen);
         }
 
-        func_020b5784(&data_020ea060.commandList, command);
+        NNS_FndRemoveListObject(&sStrmThread.commandList, command);
         player->commandCount--;
-        func_020b4a88(command);
+        FreeCommandBuffer(command);
     }
 
-    command = func_020b4ac0();
+    command = AllocCommandBuffer();
     ((void) 0);
 
     command->player      = player;
@@ -481,13 +481,13 @@ void func_020b4898(NNSSndStrmCallbackStatus status, int numChannels, void *buffe
     }
     command->bufLen = len;
 
-    thread = &data_020ea060;
-    if (status == NNS_SND_STRM_CALLBACK_SETUP && data_020e9ca4) {
-        thread = data_020e9ca4;
+    thread = &sStrmThread;
+    if (status == NNS_SND_STRM_CALLBACK_SETUP && sPrepareThread) {
+        thread = sPrepareThread;
     }
 
     player->commandCount++;
-    func_020b57f0(&thread->commandList, command);
+    NNS_FndAppendListObject(&thread->commandList, command);
 
-    func_0200cc3c(&thread->threadQ);
+    OS_WakeupThread(&thread->threadQ);
 }

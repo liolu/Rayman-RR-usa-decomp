@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02009f7c();
+extern void _fdiv();
 extern void func_0200a42c();
 extern void func_0202c700();
 extern void func_0204d0b8();
@@ -218,15 +218,15 @@ L_0204f920:
     ldr r0, [sp, #0x6c]
     bl func_0200a42c
     ldr r1, =0x45800000
-    bl func_02009f7c
+    bl _fdiv
     ldr r0, [sp, #0x70]
     bl func_0200a42c
     ldr r1, =0x45800000
-    bl func_02009f7c
+    bl _fdiv
     ldr r0, [sp, #0x74]
     bl func_0200a42c
     ldr r1, =0x45800000
-    bl func_02009f7c
+    bl _fdiv
     mov r0, #0x0
     str r0, [r4, #0x14]
     ldr r1, [r8, #0xc]
@@ -446,15 +446,15 @@ L_0204f920:
     ldr r0, [sp, #0x6c]
     bl func_0200a42c
     ldr r1, =0x45800000
-    bl func_02009f7c
+    bl _fdiv
     ldr r0, [sp, #0x70]
     bl func_0200a42c
     ldr r1, =0x45800000
-    bl func_02009f7c
+    bl _fdiv
     ldr r0, [sp, #0x74]
     bl func_0200a42c
     ldr r1, =0x45800000
-    bl func_02009f7c
+    bl _fdiv
     ldr r0, [sp, #0x14]
     add r1, r0, #0x1
     ldr r0, [sp, #0x1c]

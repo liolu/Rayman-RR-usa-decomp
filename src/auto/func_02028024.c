@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_0201fc70();                            /* extern */
-M2C_UNK func_0201fc74();                            /* extern */
+M2C_UNK func_0201fc70();
+M2C_UNK func_0201fc74();
 extern M2C_UNK data_020c57b4;
 
 /* arg1 must be volatile: the target homes r0-r3 with "push {r0, r1, r2, r3}" and

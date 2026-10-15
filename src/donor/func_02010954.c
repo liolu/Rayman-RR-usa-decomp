@@ -10,20 +10,20 @@ typedef struct {
     void *callbackArg;
     void *work;
 } PMiWork;
-extern PMiWork data_020c1034;
+extern PMiWork PMi_Work;
 void func_02010954(u32 result) {
     PMCallback callback;
     void *arg;
 
-    callback = data_020c1034.callback;
-    arg      = data_020c1034.callbackArg;
+    callback = PMi_Work.callback;
+    arg      = PMi_Work.callbackArg;
 
-    if (data_020c1034.lock) {
-        data_020c1034.lock = 0;
+    if (PMi_Work.lock) {
+        PMi_Work.lock = 0;
     }
 
     if (callback) {
-        data_020c1034.callback = 0;
+        PMi_Work.callback = 0;
         (callback)(result, arg);
     }
 }

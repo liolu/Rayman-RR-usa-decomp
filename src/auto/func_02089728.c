@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-s32 func_0208d6ac(s32);                             /* extern */
-s32 func_0208d6dc(s32);                             /* extern */
+s32 func_0208d6ac(s32);
+s32 func_0208d6dc(s32);
 extern M2C_UNK data_020dd7a4;
 
 void func_02089728(s32 arg0, s32 *arg1, volatile s32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {

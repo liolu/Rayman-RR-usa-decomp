@@ -348,7 +348,7 @@ static inline BOOL FSi_IsArchiveSync(const volatile FSArchive *p_arc) {
 extern OSIntrMode OS_DisableIrq(void);
 extern OSIntrMode OS_RestoreIrq(OSIntrMode state);
 extern void OS_SleepThread(OSThreadQueue *queue);
-extern void func_0200cc3c(OSThreadQueue *queue);
+extern void OS_WakeupThread(OSThreadQueue *queue);
 typedef struct {
     FSArchive *arc;
     u32 pos;
@@ -363,11 +363,11 @@ extern FSResult FSi_ReadTable(FSiSyncReadParam *p, void *dst, u32 len);
 extern void FSi_SeekDirDirect(FSFile *p_dir, u32 id);
 extern int FSi_StrNICmp(const char *str1, const char *str2, u32 len);
 extern FSResult FSi_TranslateCommand(FSFile *p_file, FSCommandType command);
-extern void func_02012c2c(FSFile *p_file, FSResult ret);
+extern void FSi_ReleaseCommand(FSFile *p_file, FSResult ret);
 extern void FSi_ExecuteAsyncCommand(FSFile *p_file);
 extern FSFile *func_02013bc4(FSArchive *p_arc);
 extern BOOL FSi_SendCommand(FSFile *p_file, FSCommandType command);
-extern void func_020143a0(FSFile *p_file);
+extern void FS_InitFile(FSFile *p_file);
 extern BOOL FS_CloseFile(FSFile *p_file);
 extern BOOL FS_OpenFileDirect(FSFile *p_file, FSArchive *p_arc, u32 image_top, u32 image_bottom, u32 file_index);
 extern BOOL FS_OpenFileFast(FSFile *p_file, FSFileID file_id);
@@ -388,7 +388,7 @@ FSFile *func_02013bc4(FSArchive *p_arc) {
                 if (p_arc->list.next == p) {
                     p_arc->list.next = q;
                 }
-                func_02012c2c(p, FS_RESULT_CANCELED);
+                FSi_ReleaseCommand(p, FS_RESULT_CANCELED);
                 if (!q) {
                     q = p_arc->list.next;
                 }
@@ -416,7 +416,7 @@ FSFile *func_02013bc4(FSArchive *p_arc) {
         p_file->stat |= 0x00000040;
 
         if (FS_IsFileSyncMode(p_file)) {
-            func_0200cc3c(p_file->queue);
+            OS_WakeupThread(p_file->queue);
             (void) OS_RestoreIrq(bak_psr);
             return ((void *) 0);
         } else {
@@ -430,7 +430,7 @@ FSFile *func_02013bc4(FSArchive *p_arc) {
 
         if ((p_arc->proc_flag & (1 << FS_COMMAND_IDLE)) != 0) {
             FSFile tmp;
-            func_020143a0(&tmp);
+            FS_InitFile(&tmp);
             tmp.arc = p_arc;
             (void) (*p_arc->proc)(&tmp, FS_COMMAND_IDLE);
         }
@@ -439,7 +439,7 @@ FSFile *func_02013bc4(FSArchive *p_arc) {
     if (FSi_IsArchiveSuspending(p_arc)) {
         p_arc->flag &= ~0x00000040;
         p_arc->flag |= 0x00000008;
-        func_0200cc3c(&p_arc->stat_q);
+        OS_WakeupThread(&p_arc->stat_q);
     }
 
     (void) OS_RestoreIrq(bak_psr);

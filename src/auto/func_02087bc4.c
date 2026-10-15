@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_020015f4();
+extern void memset();
 extern void func_0200a3b8();
 extern void func_0200a4bc();
 extern void func_02040d90();
@@ -283,7 +283,7 @@ L_02087f40:
     addeq r0, r0, r0, lsl #0x1
     mov r2, r0, lsl #0x2
     add r0, r4, #0x8
-    bl func_020015f4
+    bl memset
     add sp, sp, #0xc
     ldmfd sp!, {r3, r4, r5, r6, r7, r8, pc}
 L_02087f74:
@@ -297,7 +297,7 @@ L_02087f74:
     addeq r0, r0, r0, lsl #0x1
     mov r2, r0, lsl #0x2
     add r0, r4, #0x8
-    bl func_020015f4
+    bl memset
     add sp, sp, #0xc
     ldmfd sp!, {r3, r4, r5, r6, r7, r8, pc}
 L_02087fa8:
@@ -311,7 +311,7 @@ L_02087fa8:
     addeq r0, r0, r0, lsl #0x1
     mov r2, r0, lsl #0x2
     add r0, r4, #0x8
-    bl func_020015f4
+    bl memset
     add sp, sp, #0xc
     ldmfd sp!, {r3, r4, r5, r6, r7, r8, pc}
 L_02087fdc:

@@ -26,11 +26,11 @@ void *func_02001588(void *p_vDst, const void *p_vSrc, unsigned long ulSize);
 long func_02084450(long lArg0, void *p_vObject, long lArg2);
 
 /* Math and utility functions identified from code */
-fx32 func_02014910(fx32 xNum, fx32 xDen);
-fx32 func_020148f4(fx32 x);
+fx32 FX_Div(fx32 xNum, fx32 xDen);
+fx32 FX_Inv(fx32 x);
 fx32 func_020148a4(fx32 x);
 void func_01ff84a0(VecFx32 *p_stDst, const VecFx32 *p_stSrc);
-long func_02003b14(void);
+long rand(void);
 long func_0206b3c4(void *p_vObj);
 long func_02067900(long *p_lVal);
 

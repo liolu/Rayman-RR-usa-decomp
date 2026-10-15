@@ -2,7 +2,7 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_020148a4();
-extern void func_02014910();
+extern void FX_Div();
 // clang-format off
 asm void func_02035614(void) {
     stmfd sp!, {r3, r4, r5, lr}
@@ -144,7 +144,7 @@ asm void func_02035614(void) {
     mov r2, r2, lsr #0xc
     orr r2, r2, r1, lsl #0x14
     add r1, r2, #0x1000
-    bl func_02014910
+    bl FX_Div
     bl func_020148a4
     str r0, [r5, #0x18]
     ldr r0, [r5, #0xc]

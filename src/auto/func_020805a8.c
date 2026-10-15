@@ -5,7 +5,7 @@ extern void VEC_DotProduct();
 extern void func_01ff8778();
 extern void func_01ff8858();
 extern void func_020148a4();
-extern void func_02014910();
+extern void FX_Div();
 // clang-format off
 asm void func_020805a8(void) {
     stmfd sp!, {r4, r5, r6, r7, r8, r9, lr}
@@ -42,7 +42,7 @@ asm void func_020805a8(void) {
     bl func_01ff8778
     mov r1, r0
     mov r0, r9
-    bl func_02014910
+    bl FX_Div
     str r0, [r5, #0x0]
     ldr r1, [r6, #0x0]
     smull r2, r1, r0, r1

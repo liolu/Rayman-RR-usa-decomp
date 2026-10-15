@@ -4,7 +4,7 @@
 extern void VEC_DotProduct();
 extern void func_01ff84a0();
 extern void func_01ff8668();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_02067910();
 extern void func_0208d150();
 extern void func_0208d1f0();
@@ -188,7 +188,7 @@ L_0208a12c:
     cmp r1, #0x1000
     ble L_0208a1f4
     mov r0, r4
-    bl func_02014910
+    bl FX_Div
     mov r4, r0
     b L_0208a220
 L_0208a1f4:

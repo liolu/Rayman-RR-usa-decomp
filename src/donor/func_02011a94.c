@@ -84,10 +84,10 @@ struct _OSThread {
     void *userParameter;
     int systemErrno;
 };
-extern void func_0200cc3c(OSThreadQueue *queue);
-extern void func_0200cc08(OSThread *thread);
-extern OSIrqMask func_0200c304(OSIrqMask intr);
-extern OSIrqMask func_0200c2d0(OSIrqMask intr);
+extern void OS_WakeupThread(OSThreadQueue *queue);
+extern void OS_WakeupThreadDirect(OSThread *thread);
+extern OSIrqMask OS_DisableIrqMask(OSIrqMask intr);
+extern OSIrqMask OS_ResetRequestIrqMask(OSIrqMask intr);
 struct OSMutex {
     OSThreadQueue queue;
     OSThread *thread;
@@ -108,7 +108,7 @@ struct OSiAlarm {
     OSTick start;
 };
 typedef void (*MIDmaCallback)(void *);
-extern void func_020179e4(u32 dmaNo);
+extern void MI_StopDma(u32 dmaNo);
 typedef enum {
     CARD_RESULT_SUCCESS = 0,
     CARD_RESULT_FAILURE,
@@ -234,7 +234,7 @@ typedef struct CARDiCommon {
 
     u8 backup_cache_page_buf[256] __attribute__((aligned(32)));
 } CARDiCommon;
-extern CARDiCommon data_020c1100;
+extern CARDiCommon cardi_common;
 static inline void CARDi_EndTask(CARDiCommon *p, BOOL is_own_task) {
     const MIDmaCallback func = p->callback;
     void *const arg          = p->callback_arg;
@@ -243,10 +243,10 @@ static inline void CARDi_EndTask(CARDiCommon *p, BOOL is_own_task) {
         OSIntrMode bak_psr = OS_DisableIrq();
 
         p->flag &= ~(CARD_STAT_BUSY | CARD_STAT_TASK | CARD_STAT_CANCEL);
-        func_0200cc3c(p->busy_q);
+        OS_WakeupThread(p->busy_q);
 
         if ((p->flag & CARD_STAT_RECV) != 0) {
-            func_0200cc08(p->thread);
+            OS_WakeupThreadDirect(p->thread);
         }
 
         (void) OS_RestoreIrq(bak_psr);
@@ -264,18 +264,18 @@ typedef struct CARDRomStat {
     u8 cache_buf[512];
 } CARDRomStat;
 extern CARDRomStat rom_stat;
-extern void func_02011f68(u32 id);
-extern u32 func_020117c0(void);
+extern void CARDi_CheckPulledOutCore(u32 id);
+extern u32 CARDi_ReadRomIDCore(void);
 static inline void CARDi_ReadEnd(void) {
-    CARDiCommon *const p = &data_020c1100;
+    CARDiCommon *const p = &cardi_common;
 
-    func_02011f68(func_020117c0());
+    CARDi_CheckPulledOutCore(CARDi_ReadRomIDCore());
 
     p->cmd->result = CARD_RESULT_SUCCESS;
     CARDi_EndTask(p, 1);
 }
 static inline BOOL CARDi_OnReadPageDirect(CARDRomStat *arg) {
-    CARDiCommon *p = &data_020c1100;
+    CARDiCommon *p = &cardi_common;
     (void) arg;
 
     p->src += 512;
@@ -287,15 +287,15 @@ static inline BOOL CARDi_OnReadPageDirect(CARDRomStat *arg) {
 void func_02011b74(void);
 void func_02011a94(void) {
     CARDRomStat *const p = &rom_stat;
-    CARDiCommon *const c = &data_020c1100;
+    CARDiCommon *const c = &cardi_common;
 
-    func_020179e4(c->dma);
+    MI_StopDma(c->dma);
     if (!CARDi_OnReadPageDirect(p)) {
-        (void) func_0200c304((1UL << 19));
-        (void) func_0200c2d0((1UL << 19));
+        (void) OS_DisableIrqMask((1UL << 19));
+        (void) OS_ResetRequestIrqMask((1UL << 19));
         CARDi_ReadEnd();
     } else {
         func_02011b74();
     }
 }
-u32 func_020117c0(void);
+u32 CARDi_ReadRomIDCore(void);

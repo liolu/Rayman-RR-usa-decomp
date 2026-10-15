@@ -7,9 +7,9 @@ s32 func_0205d0d4(void);
 void func_0206b35c(s32);
 void func_0207ac90(s32);
 
-M2C_UNK func_02057038(s32, M2C_UNK, M2C_UNK *, M2C_UNK, s32); /* extern */
-M2C_UNK func_0206b358(s32);                         /* extern */
-M2C_UNK func_0207ad9c(M2C_UNK, u8, M2C_UNK, M2C_UNK, s32, s32, s32, s32); /* extern */
+M2C_UNK func_02057038(s32, M2C_UNK, M2C_UNK *, M2C_UNK, s32);
+M2C_UNK func_0206b358(s32);
+M2C_UNK func_0207ad9c(M2C_UNK, u8, M2C_UNK, M2C_UNK, s32, s32, s32, s32);
 extern u8 data_020bd280;
 extern M2C_UNK data_020bd358;
 

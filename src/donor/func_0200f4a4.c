@@ -243,7 +243,7 @@ extern struct {
     vu16 state;
     vu16 err_flg;
     vu16 command_flg;
-} data_020c0fc4;
+} tpState;
 static inline void TPi_CopyTpFromSystemWork(TPData *result) {
     SPITpData spi_tp;
 
@@ -256,10 +256,10 @@ static inline void TPi_CopyTpFromSystemWork(TPData *result) {
     result->validity = (u8) spi_tp.e.validity;
 }
 static inline void TPi_ErrorAtPxi(TPRequestCommand command) {
-    data_020c0fc4.err_flg |= (1 << command);
+    tpState.err_flg |= (1 << command);
 
-    if (data_020c0fc4.callback) {
-        (data_020c0fc4.callback)(command, TP_RESULT_PXI_BUSY, 0);
+    if (tpState.callback) {
+        (tpState.callback)(command, TP_RESULT_PXI_BUSY, 0);
     }
 }
 void func_0200f4a4(PXIFifoTag tag, u32 data, BOOL err) {
@@ -277,16 +277,16 @@ void func_0200f4a4(PXIFifoTag tag, u32 data, BOOL err) {
     }
 
     if (command == 0x0010) {
-        data_020c0fc4.index++;
+        tpState.index++;
 
-        if (data_020c0fc4.index >= data_020c0fc4.bufSize) {
-            data_020c0fc4.index = 0;
+        if (tpState.index >= tpState.bufSize) {
+            tpState.index = 0;
         }
 
-        TPi_CopyTpFromSystemWork(&data_020c0fc4.samplingBufs[data_020c0fc4.index]);
+        TPi_CopyTpFromSystemWork(&tpState.samplingBufs[tpState.index]);
 
-        if (data_020c0fc4.callback) {
-            (data_020c0fc4.callback)((TPRequestCommand) command, TP_RESULT_SUCCESS, (u8) data_020c0fc4.index);
+        if (tpState.callback) {
+            (tpState.callback)((TPRequestCommand) command, TP_RESULT_SUCCESS, (u8) tpState.index);
         }
 
         return;
@@ -302,21 +302,21 @@ void func_0200f4a4(PXIFifoTag tag, u32 data, BOOL err) {
         case 0x0000:
             switch (command) {
                 case 0x0000:
-                    TPi_CopyTpFromSystemWork(&data_020c0fc4.buf);
-                    data_020c0fc4.state = TP_STATE_READY;
+                    TPi_CopyTpFromSystemWork(&tpState.buf);
+                    tpState.state = TP_STATE_READY;
                     break;
                 case 0x0001:
-                    data_020c0fc4.state = TP_STATE_AUTO_SAMPLING;
+                    tpState.state = TP_STATE_AUTO_SAMPLING;
                     break;
                 case 0x0002:
-                    data_020c0fc4.state = TP_STATE_READY;
+                    tpState.state = TP_STATE_READY;
                     break;
             }
 
-            data_020c0fc4.command_flg &= ~(1 << command);
+            tpState.command_flg &= ~(1 << command);
 
-            if (data_020c0fc4.callback) {
-                (data_020c0fc4.callback)((TPRequestCommand) command, TP_RESULT_SUCCESS, 0);
+            if (tpState.callback) {
+                (tpState.callback)((TPRequestCommand) command, TP_RESULT_SUCCESS, 0);
             }
 
             break;
@@ -329,11 +329,11 @@ void func_0200f4a4(PXIFifoTag tag, u32 data, BOOL err) {
         case 0x0003:
             result = TP_RESULT_ILLEGAL_STATUS;
         common:
-            data_020c0fc4.err_flg |= (1 << command);
-            data_020c0fc4.command_flg &= ~(1 << command);
+            tpState.err_flg |= (1 << command);
+            tpState.command_flg &= ~(1 << command);
 
-            if (data_020c0fc4.callback) {
-                (data_020c0fc4.callback)((TPRequestCommand) command, (TPRequestResult) (result & 0xff), 0);
+            if (tpState.callback) {
+                (tpState.callback)((TPRequestCommand) command, (TPRequestResult) (result & 0xff), 0);
             }
             break;
 

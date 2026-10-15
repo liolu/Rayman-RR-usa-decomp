@@ -1,13 +1,13 @@
 #include "m2c.h"
 
-s32 func_0201e508(M2C_UNK);                         /* extern */
-M2C_UNK func_02022930();                            /* extern */
-M2C_UNK func_020230b8(M2C_UNK *);                   /* extern */
-M2C_UNK func_02023ca0();                            /* extern */
-s32 func_02024a04(M2C_UNK);                         /* extern */
-M2C_UNK func_02024e00(M2C_UNK *);                   /* extern */
-s32 func_02027514(M2C_UNK);                         /* extern */
-M2C_UNK func_020b24fc();                            /* extern */
+s32 func_0201e508(M2C_UNK);
+M2C_UNK func_02022930();
+M2C_UNK func_020230b8(M2C_UNK *);
+M2C_UNK func_02023ca0();
+s32 func_02024a04(M2C_UNK);
+M2C_UNK func_02024e00(M2C_UNK *);
+s32 func_02027514(M2C_UNK);
+M2C_UNK NNS_SndInit();
 extern s32 data_020c4a4c;
 extern s32 data_020c4bf8;
 extern s32 data_020c4bfc;
@@ -26,7 +26,7 @@ s32 func_02021928(M2C_UNK arg0) {
     u8 sp0[8];
     s32 i;
 
-    func_020b24fc();
+    NNS_SndInit();
     for (i = 0; i < 0x40; i++) {
         data_020c4c00[i].unk8  = 1;
         data_020c4c00[i].unk18 = 0;

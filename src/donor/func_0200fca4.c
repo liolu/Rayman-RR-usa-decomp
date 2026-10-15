@@ -6,7 +6,7 @@ typedef unsigned long u32;
 typedef unsigned long long int u64;
 typedef signed long s32;
 typedef int BOOL;
-extern void func_020182f4(void);
+extern void PXI_Init(void);
 typedef struct CPContext {
     u64 div_numer;
     u64 div_denom;
@@ -183,8 +183,8 @@ typedef enum {
     PXI_MAX_FIFO_TAG = 32
 } PXIFifoTag;
 typedef void (*PXIFifoCallback)(PXIFifoTag tag, u32 data, BOOL err);
-extern void func_02018500(int fifotag, PXIFifoCallback callback);
-extern BOOL func_020184d8(int fifotag, PXIProc proc);
+extern void PXI_SetFifoRecvCallback(int fifotag, PXIFifoCallback callback);
+extern BOOL PXI_IsCallbackReady(int fifotag, PXIProc proc);
 typedef enum MICResult {
     MIC_RESULT_SUCCESS = 0,
     MIC_RESULT_BUSY,
@@ -211,24 +211,24 @@ typedef struct MICWork {
     void *fullArg;
     void *dst_buf;
 } MICWork;
-extern u16 data_020c0ffc;
-extern MICWork data_020c1000;
+extern u16 micInitialized;
+extern MICWork micWork;
 extern void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err);
 void func_0200fca4(void) {
-    if (data_020c0ffc) {
+    if (micInitialized) {
         return;
     }
 
-    data_020c0ffc = 1;
+    micInitialized = 1;
 
-    data_020c1000.lock     = MIC_LOCK_OFF;
-    data_020c1000.callback = ((void *) 0);
+    micWork.lock     = MIC_LOCK_OFF;
+    micWork.callback = ((void *) 0);
 
-    func_020182f4();
-    while (!func_020184d8(PXI_FIFO_TAG_MIC, PXI_PROC_ARM7)) {
+    PXI_Init();
+    while (!PXI_IsCallbackReady(PXI_FIFO_TAG_MIC, PXI_PROC_ARM7)) {
     }
 
     ((OSSystemWork *) (0x02000000 + 0x007ffc00))->mic_last_address = 0;
-    func_02018500(PXI_FIFO_TAG_MIC, func_0200f8ec);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_MIC, func_0200f8ec);
 }
 void func_0200f8ec(PXIFifoTag tag, u32 data, BOOL err);

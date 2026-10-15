@@ -6,7 +6,7 @@ extern void func_01ff87ec();
 extern void func_01ff8878();
 extern void func_01ff88b4();
 extern void func_02001588();
-extern void func_02014910();
+extern void FX_Div();
 extern void func_0202dc64();
 extern void func_020317f8();
 extern void func_02031c40();
@@ -58,7 +58,7 @@ asm void func_0203cf3c(void) {
     bl func_01ff88b4
     mov r1, r0
     mov r0, r8
-    bl func_02014910
+    bl FX_Div
     smull r2, r1, r0, r9
     adds r2, r2, #0x800
     adc r0, r1, #0x0

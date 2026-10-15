@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02018a48();
+extern void SND_SetPlayerVolume();
 extern void func_0201ea9c();
 extern void func_0201f484();
 extern char data_020bb604[];
@@ -71,7 +71,7 @@ L_0201ea44:
     mov r2, r2, asr #0x8
     mov r2, r2, lsl #0x1
     ldrsh r1, [r1, r2]
-    bl func_02018a48
+    bl SND_SetPlayerVolume
     ldr r0, =data_020c4a64
     ldr r0, [r0, #0x20]
     ldr r0, [r0, #0x4c]

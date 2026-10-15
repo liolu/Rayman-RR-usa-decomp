@@ -2,275 +2,76 @@
 # <source path> <mwccarm version>
 src/auto/func_0200c63c.c 1.2/sp2p3
 src/auto/func_0200c6cc.c 1.2/sp2p3
-src/auto/func_0200cc08.c 1.2/sp2p3
-src/auto/func_0200ccbc.c 1.2/sp2p3
-src/auto/func_0200cd10.c 1.2/sp2p3
-src/auto/func_0200cdb4.c 1.2/sp2p3
 src/auto/func_0200ce24.c 1.2/sp2p3
-src/auto/func_0200d530.c 1.2/sp2p3
-src/auto/func_0200d5e8.c 1.2/sp2p3
-src/auto/func_0200d674.c 1.2/sp2p3
-src/auto/func_0200d748.c 1.2/sp2p3
-src/auto/func_0200da6c.c 1.2/sp2p3
-src/auto/func_0200daec.c 1.2/sp2p3
-src/auto/func_0200e404.c 1.2/sp2p3
-src/auto/func_0200e9a0.c 1.2/sp2p3
-src/auto/func_0200e9e4.c 1.2/sp2p3
-src/auto/func_0200ef78.c 1.2/sp2p3
-src/auto/func_0200f414.c 1.2/sp2p3
-src/auto/func_0200f78c.c 1.2/sp2p3
-src/auto/func_0200fa3c.c 1.2/sp2p3
 src/auto/func_0200faf0.c 1.2/sp2p3
-src/auto/func_0200fd90.c 1.2/sp2p3
-src/auto/func_0200fe0c.c 1.2/sp2p3
-src/auto/func_0200fe68.c 1.2/sp2p3
-src/auto/func_020101d4.c 1.2/sp2p3
-src/auto/func_020102ac.c 1.2/sp2p3
-src/auto/func_02010398.c 1.2/sp2p3
-src/auto/func_02010464.c 1.2/sp2p3
-src/auto/func_020104a0.c 1.2/sp2p3
 src/auto/func_02010508.c 1.2/sp2p3
-src/auto/func_020105c4.c 1.2/sp2p3
-src/auto/func_020109b0.c 1.2/sp2p3
-src/auto/func_02010a60.c 1.2/sp2p3
-src/auto/func_02010a80.c 1.2/sp2p3
-src/auto/func_02010b20.c 1.2/sp2p3
-src/auto/func_02011fd8.c 1.2/sp2p3
-src/auto/func_02012070.c 1.2/sp2p3
-src/auto/func_020120f0.c 1.2/sp2p3
-src/auto/func_02012208.c 1.2/sp2p3
-src/auto/func_020122c0.c 1.2/sp2p3
-src/auto/func_02012518.c 1.2/sp2p3
-src/auto/func_020125a8.c 1.2/sp2p3
-src/auto/func_020125c8.c 1.2/sp2p3
-src/auto/func_02012648.c 1.2/sp2p3
-src/auto/func_02012850.c 1.2/sp2p3
-src/auto/func_02012a20.c 1.2/sp2p3
-src/auto/func_0201375c.c 1.2/sp2p3
-src/auto/func_020138e4.c 1.2/sp2p3
-src/auto/func_02013ad8.c 1.2/sp2p3
-src/auto/func_02013dbc.c 1.2/sp2p3
-src/auto/func_02013de8.c 1.2/sp2p3
-src/auto/func_02014060.c 1.2/sp2p3
-src/auto/func_020143a0.c 1.2/sp2p3
-src/auto/func_020143d0.c 1.2/sp2p3
-src/auto/func_020145bc.c 1.2/sp2p3
-src/auto/func_020146a0.c 1.2/sp2p3
-src/auto/func_020148f4.c 1.2/sp2p3
-src/auto/func_02014910.c 1.2/sp2p3
-src/auto/func_0201512c.c 1.2/sp2p3
-src/auto/func_02015234.c 1.2/sp2p3
-src/auto/func_02015430.c 1.2/sp2p3
-src/auto/func_020156d0.c 1.2/sp2p3
-src/auto/func_0201612c.c 1.2/sp2p3
-src/auto/func_02016150.c 1.2/sp2p3
-src/auto/func_02016200.c 1.2/sp2p3
-src/auto/func_020164d8.c 1.2/sp2p3
-src/auto/func_020168e4.c 1.2/sp2p3
 src/auto/func_02016fa4.c 1.2/sp2p3
 src/auto/func_0201700c.c 1.2/sp2p3
 src/auto/func_02017074.c 1.2/sp2p3
 src/auto/func_020170dc.c 1.2/sp2p3
-src/auto/func_020178c0.c 1.2/sp2p3
-src/auto/func_02017ad8.c 1.2/sp2p3
-src/auto/func_02017afc.c 1.2/sp2p3
-src/auto/func_020182d0.c 1.2/sp2p3
-src/auto/func_020184d8.c 1.2/sp2p3
-src/auto/func_02018678.c 1.2/sp2p3
-src/auto/func_020186d0.c 1.2/sp2p3
-src/auto/func_02018704.c 1.2/sp2p3
-src/auto/func_02018738.c 1.2/sp2p3
-src/auto/func_02018764.c 1.2/sp2p3
-src/auto/func_02018798.c 1.2/sp2p3
-src/auto/func_020187c4.c 1.2/sp2p3
-src/auto/func_02018848.c 1.2/sp2p3
-src/auto/func_020188d4.c 1.2/sp2p3
-src/auto/func_02018910.c 1.2/sp2p3
-src/auto/func_020189c4.c 1.2/sp2p3
-src/auto/func_020189f8.c 1.2/sp2p3
-src/auto/func_02018a20.c 1.2/sp2p3
-src/auto/func_02018a78.c 1.2/sp2p3
-src/auto/func_02018aa4.c 1.2/sp2p3
-src/auto/func_02018ad0.c 1.2/sp2p3
-src/auto/func_02018b2c.c 1.2/sp2p3
-src/auto/func_02018c18.c 1.2/sp2p3
-src/auto/func_02018c4c.c 1.2/sp2p3
-src/auto/func_02018cb8.c 1.2/sp2p3
-src/auto/func_02018ce8.c 1.2/sp2p3
-src/auto/func_02018e1c.c 1.2/sp2p3
-src/auto/func_020190b4.c 1.2/sp2p3
-src/auto/func_020194fc.c 1.2/sp2p3
-src/auto/func_02019530.c 1.2/sp2p3
-src/auto/func_02019568.c 1.2/sp2p3
-src/auto/func_02019614.c 1.2/sp2p3
-src/auto/func_020b248c.c 1.2/sp2p3
-src/auto/func_020b24c8.c 1.2/sp2p3
-src/auto/func_020b25f0.c 1.2/sp2p3
-src/auto/func_020b2650.c 1.2/sp2p3
-src/auto/func_020b2688.c 1.2/sp2p3
-src/auto/func_020b26dc.c 1.2/sp2p3
-src/auto/func_020b27c8.c 1.2/sp2p3
 src/auto/func_020b2b08.c 1.2/sp2p3
 src/auto/func_020b2b80.c 1.2/sp2p3
-src/auto/func_020b2c9c.c 1.2/sp2p3
-src/auto/func_020b2cd0.c 1.2/sp2p3
-src/auto/func_020b2d50.c 1.2/sp2p3
-src/auto/func_020b2e08.c 1.2/sp2p3
-src/auto/func_020b2e38.c 1.2/sp2p3
-src/auto/func_020b3064.c 1.2/sp2p3
-src/auto/func_020b30f8.c 1.2/sp2p3
-src/auto/func_020b3498.c 1.2/sp2p3
-src/auto/func_020b3934.c 1.2/sp2p3
-src/auto/func_020b3958.c 1.2/sp2p3
-src/auto/func_020b39a8.c 1.2/sp2p3
-src/auto/func_020b39f8.c 1.2/sp2p3
-src/auto/func_020b3b28.c 1.2/sp2p3
-src/auto/func_020b3b44.c 1.2/sp2p3
-src/auto/func_020b3cec.c 1.2/sp2p3
-src/auto/func_020b3d10.c 1.2/sp2p3
-src/auto/func_020b3d50.c 1.2/sp2p3
 src/auto/func_020b3e1c.c 1.2/sp2p3
-src/auto/func_020b49dc.c 1.2/sp2p3
-src/auto/func_020b4a88.c 1.2/sp2p3
-src/auto/func_020b4b0c.c 1.2/sp2p3
-src/auto/func_020b4bd4.c 1.2/sp2p3
-src/auto/func_020b4c40.c 1.2/sp2p3
 src/auto/func_020b4cc8.c 1.2/sp2p3
 src/auto/func_020b4d34.c 1.2/sp2p3
-src/auto/func_020b50dc.c 1.2/sp2p3
 src/auto/func_020b53e0.c 1.2/sp2p3
-src/auto/func_020b540c.c 1.2/sp2p3
-src/auto/func_020b5454.c 1.2/sp2p3
-src/auto/func_020b5708.c 1.2/sp2p3
-src/auto/func_020b5738.c 1.2/sp2p3
-src/auto/func_020b589c.c 1.2/sp2p3
-src/auto/func_020b58b8.c 1.2/sp2p3
-src/auto/func_020b59e4.c 1.2/sp2p3
-src/auto/func_020b5bec.c 1.2/sp2p3
-src/auto/func_02014744.c 1.2/sp2p3
 src/auto/func_02098974.c 1.2/sp2p3 -proc arm7tdmi
-src/auto/func_0200c8b8.c 1.2/sp2p3
-src/auto/func_0200c93c.c 1.2/sp2p3
-src/auto/func_0200ebc0.c 1.2/sp2p3
-src/auto/func_0200fa80.c 1.2/sp2p3
-src/auto/func_020109f0.c 1.2/sp2p3
-src/auto/func_02011d04.c 1.2/sp2p3
 src/auto/func_02013f44.c 1.2/sp2p3
-src/auto/func_02018b78.c 1.2/sp2p3
-src/auto/func_02018d88.c 1.2/sp2p3
-src/auto/func_02018ddc.c 1.2/sp2p3
-src/auto/func_0200c8f0.c 1.2/sp2p3
-src/auto/func_02013b20.c 1.2/sp2p3
-src/auto/func_0201881c.c 1.2/sp2p3
-src/auto/func_0201887c.c 1.2/sp2p3
-src/auto/func_020188a8.c 1.2/sp2p3
-src/auto/func_020b2a30.c 1.2/sp2p3
-src/auto/func_020b4dd8.c 1.2/sp2p3
 src/auto/func_020b5394.c 1.2/sp2p3
-src/auto/func_020b5a78.c 1.2/sp2p3
-src/auto/func_02013f90.c 1.2/sp2p3
-src/auto/func_02016178.c 1.2/sp2p3
-src/auto/func_02017204.c 1.2/sp2p3
-src/auto/func_0201726c.c 1.2/sp2p3
 src/auto/func_020172c8.c 1.2/sp2p3
 src/auto/func_02017330.c 1.2/sp2p3
 src/auto/func_02017398.c 1.2/sp2p3
-src/auto/func_02017400.c 1.2/sp2p3
-src/auto/func_0201745c.c 1.2/sp2p3
-src/auto/func_02017570.c 1.2/sp2p3
-src/auto/func_0201906c.c 1.2/sp2p3
-src/auto/func_0201939c.c 1.2/sp2p3
-src/auto/func_020b56cc.c 1.2/sp2p3
-src/auto/func_020146e0.c 1.2/sp2p3
-src/auto/func_02014718.c 1.2/sp2p3
-src/auto/func_02014794.c 1.2/sp2p3
-src/auto/func_020147d0.c 1.2/sp2p3
-src/auto/func_0201480c.c 1.2/sp2p3
-src/auto/func_02014174.c 1.2/sp2p3
 src/auto/func_02088e60.c 1.2/sp2p3
-src/auto/func_02017528.c 1.2/sp2p3
-src/donor/func_02000ef0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02000fc8.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02001300.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02001510.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02001660.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020016a0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02001750.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020026e8.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200391c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02003b48.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02003d18.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02003de0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02003e30.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02003e60.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02003fa8.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02004524.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02007ba0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02007ec0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02008088.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200820c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/__flush_all.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/__flush_buffer.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/fflush.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/memcmp.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_02008854.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020088fc.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02008e28.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02008f00.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02008f40.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02008f7c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020092e0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200a334.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/_dfix.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/_dflt.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/_dmul.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MSL_Sqrt.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/_f2d.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200a3b8.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200a3ec.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200a42c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200a474.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200a4bc.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200ab28.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200b478.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200b48c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/_s32_div_f.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/sys_WriteChar.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/sys_ReadChar.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200b4a0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200b4b0.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200c2d0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200c304.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200c34c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200c3b8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200c404.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200c504.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200c928.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_EnterTimerCallback.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_EnterDmaCallback.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_GetLockID.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200c990.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200ca3c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200cc3c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200cd70.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_SetThreadPriority.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_WakeupThread.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_ExitThread.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200ce50.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200d0b4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200d0fc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_RemoveThreadFromList.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_InsertThreadToList.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200d194.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200d21c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/OSi_InsertLinkToQueue.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200d3c8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200d4bc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200d578.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200d720.c 2.0/sp1p5
+src/donor/DC_WaitWriteBufferEmpty.c 2.0/sp1p5
 src/donor/func_0200d798.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200dc04.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200dca4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200dd60.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200dd9c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_FreeToHeap.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200de10.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200df3c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e05c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200e06c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/DLInsert.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_EnableProtectionUnit.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/OS_DisableProtectionUnit.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200e07c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200e0a0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e2cc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e37c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e5c8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e790.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e7e8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e884.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200e96c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_0200ea4c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200ead0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200eb58.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/OSi_ExceptionHandler.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_SetTimer.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_GetOwnerInfo.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_InitVramExclusive.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_0200eb98.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200ebd8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200ed08.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200ef98.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200f10c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200f220.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
@@ -280,11 +81,9 @@ src/donor/func_0200f7c0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200f8ec.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200fb34.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0200fca4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200fdc0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0200fea4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02010204.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020102e8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020103d4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/PMi_SetLCDPower.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/PM_ForceToPowerOffAsync.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/PM_SetBackLightAsync.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02010544.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02010600.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02010678.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
@@ -296,130 +95,328 @@ src/donor/func_02010ab4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02010c5c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02010d00.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020115ec.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02011714.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CARDi_ReadRomSyncCore.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02011824.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02011a94.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02011b74.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02011bcc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02011c6c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02011e58.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02011eb4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02011f68.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02012128.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02012194.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020123e4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02012920.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CARDi_ReadFromCache.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CARDi_TaskThread.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CARDi_OnFifoRecv.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CARDi_CheckPulledOutCore.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CTRDG_IsExisting.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/CTRDGi_TaskThread.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02012ab0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02012c2c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02012cc0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013328.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013468.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013508.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013540.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020135ac.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013658.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020136bc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020137d4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013894.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_ReleaseCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_OpenFileFastCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_ReadDirCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_SeekDirCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_WriteFileCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_ReadFileCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_ReadTable.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FS_NotifyArchiveAsyncEnd.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FS_RegisterArchiveName.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FS_FindArchive.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02013bc4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013e10.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02013e74.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02013ec8.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020140a8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020140f8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020141b8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02014240.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FS_SeekFile.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/FS_OpenFile.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FS_OpenFileFast.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_ReadFileCore.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_FindPath.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02014834.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020148a4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0201492c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02014a6c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02014b08.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02014c90.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02014d60.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02014e4c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FX_Atan2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02015028.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02015174.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020151e8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_0201527c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020152ac.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020155c4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02015708.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02015784.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02015850.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02015944.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02015b48.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02015cb4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02015f6c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016044.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020161b8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02016228.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020162cc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016344.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020163d8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016404.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016430.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0201651c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016570.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0201661c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020166cc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016700.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016788.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02016920.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/GXi_NopClearFifo128_.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/G3X_ResetMtxStack.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/G3X_InitMtxStack.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/G3X_ClearFifo.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/G3X_Reset.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/G3X_Init.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020174b4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020175e0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02017744.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/GX_LoadTex.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020177c4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02017930.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020179e4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02017a68.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02017e00.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02017f00.c 2.0/sp1p5
-src/donor/func_02017f18.c 2.0/sp1p5
-src/donor/func_02017f60.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02017fe4.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_02018078.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/func_02018300.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_02018424.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02018500.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0201856c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02018954.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02018bc0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02018d08.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02018d48.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02018eac.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02019150.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0201944c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_0201947c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020195a0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_02019660.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b24fc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b2738.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b2978.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b2d94.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3094.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b317c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3200.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3260.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/PXI_InitFifo.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/SND_StopTimer.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/SND_FlushCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/SND_AssignWaveArc.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020b335c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3544.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020b35a8.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020b360c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020b3680.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/NNS_SndArcGetStrmPlayerInfo.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/NNS_SndArcGetPlayerInfo.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/NNS_SndArcGetStrmInfo.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/NNS_SndArcSetup.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020b3a68.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3be0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3c88.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b3d9c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/StrmThread.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OpenFileStream.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020b4898.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b4ac0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b4b60.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b4c88.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b5758.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020b5784.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b57f0.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b5858.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
-src/donor/func_020b5948.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/AllocCommandBuffer.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/RemoveCommandByPlayer.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/AllocChannel.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020b5a24.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b5ac4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b5af4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b5b0c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
-src/donor/func_020b5b80.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FreeTail.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FreeHead.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/msl/mbstring_3.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/mem_funcs.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/printf.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/printf_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/printf_4.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/CharCursor_Control_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/strcpy_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/strncpy_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/strcat_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/strcmp_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/strchr_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/strtol_2.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/s_frexp.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/ansi_fp.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/ansi_fp_3.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/math_api.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/dfltu.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/msl/console_io.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/nitro/os/os_interrupt.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_interrupt_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_interrupt_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_thread.c 1.2/sp2p3
+src/nitro/os/os_thread_2.c 1.2/sp2p3
+src/nitro/os/os_thread_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_thread_4.c 1.2/sp2p3
+src/nitro/os/os_thread_7.c 1.2/sp2p3
+src/nitro/os/os_thread_8.c 1.2/sp2p3
+src/nitro/os/os_thread_9.c 1.2/sp2p3
+src/nitro/os/os_thread_10.c 1.2/sp2p3
+src/nitro/os/os_mutex_2.c 1.2/sp2p3
+src/nitro/os/os_mutex_3.c 1.2/sp2p3
+src/nitro/os/os_mutex_4.c 1.2/sp2p3
+src/nitro/os/os_init_2.c 1.2/sp2p3
+src/nitro/os/os_arena_3.c 1.2/sp2p3
+src/nitro/os/os_arena_4.c 1.2/sp2p3
+src/nitro/os/os_tick.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_tick_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_tick_3.c 1.2/sp2p3
+src/nitro/os/os_alarm_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_alarm_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_valarm.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/os/os_reset.c 1.2/sp2p3
+src/nitro/os/os_reset_2.c 1.2/sp2p3
+src/nitro/os/os_vramExclusive.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/spi/tp_2.c 1.2/sp2p3
+src/nitro/spi/tp_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/spi/tp_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/spi/tp_5.c 1.2/sp2p3
+src/nitro/spi/tp_6.c 1.2/sp2p3
+src/nitro/spi/mic_3.c 1.2/sp2p3
+src/nitro/spi/mic_4.c 1.2/sp2p3
+src/nitro/spi/mic_5.c 1.2/sp2p3
+src/nitro/spi/pm_4.c 1.2/sp2p3
+src/nitro/spi/pm_5.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/spi/pm_6.c 1.2/sp2p3
+src/nitro/spi/pm_7.c 1.2/sp2p3
+src/nitro/spi/pm_9.c 1.2/sp2p3
+src/nitro/spi/pm_10.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/spi/pm_11.c 1.2/sp2p3
+src/nitro/spi/pm_12.c 1.2/sp2p3
+src/nitro/spi/pm_13.c 1.2/sp2p3
+src/nitro/spi/pm_14.c 1.2/sp2p3
+src/nitro/spi/pm_15.c 1.2/sp2p3
+src/nitro/spi/pm_16.c 1.2/sp2p3
+src/nitro/spi/pm_17.c 1.2/sp2p3
+src/nitro/card/card_common_2.c 1.2/sp2p3
+src/nitro/card/card_common_3.c 1.2/sp2p3
+src/nitro/card/card_common_6.c 1.2/sp2p3
+src/nitro/card/card_rom_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/card/card_request.c 1.2/sp2p3
+src/nitro/card/card_pullOut.c 1.2/sp2p3
+src/nitro/card/card_pullOut_3.c 1.2/sp2p3
+src/nitro/card/card_pullOut_4.c 1.2/sp2p3
+src/nitro/cp/cp_context.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/cp/cp_context_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/ctrdg/ctrdg.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_2.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_5.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_proc_2.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_proc_3.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_proc_4.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_proc_5.c 1.2/sp2p3
+src/nitro/ctrdg/ctrdg_task_2.c 1.2/sp2p3
+src/nitro/fs/fs_command_default_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/fs/fs_archive_2.c 1.2/sp2p3
+src/nitro/fs/fs_archive_3.c 1.2/sp2p3
+src/nitro/fs/fs_archive_4.c 1.2/sp2p3
+src/nitro/fs/fs_archive_5.c 1.2/sp2p3
+src/nitro/fs/fs_archive_6.c 1.2/sp2p3
+src/nitro/fs/fs_archive_7.c 1.2/sp2p3
+src/nitro/fs/fs_archive_8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/fs/fs_file_2.c 1.2/sp2p3
+src/nitro/fs/fs_file_3.c 1.2/sp2p3
+src/nitro/fs/fs_file_4.c 1.2/sp2p3
+src/nitro/fs/fs_file_5.c 1.2/sp2p3
+src/nitro/fs/fs_file_6.c 1.2/sp2p3
+src/nitro/fs/fs_rom.c 1.2/sp2p3
+src/nitro/fs/fs_rom_2.c 1.2/sp2p3
+src/nitro/fx/fx_cp.c 1.2/sp2p3
+src/nitro/fx/fx_cp_2.c 1.2/sp2p3
+src/nitro/fx/fx_cp_3.c 1.2/sp2p3
+src/nitro/fx/fx_cp_4.c 1.2/sp2p3
+src/nitro/fx/fx_cp_5.c 1.2/sp2p3
+src/nitro/fx/fx_cp_6.c 1.2/sp2p3
+src/nitro/fx/fx_cp_7.c 1.2/sp2p3
+src/nitro/fx/fx_cp_8.c 1.2/sp2p3
+src/nitro/fx/fx_vec.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/fx/fx_vec_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx.c 1.2/sp2p3
+src/nitro/gx/gx_2.c 1.2/sp2p3
+src/nitro/gx/gxstate.c 1.2/sp2p3
+src/nitro/gx/gx_vramcnt.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_vramcnt_3.c 1.2/sp2p3
+src/nitro/gx/gx_vramcnt_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_vramcnt_5.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_vramcnt_7.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_vramcnt_8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_vramcnt_9.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_bgcnt.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/g3c.c 1.2/sp2p3
+src/nitro/gx/g3c_2.c 1.2/sp2p3
+src/nitro/gx/g3c_3.c 1.2/sp2p3
+src/nitro/gx/g3c_4.c 1.2/sp2p3
+src/nitro/gx/g3x.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/g3x_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/g3x_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/g3x_4.c 1.2/sp2p3
+src/nitro/gx/g3x_5.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/g3_util.c 1.2/sp2p3
+src/nitro/gx/g3_util_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/gx/gx_load2d_2.c 1.2/sp2p3
+src/nitro/gx/gx_load2d_3.c 1.2/sp2p3
+src/nitro/gx/gx_load2d_4.c 1.2/sp2p3
+src/nitro/gx/gx_load3d.c 1.2/sp2p3
+src/nitro/gx/gx_load3d_2.c 1.2/sp2p3
+src/nitro/gx/gx_load3d_3.c 1.2/sp2p3
+src/nitro/gx/gx_load3d_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/mi/mi_dma.c 1.2/sp2p3
+src/nitro/mi/mi_dma_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/mi/mi_dma_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/mi/mi_dma_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/mi/mi_dma_5.c 1.2/sp2p3
+src/nitro/mi/mi_dma_6.c 1.2/sp2p3
+src/nitro/mi/mi_dma_gxcommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/mi/mi_memory.c 2.0/sp1p5
+src/nitro/mi/mi_memory_3.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/nitro/mi/mi_memory_4.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/nitro/mi/mi_init_2.c 1.2/sp2p3
+src/nitro/pxi/pxi_fifo.c 1.2/sp2p3
+src/nitro/pxi/pxi_fifo_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_interface.c 1.2/sp2p3
+src/nitro/snd/snd_interface_2.c 1.2/sp2p3
+src/nitro/snd/snd_interface_3.c 1.2/sp2p3
+src/nitro/snd/snd_interface_4.c 1.2/sp2p3
+src/nitro/snd/snd_interface_5.c 1.2/sp2p3
+src/nitro/snd/snd_interface_6.c 1.2/sp2p3
+src/nitro/snd/snd_interface_7.c 1.2/sp2p3
+src/nitro/snd/snd_interface_8.c 1.2/sp2p3
+src/nitro/snd/snd_interface_9.c 1.2/sp2p3
+src/nitro/snd/snd_interface_10.c 1.2/sp2p3
+src/nitro/snd/snd_interface_11.c 1.2/sp2p3
+src/nitro/snd/snd_interface_12.c 1.2/sp2p3
+src/nitro/snd/snd_interface_13.c 1.2/sp2p3
+src/nitro/snd/snd_interface_14.c 1.2/sp2p3
+src/nitro/snd/snd_interface_15.c 1.2/sp2p3
+src/nitro/snd/snd_interface_16.c 1.2/sp2p3
+src/nitro/snd/snd_interface_19.c 1.2/sp2p3
+src/nitro/snd/snd_interface_20.c 1.2/sp2p3
+src/nitro/snd/snd_interface_21.c 1.2/sp2p3
+src/nitro/snd/snd_main_3.c 1.2/sp2p3
+src/nitro/snd/snd_command.c 1.2/sp2p3
+src/nitro/snd/snd_command_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_command_3.c 1.2/sp2p3
+src/nitro/snd/snd_command_4.c 1.2/sp2p3
+src/nitro/snd/snd_command_5.c 1.2/sp2p3
+src/nitro/snd/snd_command_6.c 1.2/sp2p3
+src/nitro/snd/snd_command_7.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_command_8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_command_9.c 1.2/sp2p3
+src/nitro/snd/snd_command_10.c 1.2/sp2p3
+src/nitro/snd/snd_command_11.c 1.2/sp2p3
+src/nitro/snd/snd_command_12.c 1.2/sp2p3
+src/nitro/snd/snd_command_13.c 1.2/sp2p3
+src/nitro/snd/snd_command_14.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_alarm.c 1.2/sp2p3
+src/nitro/snd/snd_alarm_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_work.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_work_2.c 1.2/sp2p3
+src/nitro/snd/snd_work_3.c 1.2/sp2p3
+src/nitro/snd/snd_work_4.c 1.2/sp2p3
+src/nitro/snd/snd_util.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nitro/snd/snd_bank.c 1.2/sp2p3
+src/nnsys/snd/main_4.c 1.2/sp2p3
+src/nnsys/snd/main_5.c 1.2/sp2p3
+src/nnsys/snd/main_6.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/resource_mgr_3.c 1.2/sp2p3
+src/nnsys/snd/resource_mgr_5.c 1.2/sp2p3
+src/nnsys/snd/resource_mgr_6.c 1.2/sp2p3
+src/nnsys/snd/player.c 1.2/sp2p3
+src/nnsys/snd/player_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/player_3.c 1.2/sp2p3
+src/nnsys/snd/player_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/player_5.c 1.2/sp2p3
+src/nnsys/snd/stream.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream.c 1.2/sp2p3
+src/nnsys/snd/stream_2.c 1.2/sp2p3
+src/nnsys/snd/stream_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/stream_4.c 1.2/sp2p3
+src/nnsys/snd/stream_5.c 1.2/sp2p3
+src/nnsys/snd/stream_6.c 1.2/sp2p3
+src/nnsys/snd/stream_7.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/stream_8.c 1.2/sp2p3
+src/nnsys/snd/capture_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/capture_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/capture_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/sndarc_3.c 1.2/sp2p3
+src/nnsys/snd/heap.c 1.2/sp2p3
+src/nnsys/snd/heap_2.c 1.2/sp2p3
+src/nnsys/snd/heap_3.c 1.2/sp2p3
+src/nnsys/snd/heap_5.c 1.2/sp2p3
+src/nnsys/snd/heap_6.c 1.2/sp2p3
+src/nnsys/snd/heap_7.c 1.2/sp2p3
+src/nnsys/snd/sndarc_player.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/snd/sndarc_stream_2.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_3.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_4.c 1.2/sp2p3
+src/nnsys/snd/sndarc_loader.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_6.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_7.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_8.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_9.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_10.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_11.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_12.c 1.2/sp2p3
+src/nnsys/snd/sndarc_stream_14.c 1.2/sp2p3
+src/nnsys/snd/fader_2.c 1.2/sp2p3
+src/nnsys/snd/fader_3.c 1.2/sp2p3
+src/nnsys/snd/fader_4.c 1.2/sp2p3
+src/nnsys/fnd/list.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/nnsys/fnd/list_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/fnd/list_4.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/fnd/list_5.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/nnsys/fnd/heapcommon.c 1.2/sp2p3
+src/nnsys/fnd/heapcommon_2.c 1.2/sp2p3
+src/nnsys/fnd/heapcommon_3.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/fnd/frameheap.c 1.2/sp2p3
+src/nnsys/fnd/frameheap_3.c 1.2/sp2p3
+src/nnsys/fnd/expheap.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/fnd/expheap_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/nnsys/fnd/frameheap_4.c 1.2/sp2p3

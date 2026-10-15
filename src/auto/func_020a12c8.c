@@ -1,8 +1,8 @@
 #include "m2c.h"
 
-M2C_UNK func_02084450(M2C_UNK, void *, s32 *);      /* extern */
-s32 func_020931d8(s32);                             /* extern */
-M2C_UNK func_0209c740(s32, M2C_UNK, M2C_UNK *);     /* extern */
+M2C_UNK func_02084450(M2C_UNK, void *, s32 *);
+s32 func_020931d8(s32);
+M2C_UNK func_0209c740(s32, M2C_UNK, M2C_UNK *);
 extern s32 data_020bc550;
 
 /* Local scratch record: the first call fills field 0, the virtual call

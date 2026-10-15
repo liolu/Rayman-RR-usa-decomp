@@ -87,22 +87,22 @@ extern void OS_SleepThread(OSThreadQueue *queue);
 extern void OS_WakeupThread(OSThreadQueue *queue);
 extern void OS_Terminate(void);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
-extern void func_02018244(u32 dmaNo, const void *src, void *dest, u32 size);
-extern void func_02011bcc(u32 cmd1, u32 cmd2);
+extern void MIi_CardDmaCopy32(u32 dmaNo, const void *src, void *dest, u32 size);
+extern void CARDi_SetRomOp(u32 cmd1, u32 cmd2);
 static inline u32 CARDi_GetRomFlag(u32 flag) {
     const u32 rom_ctrl = *(vu32 *) (data_020423e8 + 0x60);
     return (u32) ((rom_ctrl & ~0x07000000) | flag | 0x00000000 | 0x80000000 | 0x20000000);
 }
 static inline void CARDi_SetRomOpReadPage1(u32 src) {
-    func_02011bcc((u32) (0xB7000000 | (src >> 8)), (u32) (src << 24));
+    CARDi_SetRomOp((u32) (0xB7000000 | (src >> 8)), (u32) (src << 24));
 }
-extern CARDiCommon data_020c1100;
-extern CARDRomStat data_020c1740 __attribute__((aligned(32)));
+extern CARDiCommon cardi_common;
+extern CARDRomStat rom_stat __attribute__((aligned(32)));
 void func_02011b74(void) {
-    CARDiCommon *const c = &data_020c1100;
-    CARDRomStat *const p = &data_020c1740;
+    CARDiCommon *const c = &cardi_common;
+    CARDRomStat *const p = &rom_stat;
 
-    func_02018244(c->dma, (const void *) 0x04100010, (void *) c->dst, 512);
+    MIi_CardDmaCopy32(c->dma, (const void *) 0x04100010, (void *) c->dst, 512);
 
     CARDi_SetRomOpReadPage1(c->src);
     *(vu32 *) 0x040001a4 = p->ctrl;

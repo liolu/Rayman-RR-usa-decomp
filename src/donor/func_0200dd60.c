@@ -38,7 +38,7 @@ typedef struct {
     void *arenaEnd;
     HeapDesc *heapArray;
 } OSHeapInfo;
-extern void *data_020c0ebc[OS_ARENA_MAX];
+extern void *OSiHeapInfo[OS_ARENA_MAX];
 OSHeapHandle func_0200dd60(OSArenaId id, OSHeapHandle heap) {
     OSHeapInfo *heapInfo;
     OSHeapHandle prev;
@@ -47,7 +47,7 @@ OSHeapHandle func_0200dd60(OSArenaId id, OSHeapHandle heap) {
     ((void) 0);
     ((void) 0);
 
-    heapInfo = data_020c0ebc[id];
+    heapInfo = OSiHeapInfo[id];
 
     ((void) 0);
     ((void) 0);

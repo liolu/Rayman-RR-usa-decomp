@@ -1,8 +1,8 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003d18();
-extern void func_02003fa8();
+extern void strcpy();
+extern void strchr();
 extern void func_020582c4();
 extern char data_020dc19c[];
 extern char data_020dc1a0[];
@@ -11,10 +11,10 @@ asm void func_02058384(void) {
     stmfd sp!, {r3, r4, r5, lr}
     mov r1, r0
     ldr r0, =data_020dc1a0
-    bl func_02003d18
+    bl strcpy
     ldr r0, =data_020dc1a0
     mov r1, #0x24
-    bl func_02003fa8
+    bl strchr
     movs r4, r0
     ldreq r0, =data_020dc19c
     mov r1, #0x0
@@ -26,7 +26,7 @@ asm void func_02058384(void) {
     mov r5, r0
     add r0, r4, #0x1
     mov r1, #0x24
-    bl func_02003fa8
+    bl strchr
     cmp r0, #0x0
     moveq r0, #0x0
     beq L_020583e4

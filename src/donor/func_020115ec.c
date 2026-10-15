@@ -381,23 +381,23 @@ struct CARDRomStat {
     u32 dummy[5];
     u8 cache_buf[0x200];
 };
-extern void func_02010b20(void);
+extern void CARD_CheckEnabled(void);
 extern int OS_DisableIrq(void);
 extern void OS_RestoreIrq(int state);
-extern void func_0200ccbc(void *queue);
-extern void func_020179e4(u32 channel);
-extern BOOL func_02011924(struct CARDRomStat *state);
-extern void func_0201155c(void);
-extern void func_02010d9c(void (*task)(struct CARDiCommon *common));
-extern void func_02011714(struct CARDiCommon *common);
-extern struct CARDRomStat data_020c1740 __attribute__((aligned(32)));
-extern struct CARDiCommon data_020c1100;
-extern u32 data_020c1720;
-extern struct OSiThreadInfoPrefix data_020c0c5c;
+extern void OS_SleepThread(void *queue);
+extern void MI_StopDma(u32 channel);
+extern BOOL CARDi_TryReadCardDma(struct CARDRomStat *state);
+extern void CARD_WaitRomAsync(void);
+extern void CARDi_SetTask(void (*task)(struct CARDiCommon *common));
+extern void CARDi_ReadRomSyncCore(struct CARDiCommon *common);
+extern struct CARDRomStat rom_stat __attribute__((aligned(32)));
+extern struct CARDiCommon cardi_common;
+extern u32 cardi_rom_base;
+extern struct OSiThreadInfoPrefix OSi_ThreadInfo;
 static inline void Card_WaitTask(struct CARDiCommon *common, CARDCallback callback, void *callbackArgument) {
     int interruptState = OS_DisableIrq();
     while ((common->flag & CARD_STAT_BUSY) != 0) {
-        func_0200ccbc(common->busy_q);
+        OS_SleepThread(common->busy_q);
     }
     common->flag |= CARD_STAT_BUSY;
     common->callback     = callback;
@@ -406,28 +406,28 @@ static inline void Card_WaitTask(struct CARDiCommon *common, CARDCallback callba
 }
 void func_020115ec(u32 dma, const void *source, void *destination, u32 length, CARDCallback callback, void *callbackArgument,
                    BOOL asynchronous) {
-    struct CARDRomStat *const state  = &data_020c1740;
-    struct CARDiCommon *const common = &data_020c1100;
+    struct CARDRomStat *const state  = &rom_stat;
+    struct CARDiCommon *const common = &cardi_common;
 
-    func_02010b20();
+    CARD_CheckEnabled();
     Card_WaitTask(common, callback, callbackArgument);
 
     common->dma = dma;
-    common->src = (u32) source + data_020c1720;
+    common->src = (u32) source + cardi_rom_base;
     common->dst = (u32) destination;
     common->len = length;
     if (dma <= 3) {
-        func_020179e4(dma);
+        MI_StopDma(dma);
     }
 
-    if (func_02011924(state)) {
+    if (CARDi_TryReadCardDma(state)) {
         if (!asynchronous) {
-            func_0201155c();
+            CARD_WaitRomAsync();
         }
     } else if (asynchronous) {
-        func_02010d9c(func_02011714);
+        CARDi_SetTask(CARDi_ReadRomSyncCore);
     } else {
-        common->cur_th = data_020c0c5c.current_thread;
-        func_02011714(common);
+        common->cur_th = OSi_ThreadInfo.current_thread;
+        CARDi_ReadRomSyncCore(common);
     }
 }

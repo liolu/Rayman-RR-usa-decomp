@@ -1,9 +1,9 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200d6fc();
+extern void DC_FlushRange();
 extern void func_020162f0();
-extern void func_02017a68();
+extern void MI_WaitDma();
 extern void func_0204d0b8();
 extern void func_0204d4a0();
 extern void func_0204d558();
@@ -116,9 +116,9 @@ L_02050b24:
     str r3, [sp, #0x24]
     str r3, [sp, #0x28]
     str r2, [sp, #0x2c]
-    bl func_0200d6fc
+    bl DC_FlushRange
     mov r0, #0x0
-    bl func_02017a68
+    bl MI_WaitDma
     add r0, sp, #0xc
     bl func_020162f0
     ldr r1, =0x400046c

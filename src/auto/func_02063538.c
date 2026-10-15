@@ -1,25 +1,25 @@
 #include "m2c.h"
 
-M2C_UNK func_0201a490(s32);                         /* extern */
-M2C_UNK func_0201a4ec(s32);                         /* extern */
-M2C_UNK func_0202affc(s32);                         /* extern */
-M2C_UNK func_0202b04c(s32);                         /* extern */
-M2C_UNK func_0202b0d4();                            /* extern */
-M2C_UNK func_0202b0e8();                            /* extern */
-M2C_UNK func_0202f9b0(M2C_UNK, u8, s32, s32, s32, s32, s32); /* extern */
-void *func_020414ac(M2C_UNK, u16, M2C_UNK);         /* extern */
-M2C_UNK func_02041da8(void *);                      /* extern */
-M2C_UNK func_02044a70(s32);                         /* extern */
-M2C_UNK func_020546c4(M2C_UNK, s32);                /* extern */
-M2C_UNK func_02054794(M2C_UNK);                     /* extern */
-M2C_UNK func_02057010();                            /* extern */
-M2C_UNK func_02057024();                            /* extern */
-s32 *func_0205703c(M2C_UNK);                        /* extern */
-M2C_UNK func_0206b54c(s32);                         /* extern */
-M2C_UNK func_02082800(s32);                         /* extern */
-M2C_UNK func_02082850(s32);                         /* extern */
-M2C_UNK func_020828f0();                            /* extern */
-M2C_UNK func_02082904();                            /* extern */
+M2C_UNK func_0201a490(s32);
+M2C_UNK func_0201a4ec(s32);
+M2C_UNK func_0202affc(s32);
+M2C_UNK func_0202b04c(s32);
+M2C_UNK func_0202b0d4();
+M2C_UNK func_0202b0e8();
+M2C_UNK func_0202f9b0(M2C_UNK, u8, s32, s32, s32, s32, s32);
+void *func_020414ac(M2C_UNK, u16, M2C_UNK);
+M2C_UNK func_02041da8(void *);
+M2C_UNK func_02044a70(s32);
+M2C_UNK func_020546c4(M2C_UNK, s32);
+M2C_UNK func_02054794(M2C_UNK);
+M2C_UNK func_02057010();
+M2C_UNK func_02057024();
+s32 *func_0205703c(M2C_UNK);
+M2C_UNK func_0206b54c(s32);
+M2C_UNK func_02082800(s32);
+M2C_UNK func_02082850(s32);
+M2C_UNK func_020828f0();
+M2C_UNK func_02082904();
 extern u8 data_020bd280;
 extern M2C_UNK data_020cf6cc;
 extern s32 *data_020dd710;

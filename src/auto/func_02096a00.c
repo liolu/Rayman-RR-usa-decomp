@@ -6,12 +6,12 @@ typedef struct {
     s32 c;
 } T12;
 
-s32 func_02066cb0(s32);                             /* extern */
-void func_02066cb8(T12 *, s32, s16);                /* extern */
-s32 func_02066d28(s32, s32);                        /* extern */
-void *func_02084450(M2C_UNK, void *, void *);       /* extern */
-s32 func_02093198(s32);                             /* extern */
-M2C_UNK func_0209c740(s32, M2C_UNK, void **);       /* extern */
+s32 func_02066cb0(s32);
+void func_02066cb8(T12 *, s32, s16);
+s32 func_02066d28(s32, s32);
+void *func_02084450(M2C_UNK, void *, void *);
+s32 func_02093198(s32);
+M2C_UNK func_0209c740(s32, M2C_UNK, void **);
 
 void *func_02096a00(M2C_UNK arg0, void *arg1, void *arg2) {
     T12 sp4;
@@ -27,7 +27,7 @@ void *func_02096a00(M2C_UNK arg0, void *arg1, void *arg2) {
     var_r5  = 0;
     func_0209c740(func_02093198(temp_r4), arg0, &sp0);
     temp_r6 = M2C_FIELD(M2C_FIELD(sp0, void **, 4), s32 *, 0x14);
-    switch (temp_r4) {                              /* irregular */
+    switch (temp_r4) {
         case 0x87:
             if (temp_r6 != 0) {
                 var_r5 = func_02066cb0(temp_r6);

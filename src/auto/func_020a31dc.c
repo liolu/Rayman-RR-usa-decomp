@@ -1,9 +1,9 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003984();
-extern void func_02009f7c();
-extern void func_0200a334();
+extern void sprintf();
+extern void _fdiv();
+extern void _f2d();
 extern void func_0200a42c();
 extern void func_02084450();
 extern void func_02088a04();
@@ -97,14 +97,14 @@ L_020a32bc:
     bge L_020a3334
     bl func_0200a42c
     ldr r1, =0x41200000
-    bl func_02009f7c
-    bl func_0200a334
+    bl _fdiv
+    bl _f2d
     sub r2, r7, #0x1
     str r1, [sp, #0x0]
     mov r3, r0
     add r0, r4, r5
     ldr r1, =data_020c04a4
-    bl func_02003984
+    bl sprintf
     b L_020a3380
 L_020a3334:
     cmp r0, #0x63
@@ -113,20 +113,20 @@ L_020a3334:
     bge L_020a3370
     bl func_0200a42c
     ldr r1, =0x41200000
-    bl func_02009f7c
-    bl func_0200a334
+    bl _fdiv
+    bl _f2d
     sub r2, r7, #0x1
     str r1, [sp, #0x0]
     mov r3, r0
     add r0, r4, r5
     ldr r1, =data_020c04b0
-    bl func_02003984
+    bl sprintf
     b L_020a3380
 L_020a3370:
     ldr r1, =data_020c04bc
     add r0, r4, r5
     sub r2, r7, #0x1
-    bl func_02003984
+    bl sprintf
 L_020a3380:
     ldr r0, =data_020de0d3
     mov r2, #0x0

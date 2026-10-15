@@ -63,9 +63,9 @@ typedef struct OSThread {
     void *userParam;
     s32 error;
 } OSThread;
-extern OSThreadInfo data_020c0c5c;
+extern OSThreadInfo OSi_ThreadInfo;
 static inline OSThreadInfo *OS_GetThreadInfo(void) {
-    return &data_020c0c5c;
+    return &OSi_ThreadInfo;
 }
 static inline OSThread *OS_GetCurrentThread(void) {
     return OS_GetThreadInfo()->current;
@@ -77,7 +77,7 @@ typedef struct OSMutex {
     OSMutexLinkedList list;
 } OSMutex;
 extern BOOL func_0200d4bc(OSMutex *mutex);
-extern void func_0200d498(OSThread *thread, OSMutex *mutex);
+extern void OSi_EnqueueTail(OSThread *thread, OSMutex *mutex);
 BOOL func_0200d4bc(OSMutex *mutex) {
     u32 prevIRQState = OS_DisableIrq();
 
@@ -88,7 +88,7 @@ BOOL func_0200d4bc(OSMutex *mutex) {
     if (mutex->thread == 0) {
         mutex->thread = currentThread;
         mutex->count++;
-        func_0200d498(currentThread, mutex);
+        OSi_EnqueueTail(currentThread, mutex);
         couldLock = 1;
     } else if (mutex->thread == currentThread) {
         mutex->count++;
@@ -100,4 +100,4 @@ BOOL func_0200d4bc(OSMutex *mutex) {
     OS_RestoreIrq(prevIRQState);
     return couldLock;
 }
-void func_0200d498(OSThread *thread, OSMutex *mutex);
+void OSi_EnqueueTail(OSThread *thread, OSMutex *mutex);

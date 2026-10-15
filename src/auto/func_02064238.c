@@ -1,13 +1,13 @@
 #include "m2c.h"
 
-s32 func_0200a3b8();                                /* extern */
-M2C_UNK func_0200a4bc(s32, s32);                    /* extern */
-void *func_020414ac(M2C_UNK, M2C_UNK, M2C_UNK);     /* extern */
-M2C_UNK func_02041da8(void *);                      /* extern */
-s32 func_020672e0();                                /* extern */
-M2C_UNK func_0206730c(s32, M2C_UNK, u8, M2C_UNK);   /* extern */
-M2C_UNK func_020678f0(s32);                         /* extern */
-void *func_02067900(s32);                           /* extern */
+s32 func_0200a3b8();
+M2C_UNK func_0200a4bc(s32, s32);
+void *func_020414ac(M2C_UNK, M2C_UNK, M2C_UNK);
+M2C_UNK func_02041da8(void *);
+s32 func_020672e0();
+M2C_UNK func_0206730c(s32, M2C_UNK, u8, M2C_UNK);
+M2C_UNK func_020678f0(s32);
+void *func_02067900(s32);
 
 s32 func_02064238(M2C_UNK arg0) {
     s32 temp_r5;
@@ -18,7 +18,7 @@ s32 func_02064238(M2C_UNK arg0) {
     temp_r5   = func_020672e0();
     temp_r0   = func_020414ac(0x9B, arg0, 0x10);
     temp_r0_2 = M2C_FIELD(temp_r0, u8 *, 0xE);
-    switch (temp_r0_2) {                            /* irregular */
+    switch (temp_r0_2) {
         case 0:
             func_0206730c(temp_r5, 0, M2C_FIELD(temp_r0, u8 *, 0xF), 0);
             break;

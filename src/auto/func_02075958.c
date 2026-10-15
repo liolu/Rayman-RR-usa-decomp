@@ -3,16 +3,16 @@
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_02008d24();
 extern void func_02009848();
-extern void func_02009e50();
-extern void func_02009f7c();
-extern void func_0200a334();
+extern void _fgr();
+extern void _fdiv();
+extern void _f2d();
 extern void func_0200a3b8();
 extern void func_0200a3ec();
 extern void func_0200a42c();
 extern void func_0200a474();
 extern void func_0200a4bc();
-extern void func_0200a6a8();
-extern void func_0200af30();
+extern void _fsub();
+extern void _ddiv();
 extern void func_020146c8();
 extern char data_020bd594[];
 extern char data_020be594[];
@@ -27,22 +27,22 @@ asm void func_02075958(void) {
     stmfd sp!, {r3, r4, r5, lr}
     ldr r0, =data_020be594
     ldr r0, [r0, #0xac]
-    bl func_0200a334
+    bl _f2d
     mov r3, r1
     mov r2, r0
     ldr r1, =0x3ff00000
     mov r0, #0x0
-    bl func_0200af30
+    bl _ddiv
     bl func_02008d24
     ldr r1, =data_020be594
     mov r4, r0
     ldr r0, [r1, #0xb0]
-    bl func_0200a334
+    bl _f2d
     mov r3, r1
     mov r2, r0
     ldr r1, =0x3ff00000
     mov r0, #0x0
-    bl func_0200af30
+    bl _ddiv
     bl func_02008d24
     mov r5, r0
     ldr r0, =data_020de734
@@ -51,7 +51,7 @@ asm void func_02075958(void) {
     bl func_020146c8
     mov r0, r4
     mov r1, #0x0
-    bl func_02009e50
+    bl _fgr
     ldr r0, =0x45800000
     mov r1, r4
     bls L_020759e8
@@ -63,7 +63,7 @@ asm void func_02075958(void) {
 L_020759e8:
     bl func_0200a4bc
     mov r1, #0x3f000000
-    bl func_0200a6a8
+    bl _fsub
 L_020759f4:
     bl func_0200a3b8
     ldr r2, =data_020de744
@@ -71,7 +71,7 @@ L_020759f4:
     stmia r2, {r0, r1}
     mov r0, r5
     str r1, [r2, #0x8]
-    bl func_02009e50
+    bl _fgr
     ldr r0, =0x45800000
     mov r1, r5
     bls L_02075a30
@@ -83,7 +83,7 @@ L_020759f4:
 L_02075a30:
     bl func_0200a4bc
     mov r1, #0x3f000000
-    bl func_0200a6a8
+    bl _fsub
 L_02075a3c:
     bl func_0200a3b8
     ldr r3, =data_020de744
@@ -132,9 +132,9 @@ L_02075a3c:
     bl func_0200a4bc
     mov r1, r0
     mov r0, r5
-    bl func_0200a6a8
+    bl _fsub
     mov r1, #0x40000000
-    bl func_02009f7c
+    bl _fdiv
     bl func_0200a3ec
     ldr r1, =data_020bd594
     ldr r2, =data_020de754
@@ -151,9 +151,9 @@ L_02075a3c:
     bl func_0200a4bc
     mov r1, r0
     mov r0, r4
-    bl func_0200a6a8
+    bl _fsub
     mov r1, #0x40000000
-    bl func_02009f7c
+    bl _fdiv
     bl func_0200a3ec
     ldr r2, =data_020de755
     swpb r1, r0, [r2]

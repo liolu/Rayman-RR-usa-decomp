@@ -1,11 +1,11 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02003e60();
-extern void func_0200d6fc();
+extern void strcmp();
+extern void DC_FlushRange();
 extern void func_0200e978();
-extern void func_02017204();
-extern void func_02017d70();
+extern void GXS_LoadOAM();
+extern void MI_DmaFill32();
 extern void func_0202c4ec();
 extern void func_020738c4();
 extern void func_020738e8();
@@ -121,15 +121,15 @@ L_02077c94:
     mov r0, #0x3
     mov r3, #0x400
     str ip, [r4, #0x8]
-    bl func_02017d70
+    bl MI_DmaFill32
     bl func_02075958
     ldr r0, =data_020df7a0
     mov r1, #0x400
-    bl func_0200d6fc
+    bl DC_FlushRange
     ldr r0, =data_020df7a0
     mov r1, #0x0
     mov r2, #0x400
-    bl func_02017204
+    bl GXS_LoadOAM
     ldmfd sp!, {r4, pc}
 L_02077cd8:
     ldr r1, =data_020de6a0
@@ -238,7 +238,7 @@ L_02077e48:
     add r3, r3, #0x1c
     mov r2, #0x1
     swpb r2, r2, [r3]
-    bl func_02003e60
+    bl strcmp
     cmp r0, #0x0
     bne L_02077e7c
     ldr r0, =data_020de6a0
@@ -249,7 +249,7 @@ L_02077e48:
 L_02077e7c:
     ldr r1, =data_020be834
     mov r0, r4
-    bl func_02003e60
+    bl strcmp
     cmp r0, #0x0
     bne L_02077ea0
     ldr r0, =data_020de6a0
@@ -269,15 +269,15 @@ L_02077ea0:
     ldr r2, =0xc0c0c0c0
     mov r0, #0x3
     mov r3, #0x400
-    bl func_02017d70
+    bl MI_DmaFill32
     bl func_02075958
     ldr r0, =data_020df7a0
     mov r1, #0x400
-    bl func_0200d6fc
+    bl DC_FlushRange
     ldr r0, =data_020df7a0
     mov r1, #0x0
     mov r2, #0x400
-    bl func_02017204
+    bl GXS_LoadOAM
     ldmfd sp!, {r4, pc}
 }
 // clang-format on

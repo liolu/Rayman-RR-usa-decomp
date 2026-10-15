@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_02014060();                            /* extern */
+M2C_UNK FS_CloseFile();
 
 void func_02077f20(void) {
-    func_02014060();
+    FS_CloseFile();
 }

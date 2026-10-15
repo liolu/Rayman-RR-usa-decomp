@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-s32 func_0206b3f4();                                /* extern */
-M2C_UNK func_0206dc04(void *);                      /* extern */
+s32 func_0206b3f4();
+M2C_UNK func_0206dc04(void *);
 
 void func_0206dbd0(void *arg0) {
     void *var_r4;

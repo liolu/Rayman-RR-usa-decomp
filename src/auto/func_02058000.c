@@ -2,7 +2,7 @@
 
 /* Uses instructions the compiler never generates: written in assembly. */
 extern void func_02003cfc();
-extern void func_02003d18();
+extern void strcpy();
 extern void func_020414ac();
 extern void func_02041da8();
 extern void func_0205488c();
@@ -62,10 +62,10 @@ L_02058094:
     bl func_0205488c
     add r1, r8, #0x2
     str r0, [r7, #0xc]
-    bl func_02003d18
+    bl strcpy
     mov r0, r10
     add r1, r8, #0x2
-    bl func_02003d18
+    bl strcpy
     ldr r1, [r7, #0x0]
     cmp r1, #0x0
     ldrne r0, [r7, #0x4]

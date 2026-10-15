@@ -1,7 +1,7 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_0200ad34();
+extern void _u32_div_f();
 extern void func_0205e9e0();
 extern char data_020dc19c[];
 // clang-format off
@@ -25,7 +25,7 @@ asm void func_0206511c(void) {
     mov r1, r4
     sub r0, r6, r0
     mul r0, r2, r0
-    bl func_0200ad34
+    bl _u32_div_f
     sub r0, r6, r0
     str r0, [r5, #0xc0]
     add r1, r5, #0xda

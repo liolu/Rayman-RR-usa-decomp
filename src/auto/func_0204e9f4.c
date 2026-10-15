@@ -1,8 +1,8 @@
 #include "m2c.h"
 
 /* Uses instructions the compiler never generates: written in assembly. */
-extern void func_02014910();
-extern void func_02017a68();
+extern void FX_Div();
+extern void MI_WaitDma();
 extern void func_0204a284();
 extern char data_020bca48[];
 extern char data_020dba6c[];
@@ -50,7 +50,7 @@ asm void func_0204e9f4(void) {
     orr r0, r0, r1, lsl #0x14
     mov r1, #0x64000
     mov r7, r6, lsr #0x1
-    bl func_02014910
+    bl FX_Div
     sub r0, r0, r8, lsl #0xc
     mov r0, r0, asr #0xc
     ldr r1, [r5, #0x4]
@@ -62,7 +62,7 @@ asm void func_0204e9f4(void) {
     mov r0, r2, lsr #0xc
     orr r0, r0, r1, lsl #0x14
     mov r1, #0x64000
-    bl func_02014910
+    bl FX_Div
     rsb r0, r0, r7, lsl #0xc
     mov r0, r0, asr #0xc
     str r0, [sp, #0x4]
@@ -74,7 +74,7 @@ asm void func_0204e9f4(void) {
     adc r2, r0, #0x0
     mov r0, r3, lsr #0xc
     orr r0, r0, r2, lsl #0x14
-    bl func_02014910
+    bl FX_Div
     sub r0, r0, r8, lsl #0xc
     mov r5, r0, asr #0xc
     ldr r0, [r4, #0x4]
@@ -84,7 +84,7 @@ asm void func_0204e9f4(void) {
     adc r2, r2, #0x0
     mov r0, r0, lsr #0xc
     orr r0, r0, r2, lsl #0x14
-    bl func_02014910
+    bl FX_Div
     ldr r6, =data_020dba6c
     ldr r2, [r9, #0x4]
     add r4, r6, #0x3
@@ -113,7 +113,7 @@ asm void func_0204e9f4(void) {
     cmp r4, #0x1f
     mov r0, #0x0
     movgt r4, #0x1f
-    bl func_02017a68
+    bl MI_WaitDma
     ldr r3, =0x30080c0
     ldr r0, =0x4000454
     mov r1, #0x0

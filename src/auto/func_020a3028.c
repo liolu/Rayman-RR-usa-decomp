@@ -1,7 +1,7 @@
 #include "m2c.h"
 
-M2C_UNK func_020272f4(u8);                          /* extern */
-s32 func_02084450(M2C_UNK, M2C_UNK, void *);        /* extern */
+M2C_UNK func_020272f4(u8);
+s32 func_02084450(M2C_UNK, M2C_UNK, void *);
 
 typedef struct {
     s32 unk0;
