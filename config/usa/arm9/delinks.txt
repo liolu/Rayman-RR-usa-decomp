@@ -9844,3 +9844,19 @@ src/nnsys/fnd/expheap.c:
 src/nnsys/fnd/expheap_2.c:
     complete
     .text       start:0x020b5b80 end:0x020b5bec
+
+src/auto/func_02069260.c:
+    complete
+    .text       start:0x02069260 end:0x020692bc
+
+src/auto/func_020796a4.c:
+    complete
+    .text       start:0x020796a4 end:0x020797bc
+
+src/donor/CARDi_InitCommon.c:
+    complete
+    .text       start:0x02010b5c end:0x02010c5c
+
+src/donor/NNS_SndStrmSetup.c:
+    complete
+    .text       start:0x020b2e94 end:0x020b3064

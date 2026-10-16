@@ -4992,3 +4992,4 @@ data_020ea540 kind:bss addr:0x020ea540
 data_020ea54c kind:bss addr:0x020ea54c
 sRootListInitialized kind:bss addr:0x020eab0c
 sRootList kind:bss addr:0x020eab10
+data_020c1320 kind:bss addr:0x020c1320

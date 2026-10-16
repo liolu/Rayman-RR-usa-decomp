@@ -420,3 +420,5 @@ src/nnsys/fnd/frameheap_3.c 1.2/sp2p3
 src/nnsys/fnd/expheap.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/nnsys/fnd/expheap_2.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/nnsys/fnd/frameheap_4.c 1.2/sp2p3
+src/donor/CARDi_InitCommon.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/NNS_SndStrmSetup.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
