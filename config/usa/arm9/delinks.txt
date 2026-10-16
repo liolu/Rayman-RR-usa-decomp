@@ -9860,3 +9860,27 @@ src/donor/CARDi_InitCommon.c:
 src/donor/NNS_SndStrmSetup.c:
     complete
     .text       start:0x020b2e94 end:0x020b3064
+
+src/auto/OS_SetProtectionRegion1.c:
+    complete
+    .text       start:0x0200e090 end:0x0200e098
+
+src/auto/func_0200eb8c.c:
+    complete
+    .text       start:0x0200eb8c end:0x0200eb98
+
+src/auto/func_02053160.c:
+    complete
+    .text       start:0x02053160 end:0x0205318c
+
+src/auto/func_020681c4.c:
+    complete
+    .text       start:0x020681c4 end:0x020681f0
+
+src/auto/func_020681f0.c:
+    complete
+    .text       start:0x020681f0 end:0x0206821c
+
+src/auto/func_0206821c.c:
+    complete
+    .text       start:0x0206821c end:0x02068248
