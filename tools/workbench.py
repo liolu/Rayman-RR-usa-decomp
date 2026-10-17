@@ -22,6 +22,7 @@ Only ARM functions of the main module are handled, like auto_match.
 import argparse
 import bisect
 import json
+import os
 import re
 import shutil
 import struct
@@ -60,6 +61,10 @@ def overlay_index() -> dict[str, int]:
             if f.exists():
                 for m in re.finditer(r"^(\S+) kind:", f.read_text(encoding="utf-8", errors="replace"), re.M):
                     _OVL_INDEX.setdefault(m.group(1), int(d.name[2:]))
+        f = project.ARM9 / "itcm" / "symbols.txt"  # the ITCM module is handled like an overlay (id -1)
+        if f.exists():
+            for m in re.finditer(r"^(\S+) kind:", f.read_text(encoding="utf-8", errors="replace"), re.M):
+                _OVL_INDEX.setdefault(m.group(1), -1)
     return _OVL_INDEX
 
 
@@ -69,7 +74,7 @@ def select_module(target: str) -> str:
     ov = overlay_index().get(target) if not target.startswith("0x") else None
     if ov is None:
         return "main"
-    d = OVL_DIR / f"ov{ov:03d}"
+    d = project.ARM9 / "itcm" if ov < 0 else OVL_DIR / f"ov{ov:03d}"
     head = (d / "delinks.txt").read_text(encoding="utf-8").split("\n\n", 1)[0]
     m = re.search(r"\.text\s+start:0x([0-9a-f]+) end:0x([0-9a-f]+)", head)
     first = re.search(r"start:0x([0-9a-f]+)", head)
@@ -77,16 +82,17 @@ def select_module(target: str) -> str:
     project.SYMBOLS, project.DELINKS = d / "symbols.txt", d / "delinks.txt"
     am.SYMBOLS, am.DELINKS, pc.SYMBOLS = project.SYMBOLS, project.DELINKS, project.SYMBOLS
     am.MAIN_TEXT = text
-    pc.ARM9_BIN = project.EXTRACT / "arm9_overlays" / f"ov{ov:03d}.bin"
+    pc.ARM9_BIN = (project.EXTRACT / "arm9" / "itcm.bin" if ov < 0
+                   else project.EXTRACT / "arm9_overlays" / f"ov{ov:03d}.bin")
     pc.ARM9_BASE = int(first.group(1), 16)
     RELOCS = d / "relocs.txt"
     _SYMS = _RELOCS = None
-    MODULE = f"ov{ov:03d}"
+    MODULE = "itcm" if ov < 0 else f"ov{ov:03d}"
     return MODULE
 
 
 def all_delinks() -> list[Path]:
-    return [project.ARM9 / "delinks.txt"] + sorted(OVL_DIR.glob("ov*/delinks.txt"))
+    return [project.ARM9 / "delinks.txt", project.ARM9 / "itcm" / "delinks.txt"] + sorted(OVL_DIR.glob("ov*/delinks.txt"))
 
 
 STD_HEAD = '#include "m2c.h"\n#include "engine.h"\n#include "m2c_protos.h"\n'
@@ -210,7 +216,7 @@ def other_module_symbol(addr: int, module: str) -> str | None:
 
 
 def name_at(addr: int, module: str = "main") -> str:
-    own = "main" if MODULE == "main" else f"overlay({int(MODULE[2:])})"
+    own = MODULE if MODULE in ("main", "itcm") else f"overlay({int(MODULE[2:])})"
     if module != own:
         return other_module_symbol(addr, module) or f"0x{addr:08x} ({module})"
     c = containing(addr)
@@ -389,6 +395,8 @@ def judge(name: str, source: str, profile: str | None = None) -> dict:
                          "size": len(cand), "target_size": size}
                     if bad:
                         r["diff"] = compact_diff(pc.disasm(target, addr, thumb), pc.disasm(cand, addr, thumb))
+                        if os.environ.get("WB_FULL"):  # both listings, for tools/mdiff.py (structural diff)
+                            r["full"] = {"t": pc.disasm(target, addr, thumb), "c": pc.disasm(cand, addr, thumb)}
         finally:
             tmp.cleanup()
         rank = lambda x: ({"match": 0, "near": 1, "size": 2, "compile": 3}[x["status"]], x.get("diffs", 0))  # noqa
@@ -486,7 +494,7 @@ def cmd_submit_many(a) -> None:
     import find_culprits
     done = []
     state = {"build": ""}
-    files = [project.ARM9 / "delinks.txt", *sorted(OVL_DIR.glob("ov*/delinks.txt")), am.COMPILERS_TXT]
+    files = [project.ARM9 / "delinks.txt", project.ARM9 / "itcm" / "delinks.txt", *sorted(OVL_DIR.glob("ov*/delinks.txt")), am.COMPILERS_TXT]
 
     def attempt(group):
         """Integrates `group` and builds once: kept if the ROM is byte-identical, undone otherwise."""
