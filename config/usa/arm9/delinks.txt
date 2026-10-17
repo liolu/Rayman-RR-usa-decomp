@@ -10000,3 +10000,31 @@ src/auto/func_02024804.c:
 src/auto/func_02030f50.c:
     complete
     .text       start:0x02030f50 end:0x02030fcc
+
+src/auto/func_0200c76c.c:
+    complete
+    .text       start:0x0200c76c end:0x0200c7c0
+
+src/auto/func_0200e978.c:
+    complete
+    .text       start:0x0200e978 end:0x0200e9a0
+
+src/auto/CARDi_SendtoPxi.c:
+    complete
+    .text       start:0x02011f04 end:0x02011f68
+
+src/auto/CTRDGi_SendtoPxi.c:
+    complete
+    .text       start:0x0201225c end:0x020122c0
+
+src/auto/CTRDGi_InitCommon.c:
+    complete
+    .text       start:0x02012554 end:0x02012594
+
+src/auto/func_020015a8.c:
+    complete
+    .text       start:0x020015a8 end:0x020015f4
+
+src/auto/OS_SetProtectionRegion2.c:
+    complete
+    .text       start:0x0200e098 end:0x0200e0a0

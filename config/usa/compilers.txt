@@ -423,3 +423,9 @@ src/nnsys/fnd/frameheap_4.c 1.2/sp2p3
 src/donor/CARDi_InitCommon.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/NNS_SndStrmSetup.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/auto/func_0200eb8c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/auto/func_0200c76c.c 1.2/sp2p3
+src/auto/func_0200e978.c 1.2/sp2p3
+src/auto/CARDi_SendtoPxi.c 1.2/sp2p3
+src/auto/CTRDGi_SendtoPxi.c 1.2/sp2p3
+src/auto/CTRDGi_InitCommon.c 1.2/sp2p3
+src/auto/func_020015a8.c 1.2/sp3
