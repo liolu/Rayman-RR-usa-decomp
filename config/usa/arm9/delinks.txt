@@ -10028,3 +10028,23 @@ src/auto/func_020015a8.c:
 src/auto/OS_SetProtectionRegion2.c:
     complete
     .text       start:0x0200e098 end:0x0200e0a0
+
+src/auto/func_02001050.c:
+    complete
+    .text       start:0x02001050 end:0x02001300
+
+src/auto/long2str.c:
+    complete
+    .text       start:0x02001ce0 end:0x02001f2c
+
+src/auto/func_020079e0.c:
+    complete
+    .text       start:0x020079e0 end:0x02007ba0
+
+src/donor/__strtoul.c:
+    complete
+    .text       start:0x0200413c end:0x02004524
+
+src/donor/OSi_InsertAlarm.c:
+    complete
+    .text       start:0x0200e640 end:0x0200e780

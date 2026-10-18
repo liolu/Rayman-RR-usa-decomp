@@ -23,12 +23,12 @@ to extract assets from.
 ## Progress
 
 <!-- progress:start -->
-`█████████░░░░░░░░░░░` **46.82%** of the code matched · data 0.04% · 2555/3608 functions
+`█████████░░░░░░░░░░░` **47.22%** of the code matched · data 0.04% · 2560/3608 functions
 
 | Part of the code | Files | Functions | Share of all code |
 |---|---|---|---|
-| Auto-matched (raw m2c output, to clean up) | 1981 | 1983/1983 | 38.55% |
-| Reused from other decompilations, not merged into files yet | 150 | 150/150 | 3.49% |
+| Auto-matched (raw m2c output, to clean up) | 1984 | 1986/1986 | 38.78% |
+| Reused from other decompilations, not merged into files yet | 152 | 152/152 | 3.66% |
 | NitroSDK (Nintendo's system library) | 237 | 268/268 | 2.79% |
 | MSL (C standard library) | 38 | 47/47 | 0.87% |
 | NitroSystem (Nintendo's middleware) | 76 | 81/81 | 0.76% |

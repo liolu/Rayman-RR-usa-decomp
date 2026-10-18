@@ -429,3 +429,6 @@ src/auto/CARDi_SendtoPxi.c 1.2/sp2p3
 src/auto/CTRDGi_SendtoPxi.c 1.2/sp2p3
 src/auto/CTRDGi_InitCommon.c 1.2/sp2p3
 src/auto/func_020015a8.c 1.2/sp3
+src/auto/long2str.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/__strtoul.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/OSi_InsertAlarm.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
