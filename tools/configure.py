@@ -25,10 +25,13 @@ args = parser.parse_args()
 if args.dsd is None and (Path(__file__).resolve().parent.parent / "dsd-dsi.exe").exists():
     # dsd built with DSi-enhanced ROM support (decomp ds/_src/ds-decomp, branch dsi-enhanced) until it is released
     args.dsd = os.path.join(".", "dsd-dsi.exe")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import reloc_fixes  # per-game fix of false pointers: does nothing without config/<version>/reloc_fixes.txt
+reloc_fixes.apply(Path(__file__).resolve().parent.parent, args.version, quiet=True)
 
 
 # Config
-GAME = "rrr"
+GAME = "heroes_of_mana"
 DSD_VERSION = 'v0.12.1'
 WIBO_VERSION = '0.6.16'
 SJISWRAP_VERSION = 'v1.2.2'
@@ -44,7 +47,7 @@ CC_FLAGS = " ".join([
     "-gccext,on",           # Enable GCC extensions
     "-fp soft",             # Compute float operations in software
     "-inline noauto",       # Inline only functions marked with 'inline'
-    "-lang=c",              # The OpenSpace engine is written in C
+    "-lang=c",              # TODO: C++ games need -lang=c++
     "-Cpp_exceptions off",  # Disable C++ exceptions
     "-RTTI off",            # Disable runtime type information
     "-interworking",        # Enable ARM/Thumb interworking
