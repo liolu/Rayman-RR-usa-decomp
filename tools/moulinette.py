@@ -264,6 +264,10 @@ def main():
 
 
 if __name__ == "__main__":
+    # Rerun with the shared venv (ndspy...): configure.py writes sys.executable into build.ninja
+    VENV_PY = PROJECTS.parent / ".venv" / "Scripts" / "python.exe"
+    if VENV_PY.exists() and Path(sys.executable).resolve() != VENV_PY.resolve():
+        sys.exit(subprocess.call([str(VENV_PY), str(Path(__file__).resolve()), *sys.argv[1:]]))
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from pipeline_lock import pipeline_lock
 

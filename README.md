@@ -35,7 +35,7 @@ to extract assets from.
 | Other libraries | 23 | 23/23 | 0.31% |
 | Game code: `src/HIE/` | 1 | 3/3 | 0.05% |
 
-*Updated 2026-10-21 by `python tools/match.py progress` ([DS Decomp Studio](https://github.com/liolu/ds-decomp-studio)). A function counts only when it compiles to the exact same bytes and the ROM still rebuilds byte for byte.*
+*Updated 2026-10-22 by `python tools/match.py progress` ([DS Decomp Studio](https://github.com/liolu/ds-decomp-studio)). A function counts only when it compiles to the exact same bytes and the ROM still rebuilds byte for byte.*
 <!-- progress:end -->
 
 Run `ninja report` to get detailed numbers in `build/usa/report.json`.
