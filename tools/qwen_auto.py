@@ -14,6 +14,7 @@ Needs build/auto/status.json and build/auto/near/ (run `python tools/auto_match.
 import argparse
 import difflib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -22,7 +23,9 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "tools"))
+os.environ["DSD_PROJECT"] = str(ROOT)  # gametools/project.py: this game
+# auto_match & co. live in DS Decomp Studio (decomp ds/studio/gametools), not in the games
+sys.path.insert(0, str(ROOT.parent.parent / "studio" / "gametools"))
 
 WORK = ROOT / "build" / "qwen_auto"
 NEAR = ROOT / "build" / "auto" / "near"

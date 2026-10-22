@@ -45,6 +45,8 @@ from pathlib import Path
 
 HOME = Path(__file__).resolve().parent.parent  # the project this file belongs to
 PROJECTS = HOME.parent
+# the matching tools (draft, auto_match, permute...) live in DS Decomp Studio, not in the games
+GAMETOOLS = PROJECTS.parent / "studio" / "gametools"
 TRACKED = ["src", "include", "config", "docs", "tools", "README.md", "CONTRIBUTING.md", "INSTALL.md", "AGENTS.md"]
 
 
@@ -200,13 +202,13 @@ def main():
 
     if not args.no_drafts:
         step("m2c drafts")
-        r = run([py, "tools/draft.py", "--worklist"], check=False)
+        r = run([py, str(GAMETOOLS / "draft.py"), "--worklist"], check=False)
         if r.returncode != 0:
             print("(drafts skipped: m2c not installed? see docs/automation.md)")
 
     if not args.no_auto:
         step("Automatic matching (m2c)")
-        cmd = [py, "tools/auto_match.py"]
+        cmd = [py, str(GAMETOOLS / "auto_match.py")]
         if args.permute_near:
             cmd += ["--permute", str(args.permute_near), "--minutes", str(args.near_minutes)]
         if run(cmd, check=False).returncode != 0:
@@ -214,7 +216,7 @@ def main():
 
     if args.permute:
         step(f"Permuter on {args.permute}")
-        run([py, "tools/permute.py", args.permute, "--minutes", str(args.minutes)], check=False)
+        run([py, str(GAMETOOLS / "permute.py"), args.permute, "--minutes", str(args.minutes)], check=False)
 
     step("Verification")
     if run([py, "tools/match.py", "verify"], check=False).returncode != 0:
