@@ -23,7 +23,7 @@ to extract assets from.
 ## Progress
 
 <!-- progress:start -->
-`█████████░░░░░░░░░░░` **47.22%** of the code matched · data 0.04% · 2560/3608 functions
+`█████████░░░░░░░░░░░` **47.22%** of the code matched · data 1.41% · 2560/3608 functions
 
 | Part of the code | Files | Functions | Share of all code |
 |---|---|---|---|
@@ -34,8 +34,9 @@ to extract assets from.
 | NitroSystem (Nintendo's middleware) | 76 | 81/81 | 0.76% |
 | Other libraries | 23 | 23/23 | 0.31% |
 | Game code: `src/HIE/` | 1 | 3/3 | 0.05% |
+| Game code: `src/data/` | 130 | 0/0 | 0.00% |
 
-*Updated 2026-10-22 by `python tools/match.py progress` ([DS Decomp Studio](https://github.com/liolu/ds-decomp-studio)). A function counts only when it compiles to the exact same bytes and the ROM still rebuilds byte for byte.*
+*Updated 2026-10-24 by `python tools/match.py progress` ([DS Decomp Studio](https://github.com/liolu/ds-decomp-studio)). A function counts only when it compiles to the exact same bytes and the ROM still rebuilds byte for byte.*
 <!-- progress:end -->
 
 Run `ninja report` to get detailed numbers in `build/usa/report.json`.
