@@ -143,6 +143,53 @@ def matched_functions() -> set[str]:
             for f in u.get("functions", []) if float(f.get("fuzzy_match_percent", 0)) == 100.0}
 
 
+def staged_changes(staged: bool = True) -> dict[str, list[str]]:
+    """Paths by kind: added / modified / deleted. staged: the commit being made (git diff --cached); otherwise the
+    working tree against HEAD for the tracked paths, untracked files counting as added (nothing is staged)."""
+    tracked = [t for t in TRACKED if (ROOT / t).exists()]
+    cmd = ["git", "diff", "--name-status", "--no-renames"] + (["--cached"] if staged else ["HEAD", "--", *tracked])
+    kinds = {"added": [], "modified": [], "deleted": []}
+    for line in run(cmd, capture=True).stdout.splitlines():
+        status, _, path = line.partition("\t")
+        kinds["added" if status == "A" else "deleted" if status == "D" else "modified"].append(path)
+    if not staged:
+        kinds["added"] += run(["git", "ls-files", "--others", "--exclude-standard", "--", *tracked],
+                              capture=True).stdout.split()
+    return kinds
+
+
+def functions_by_source() -> dict[str, list[str]]:
+    """Matched functions of each source file, from the objdiff report."""
+    report = json.loads(REPORT.read_text())
+    return {u["metadata"]["source_path"]: [f["name"] for f in u.get("functions", [])
+                                           if float(f.get("fuzzy_match_percent", 0)) == 100.0]
+            for u in report["units"] if u.get("metadata", {}).get("source_path")}
+
+
+def describe_commit(changes: dict[str, list[str]]) -> tuple[str, str]:
+    """Commit title + body that list only what this commit adds or changes (not everything matched since the last
+    moulinette run: other tools commit matches too, so a snapshot difference over-counts)."""
+    funcs = functions_by_source()
+    added = sorted(f for p in changes["added"] for f in funcs.get(p, []))
+    changed = sorted(f for p in changes["modified"] for f in funcs.get(p, []))
+
+    def section(label, items, limit=50):
+        if not items:
+            return ""
+        lines = [f"- {i}" for i in items[:limit]] + ([f"- ... and {len(items) - limit} more"] if len(items) > limit else [])
+        return f"{label} ({len(items)}):\n" + "\n".join(lines)
+
+    title = f"Match {len(added)} function(s)" if added else "Update decompilation"
+    others = [p for p in changes["modified"] if p not in funcs]
+    body = "\n\n".join(s for s in (
+        section("New functions", added),
+        section("Changed functions", changed),
+        section("Other changed files", others, 20),
+        section("Added files without a matched function", [p for p in changes["added"] if not funcs.get(p)], 20),
+        section("Deleted files", changes["deleted"], 20)) if s)
+    return title, body
+
+
 def restart(scope: str):
     """Forgets what the tools already tried. The permuter history is archived, the others are regenerable."""
     step(f"Restart: forgetting what was already tried ({scope})")
@@ -225,13 +272,13 @@ def main():
 
     now = matched_functions()
     before = set(json.loads(SNAPSHOT.read_text())) if SNAPSHOT.exists() else set()
-    new = sorted(now - before)
     lost = sorted(before - now)
     if lost:
         print(f"WARNING: functions no longer matching: {', '.join(lost)}")
 
     if args.no_commit:
-        print(f"\nOK. Newly matched since last publish: {', '.join(new) or 'none'}")
+        title, body = describe_commit(staged_changes(staged=False))
+        print(f"\nOK, nothing committed (--no-commit). Would be: {title}\n\n{body}")
         return
 
     step("Publish")
@@ -250,10 +297,8 @@ def main():
             print("Verification failed after formatting: nothing committed.")
             sys.exit(1)
         run(["pre-commit", "run"])
-    title = f"Match {len(new)} function(s)" if new else "Update decompilation"
-    body = "\n".join(f"- {n}" for n in new[:50])
-    if len(new) > 50:
-        body += f"\n- ... and {len(new) - 50} more"
+    title, body = describe_commit(staged_changes())
+    print(f"\n{title}\n\n{body}\n")
     run(["git", "commit", "-m", title + ("\n\n" + body if body else "")])
     SNAPSHOT.write_text(json.dumps(sorted(now)))
     if args.no_push or not has_remote:
