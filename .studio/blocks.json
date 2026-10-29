@@ -1,61 +1,55 @@
 {
- "generation": 9,
- "created": 1792277818.6881042,
+ "generation": 10,
+ "created": 1793314336.0712132,
  "block_size": 50,
  "blocks": [
   {
-   "id": "L0-09001",
+   "id": "L0-10001",
    "level": 0,
    "functions": [
     "_u32_div_f",
+    "func_0200a920",
+    "_ll_udiv",
     "OS_SetIrqStackChecker",
-    "__exit",
-    "long2str",
-    "double2hex",
-    "float2str",
+    "__dorounddecup",
+    "_ddiv",
+    "__call_static_initializers",
     "__pformatter",
-    "raise",
-    "ldexp",
     "__ull2dec",
-    "func_0200862c",
-    "func_02001050",
-    "__strtoul",
+    "func_02001f2c",
     "__ieee754_pow",
-    "func_020079e0",
-    "OS_WaitIrq",
-    "OSi_IrqCallback",
     "func_0200c384",
-    "OS_SetIrqFunction",
     "FSi_InitRom",
-    "MI_DmaCopy16",
-    "MI_DmaFill32",
-    "MIi_CardDmaCopy32",
+    "func_02006008",
+    "func_020066d0",
+    "func_020069f0",
+    "func_020075ac",
+    "func_0200ff94",
     "G3i_PerspectiveW_",
-    "MI_DmaFill32Async",
-    "MI_DmaCopy32",
-    "MI_SendGXCommandAsyncFast",
+    "_dadd",
+    "_dsub",
     "G3i_OrthoW_",
     "OS_InitThread",
     "OS_GetInitArenaLo",
     "OS_GetInitArenaHi",
-    "OSi_ArrangeTimer",
-    "OSi_InsertAlarm",
     "FSi_GetPathCommand",
     "FSi_FindPathCommand",
-    "FSi_SendCommand",
-    "_fsub"
+    "func_02004688",
+    "func_02009848",
+    "_fsub",
+    "MakeWaveData",
+    "func_020b5598"
    ],
-   "bytes": 21900,
+   "bytes": 28308,
    "addr": [
     33598772,
-    33597728
+    34297500
    ]
   },
   {
-   "id": "L1-09001",
+   "id": "L1-10001",
    "level": 1,
    "functions": [
-    "__call_static_initializers",
     "func_02054334",
     "func_02054404",
     "func_02054510",
@@ -78,14 +72,14 @@
     "func_020965b0",
     "func_0209a890"
    ],
-   "bytes": 1068,
+   "bytes": 1024,
    "addr": [
-    33600828,
+    33899316,
     34187496
    ]
   },
   {
-   "id": "L2-09001",
+   "id": "L2-10001",
    "level": 2,
    "functions": [
     "FSi_ReadRomCallback",
@@ -106,8 +100,6 @@
     "func_020670a4",
     "func_02085cdc",
     "func_02085d20",
-    "func_020b52d8",
-    "func_020b5324",
     "LZ77UnCompReadNormalWrite8bit",
     "BitUnPack",
     "Mod",
@@ -137,21 +129,20 @@
     "func_0201e4a0",
     "func_0202184c",
     "func_020223fc",
-    "func_020232e0"
+    "func_02023910",
+    "func_0202731c",
+    "func_02027a40"
    ],
-   "bytes": 2388,
+   "bytes": 2380,
    "addr": [
     33637972,
-    33698580
+    33716868
    ]
   },
   {
-   "id": "L2-09002",
+   "id": "L2-10002",
    "level": 2,
    "functions": [
-    "func_02023910",
-    "func_0202731c",
-    "func_02027a40",
     "func_0202b264",
     "func_0202e62c",
     "func_0202e8d4",
@@ -168,7 +159,6 @@
     "func_02040d48",
     "func_0204202c",
     "func_02044dc4",
-    "func_02044e20",
     "func_0204757c",
     "func_02048cac",
     "func_02048cd8",
@@ -198,22 +188,22 @@
     "func_0205939c",
     "func_0205dff0",
     "func_0205e0b0",
-    "func_0205e688"
-   ],
-   "bytes": 4292,
-   "addr": [
-    33700112,
-    33941204
-   ]
-  },
-  {
-   "id": "L2-09003",
-   "level": 2,
-   "functions": [
+    "func_0205e688",
     "func_0205ea28",
     "func_0205ea78",
     "func_0205fd00",
-    "func_0206249c",
+    "func_0206249c"
+   ],
+   "bytes": 4336,
+   "addr": [
+    33731172,
+    33957160
+   ]
+  },
+  {
+   "id": "L2-10003",
+   "level": 2,
+   "functions": [
     "func_02063b80",
     "func_0206521c",
     "func_02066fb4",
@@ -259,22 +249,22 @@
     "func_02087054",
     "func_020889d4",
     "func_0208b47c",
-    "func_0208bc7c"
-   ],
-   "bytes": 5392,
-   "addr": [
-    33942056,
-    34127124
-   ]
-  },
-  {
-   "id": "L2-09004",
-   "level": 2,
-   "functions": [
+    "func_0208bc7c",
     "func_02090de4",
     "func_02090eb0",
     "func_02091054",
-    "func_02091620",
+    "func_02091620"
+   ],
+   "bytes": 5844,
+   "addr": [
+    33962880,
+    34150136
+   ]
+  },
+  {
+   "id": "L2-10004",
+   "level": 2,
+   "functions": [
     "func_02091950",
     "func_02091ff0",
     "func_02092034",
@@ -293,7 +283,6 @@
     "func_020a5854",
     "func_020a5984",
     "func_020a5fec",
-    "func_020b389c",
     "func_020b5f10",
     "func_01ff8498",
     "func_01ff87d0",
@@ -301,20 +290,16 @@
     "func_01ff8858",
     "func_01ff88fc"
    ],
-   "bytes": 3070,
+   "bytes": 2150,
    "addr": [
-    34147812,
+    34150736,
     33523988
    ]
   },
   {
-   "id": "L3-09001",
+   "id": "L3-10001",
    "level": 3,
    "functions": [
-    "func_02008e74",
-    "_ll_udiv",
-    "__dorounddecup",
-    "func_02004614",
     "func_02069b00",
     "func_02069bb0",
     "func_02069c60",
@@ -330,7 +315,6 @@
     "func_02054360",
     "func_02054468",
     "FindContainHeap",
-    "func_02008998",
     "func_02069914",
     "func_020699b8",
     "func_02069a5c",
@@ -360,23 +344,23 @@
     "func_020542f0",
     "func_02054574",
     "func_0205c0ec",
-    "func_0205c154"
-   ],
-   "bytes": 7124,
-   "addr": [
-    33590900,
-    33931640
-   ]
-  },
-  {
-   "id": "L3-09002",
-   "level": 3,
-   "functions": [
+    "func_0205c154",
     "func_02086070",
     "func_020860e4",
     "func_020a56d0",
     "func_020a57c0",
-    "func_020b2bd4",
+    "func_020b2bd4"
+   ],
+   "bytes": 7312,
+   "addr": [
+    33987328,
+    34286732
+   ]
+  },
+  {
+   "id": "L3-10002",
+   "level": 3,
+   "functions": [
     "func_0200b790",
     "func_0200bdb8",
     "CARDi_TryReadCardDma",
@@ -421,23 +405,23 @@
     "func_0202c3a4",
     "func_0202c558",
     "func_0202c680",
-    "func_0202c91c"
-   ],
-   "bytes": 10492,
-   "addr": [
-    34103408,
-    33737580
-   ]
-  },
-  {
-   "id": "L3-09003",
-   "level": 3,
-   "functions": [
+    "func_0202c91c",
     "func_0202e878",
     "func_020309d0",
     "func_020327a4",
     "func_02032bdc",
-    "func_02038fd8",
+    "func_02038fd8"
+   ],
+   "bytes": 10740,
+   "addr": [
+    33601424,
+    33788084
+   ]
+  },
+  {
+   "id": "L3-10003",
+   "level": 3,
+   "functions": [
     "func_02040f2c",
     "func_020420d4",
     "func_02042c90",
@@ -446,6 +430,7 @@
     "func_02045260",
     "func_02045358",
     "func_02047334",
+    "func_02047434",
     "func_02047518",
     "func_020475dc",
     "func_020476cc",
@@ -482,22 +467,22 @@
     "func_02057efc",
     "func_02058938",
     "func_02058e44",
-    "func_020591c0"
-   ],
-   "bytes": 10060,
-   "addr": [
-    33745016,
-    33919592
-   ]
-  },
-  {
-   "id": "L3-09004",
-   "level": 3,
-   "functions": [
+    "func_020591c0",
     "func_02059280",
     "func_02059d04",
     "func_02059dc4",
-    "func_02059e54",
+    "func_02059e54"
+   ],
+   "bytes": 10076,
+   "addr": [
+    33820460,
+    33922804
+   ]
+  },
+  {
+   "id": "L3-10004",
+   "level": 3,
+   "functions": [
     "func_02059f38",
     "func_0205c3f8",
     "func_0205c6ac",
@@ -543,22 +528,22 @@
     "func_0206d1c8",
     "func_0206d270",
     "func_0206e108",
-    "func_0206e34c"
-   ],
-   "bytes": 8296,
-   "addr": [
-    33919616,
-    34006072
-   ]
-  },
-  {
-   "id": "L3-09005",
-   "level": 3,
-   "functions": [
+    "func_0206e34c",
     "func_0206f820",
     "func_0206f8c0",
     "func_0207016c",
-    "func_02070b7c",
+    "func_02070b7c"
+   ],
+   "bytes": 8076,
+   "addr": [
+    33922872,
+    34016240
+   ]
+  },
+  {
+   "id": "L3-10005",
+   "level": 3,
+   "functions": [
     "func_02071430",
     "func_02071544",
     "func_02071974",
@@ -604,22 +589,22 @@
     "func_02087824",
     "func_02088250",
     "func_02088348",
-    "func_0208866c"
-   ],
-   "bytes": 8924,
-   "addr": [
-    34011168,
-    34113356
-   ]
-  },
-  {
-   "id": "L3-09006",
-   "level": 3,
-   "functions": [
+    "func_0208866c",
     "func_0208874c",
     "func_02088a38",
     "func_02088ab4",
-    "func_02088b18",
+    "func_02088b18"
+   ],
+   "bytes": 9184,
+   "addr": [
+    34018352,
+    34114540
+   ]
+  },
+  {
+   "id": "L3-10006",
+   "level": 3,
+   "functions": [
     "func_02088d58",
     "func_0208bee4",
     "func_0208c750",
@@ -665,22 +650,22 @@
     "func_020a30e0",
     "func_020a34ac",
     "func_020a3708",
-    "func_020a394c"
-   ],
-   "bytes": 9760,
-   "addr": [
-    34113356,
-    34224576
-   ]
-  },
-  {
-   "id": "L3-09007",
-   "level": 3,
-   "functions": [
+    "func_020a394c",
     "func_020a39e8",
     "func_020a3aec",
     "func_020a42e4",
-    "func_020a47b4",
+    "func_020a47b4"
+   ],
+   "bytes": 9900,
+   "addr": [
+    34114904,
+    34228376
+   ]
+  },
+  {
+   "id": "L3-10007",
+   "level": 3,
+   "functions": [
     "func_020a4898",
     "func_020a4cfc",
     "func_020a4d84",
@@ -700,9 +685,6 @@
     "func_020b1678",
     "func_020b1734",
     "func_020b2304",
-    "func_020b5118",
-    "func_020b54bc",
-    "func_020b5598",
     "OS_IrqHandler",
     "Dma_LoadChannelAndSettle",
     "func_01ff8214",
@@ -720,28 +702,22 @@
     "func_01ff8ae8",
     "func_01ff8b24"
    ],
-   "bytes": 5752,
+   "bytes": 4192,
    "addr": [
-    34224616,
+    34228376,
     33524588
    ]
   },
   {
-   "id": "L4-09001",
+   "id": "L4-10001",
    "level": 4,
    "functions": [
-    "func_0200a920",
-    "func_02003804",
     "CTRDGi_LockByProcessor",
-    "func_0200ff94",
     "func_020461ec",
     "func_02046298",
     "func_02046344",
     "func_020463f0",
     "func_020039b0",
-    "func_02003fe4",
-    "NNSi_SndPlayerMain",
-    "CARD_IdentifyBackup",
     "CARDi_RequestStreamCommandCore",
     "func_0203f340",
     "func_0203f638",
@@ -779,24 +755,24 @@
     "func_0202b664",
     "func_0202bf38",
     "func_0202d090",
-    "func_0202d1e8"
-   ],
-   "bytes": 15708,
-   "addr": [
-    33597728,
-    33739828
-   ]
-  },
-  {
-   "id": "L4-09002",
-   "level": 4,
-   "functions": [
+    "func_0202d1e8",
     "func_0202d434",
     "func_0202d570",
     "func_0202dc80",
     "func_0202e258",
     "func_0202e3cc",
-    "func_0202e6b0",
+    "func_0202e6b0"
+   ],
+   "bytes": 15204,
+   "addr": [
+    33628904,
+    33744856
+   ]
+  },
+  {
+   "id": "L4-10002",
+   "level": 4,
+   "functions": [
     "func_0202eee0",
     "func_0202f31c",
     "func_0202f380",
@@ -834,30 +810,30 @@
     "func_0204561c",
     "func_020457dc",
     "func_02046be8",
-    "func_02047434",
+    "func_020470d8",
     "func_02047940",
     "func_02047c98",
     "func_02048ee4",
     "func_02048f54",
     "func_020491d0",
-    "func_02049728"
-   ],
-   "bytes": 16616,
-   "addr": [
-    33739828,
-    33855516
-   ]
-  },
-  {
-   "id": "L4-09003",
-   "level": 4,
-   "functions": [
+    "func_02049728",
     "func_0204b940",
     "func_0204c75c",
     "func_0204cc7c",
     "func_0204dda8",
     "func_0204f094",
-    "func_0204f5ec",
+    "func_0204f5ec"
+   ],
+   "bytes": 17644,
+   "addr": [
+    33746656,
+    33880072
+   ]
+  },
+  {
+   "id": "L4-10003",
+   "level": 4,
+   "functions": [
     "func_02051694",
     "func_020521bc",
     "func_02052424",
@@ -901,24 +877,24 @@
     "func_0206ad5c",
     "func_0206b674",
     "func_0206e484",
-    "func_0206eb08"
-   ],
-   "bytes": 17684,
-   "addr": [
-    33864000,
-    34008112
-   ]
-  },
-  {
-   "id": "L4-09004",
-   "level": 4,
-   "functions": [
+    "func_0206eb08",
     "func_0206ff08",
     "func_020701ec",
     "func_02070bf0",
     "func_02071818",
     "func_02071a64",
-    "func_0207262c",
+    "func_0207262c"
+   ],
+   "bytes": 17992,
+   "addr": [
+    33887892,
+    34023540
+   ]
+  },
+  {
+   "id": "L4-10004",
+   "level": 4,
+   "functions": [
     "func_02072cac",
     "func_020731cc",
     "func_0207394c",
@@ -962,24 +938,24 @@
     "func_0208c5a8",
     "func_0208e578",
     "func_0208e9e4",
-    "func_0208eb24"
-   ],
-   "bytes": 17980,
-   "addr": [
-    34012936,
-    34140176
-   ]
-  },
-  {
-   "id": "L4-09005",
-   "level": 4,
-   "functions": [
+    "func_0208eb24",
     "func_0208ff30",
     "func_02090730",
     "func_020911b8",
     "func_02091768",
     "func_02091a1c",
-    "func_02091e34",
+    "func_02091e34"
+   ],
+   "bytes": 17420,
+   "addr": [
+    34024620,
+    34152204
+   ]
+  },
+  {
+   "id": "L4-10005",
+   "level": 4,
+   "functions": [
     "func_02094c5c",
     "func_02095848",
     "func_0209599c",
@@ -1014,8 +990,6 @@
     "func_020affb8",
     "func_020b17e4",
     "func_020b19e0",
-    "func_020b4734",
-    "NNSi_SndArcStrmMain",
     "MIi_DmaSetParams_wait",
     "func_01ff8310",
     "func_01ff8404",
@@ -1023,48 +997,25 @@
     "func_01ff8710",
     "func_01ff8968",
     "func_01ff8a84",
-    "func_01ff96c0"
-   ],
-   "bytes": 15976,
-   "addr": [
-    34144048,
-    33527692
-   ]
-  },
-  {
-   "id": "L4-09006",
-   "level": 4,
-   "functions": [
+    "func_01ff96c0",
     "func_01ff978c"
    ],
-   "bytes": 204,
+   "bytes": 13300,
    "addr": [
-    33527692,
+    34163804,
     33527896
    ]
   },
   {
-   "id": "L5-09001",
+   "id": "L5-10001",
    "level": 5,
    "functions": [
-    "_ddiv",
-    "func_020082a8",
     "_fdiv",
-    "func_02001f2c",
-    "func_02006008",
-    "func_020066d0",
-    "func_020069f0",
-    "func_020075ac",
-    "func_02007850",
-    "_dadd",
-    "_dsub",
     "CTRDGi_InitModuleInfo",
     "func_020430b8",
     "func_020433d0",
     "func_02043e40",
     "func_02044160",
-    "func_02004688",
-    "func_02009848",
     "CARDi_IdentifyBackupCore",
     "func_02019ed8",
     "func_0201b41c",
@@ -1096,18 +1047,7 @@
     "func_0202f42c",
     "func_020300d4",
     "func_02030248",
-    "func_0203134c"
-   ],
-   "bytes": 46268,
-   "addr": [
-    33599280,
-    33756440
-   ]
-  },
-  {
-   "id": "L5-09002",
-   "level": 5,
-   "functions": [
+    "func_0203134c",
     "func_02033dd8",
     "func_02037c7c",
     "func_02038be0",
@@ -1119,8 +1059,18 @@
     "func_02044ac0",
     "func_02045434",
     "func_020459b4",
-    "func_020470d8",
-    "func_020485e4",
+    "func_020485e4"
+   ],
+   "bytes": 53340,
+   "addr": [
+    33595260,
+    33851876
+   ]
+  },
+  {
+   "id": "L5-10002",
+   "level": 5,
+   "functions": [
     "func_020489e4",
     "func_0204ac44",
     "func_0204af34",
@@ -1157,18 +1107,7 @@
     "func_0205aa50",
     "func_0205ad10",
     "func_0205afbc",
-    "func_0205b148"
-   ],
-   "bytes": 54048,
-   "addr": [
-    33766872,
-    33927848
-   ]
-  },
-  {
-   "id": "L5-09003",
-   "level": 5,
-   "functions": [
+    "func_0205b148",
     "func_0205b3c4",
     "func_0205e758",
     "func_0205eecc",
@@ -1181,7 +1120,18 @@
     "func_02062ab0",
     "func_02063804",
     "func_02063db4",
-    "func_0206aeb0",
+    "func_0206aeb0"
+   ],
+   "bytes": 43080,
+   "addr": [
+    33851876,
+    33993244
+   ]
+  },
+  {
+   "id": "L5-10003",
+   "level": 5,
+   "functions": [
     "func_0206b810",
     "func_0206bbf8",
     "func_0206bfc8",
@@ -1218,18 +1168,7 @@
     "func_0207f630",
     "func_0207fa0c",
     "func_0207fe64",
-    "func_02080710"
-   ],
-   "bytes": 42848,
-   "addr": [
-    33928132,
-    34080824
-   ]
-  },
-  {
-   "id": "L5-09004",
-   "level": 5,
-   "functions": [
+    "func_02080710",
     "func_02080838",
     "func_02080fe4",
     "func_020815e4",
@@ -1242,7 +1181,18 @@
     "func_0208ad14",
     "func_0208bb34",
     "func_0208bfc0",
-    "func_0208c374",
+    "func_0208c374"
+   ],
+   "bytes": 45968,
+   "addr": [
+    33994768,
+    34129020
+   ]
+  },
+  {
+   "id": "L5-10004",
+   "level": 5,
+   "functions": [
     "func_0208c47c",
     "func_0208d7e0",
     "func_0208da3c",
@@ -1279,33 +1229,31 @@
     "func_020a79d8",
     "func_020a8e74",
     "func_020a97fc",
-    "func_020a9cf8"
-   ],
-   "bytes": 55208,
-   "addr": [
-    34080824,
-    34250872
-   ]
-  },
-  {
-   "id": "L5-09005",
-   "level": 5,
-   "functions": [
+    "func_020a9cf8",
     "func_020aa078",
     "func_020aa404",
     "func_020b0684",
     "func_020b09dc",
     "func_020b1b84",
     "func_020b1ed8",
-    "MakeWaveData",
-    "PrepareStrm",
     "OS_IrqHandler_ThreadSwitch",
     "func_01ff84a0",
     "func_01ff8b6c",
     "func_01ff8d74",
     "func_01ff8eec",
     "func_01ff9594",
-    "func_01ff9858",
+    "func_01ff9858"
+   ],
+   "bytes": 54840,
+   "addr": [
+    34129020,
+    33530160
+   ]
+  },
+  {
+   "id": "L5-10005",
+   "level": 5,
+   "functions": [
     "func_01ffa130",
     "func_01ffa3fc",
     "func_01ffa8c4",
@@ -1313,9 +1261,9 @@
     "func_01ffaedc",
     "func_01ffb044"
    ],
-   "bytes": 20624,
+   "bytes": 4452,
    "addr": [
-    34250872,
+    33530160,
     33534612
    ]
   }
