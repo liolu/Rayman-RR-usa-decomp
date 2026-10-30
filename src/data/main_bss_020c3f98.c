@@ -1,0 +1,5 @@
+/* compiler: 2.0/sp1p5 */
+#include "m2c.h"
+
+u32 HIE_g_lNbMatrixInCameraStack[1];
+u32 HIE_g_a_stCameraMatrixStack[525];
