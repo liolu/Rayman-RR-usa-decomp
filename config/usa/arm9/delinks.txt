@@ -10816,3 +10816,141 @@ src/data/main_data_020bf6f4.c:
 src/data/main_data_020bf740.c:
     complete
     .data       start:0x020bf740 end:0x020bf7b0
+
+src/auto/__exit.c:
+    complete
+    .text       start:0x02000dc8 end:0x02000ef0
+
+src/auto/double2hex.c:
+    complete
+    .text       start:0x0200220c end:0x020026e8
+
+src/auto/float2str.c:
+    complete
+    .text       start:0x0200280c end:0x02002f70
+
+src/auto/func_02003804.c:
+    complete
+    .text       start:0x02003804 end:0x0200391c
+
+src/auto/raise.c:
+    complete
+    .text       start:0x02003bcc end:0x02003cfc
+
+src/auto/func_02003fe4.c:
+    complete
+    .text       start:0x02003fe4 end:0x0200413c
+
+src/auto/func_02004614.c:
+    complete
+    .text       start:0x02004614 end:0x02004688
+
+src/auto/ldexp.c:
+    complete
+    .text       start:0x02007c5c end:0x02007ea8
+
+src/auto/func_020082a8.c:
+    complete
+    .text       start:0x020082a8 end:0x0200862c
+
+src/auto/func_02008998.c:
+    complete
+    .text       start:0x02008998 end:0x02008a00
+
+src/auto/_ll_ufrom_d.c:
+    complete
+    .text       start:0x02008e74 end:0x02008f00
+
+src/donor/func_02007850.c:
+    complete
+    .text       start:0x02007850 end:0x020079c0
+
+src/donor/func_0200862c.c:
+    complete
+    .text       start:0x0200862c end:0x020087ac
+
+src/donor/OS_WaitIrq.c:
+    complete
+    .text       start:0x0200c0fc end:0x0200c17c
+
+src/donor/OSi_IrqCallback.c:
+    complete
+    .text       start:0x0200c1fc end:0x0200c298
+
+src/donor/OS_SetIrqFunction.c:
+    complete
+    .text       start:0x0200c450 end:0x0200c4e0
+
+src/donor/OSi_ArrangeTimer.c:
+    complete
+    .text       start:0x0200e4b0 end:0x0200e5c8
+
+src/donor/FSi_SendCommand.c:
+    complete
+    .text       start:0x0201391c end:0x02013ad8
+
+src/donor/MI_DmaFill32Async.c:
+    complete
+    .text       start:0x02017ba4 end:0x02017c7c
+
+src/donor/MI_DmaCopy16.c:
+    complete
+    .text       start:0x02017c7c end:0x02017cf4
+
+src/donor/MI_DmaCopy32.c:
+    complete
+    .text       start:0x02017cf4 end:0x02017d70
+
+src/donor/MI_DmaFill32.c:
+    complete
+    .text       start:0x02017d70 end:0x02017e00
+
+src/donor/MI_SendGXCommandAsyncFast.c:
+    complete
+    .text       start:0x02017e40 end:0x02017f00
+
+src/donor/MIi_CardDmaCopy32.c:
+    complete
+    .text       start:0x02018244 end:0x020182d0
+
+src/donor/NNSi_SndPlayerMain.c:
+    complete
+    .text       start:0x020b2804 end:0x020b2978
+
+src/donor/func_020b389c.c:
+    complete
+    .text       start:0x020b389c end:0x020b3934
+
+src/donor/func_020b4734.c:
+    complete
+    .text       start:0x020b4734 end:0x020b4898
+
+src/donor/PrepareStrm.c:
+    complete
+    .text       start:0x020b4e3c end:0x020b50dc
+
+src/donor/func_020b5118.c:
+    complete
+    .text       start:0x020b5118 end:0x020b51c0
+
+src/donor/NNSi_SndArcStrmMain.c:
+    complete
+    .text       start:0x020b51c0 end:0x020b52d8
+
+src/donor/func_020b52d8.c:
+    complete
+    .text       start:0x020b52d8 end:0x020b5324
+
+src/donor/func_020b5324.c:
+    complete
+    .text       start:0x020b5324 end:0x020b5370
+
+src/auto/func_020232e0.c:
+    complete
+    .text       start:0x020232e0 end:0x02023314
+
+src/auto/func_02044e20.c:
+    complete
+    .text       start:0x02044e20 end:0x02044e6c
+
+

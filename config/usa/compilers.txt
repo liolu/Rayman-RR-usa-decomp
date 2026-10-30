@@ -434,3 +434,31 @@ src/donor/__strtoul.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
 src/donor/OSi_InsertAlarm.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/auto/CARD_IdentifyBackup.c 1.2/sp2p3
 src/auto/func_020b54bc.c 1.2/sp2p3
+src/auto/double2hex.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/auto/float2str.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/auto/func_02003804.c 2.0/sp1p5 -O2,p
+src/auto/func_02008998.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/auto/_ll_ufrom_d.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/func_02007850.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/func_0200862c.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/OS_WaitIrq.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_IrqCallback.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OS_SetIrqFunction.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/OSi_ArrangeTimer.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_SendCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MI_DmaFill32Async.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MI_DmaCopy16.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MI_DmaCopy32.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MI_DmaFill32.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MI_SendGXCommandAsyncFast.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MIi_CardDmaCopy32.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/NNSi_SndPlayerMain.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/func_020b389c.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/func_020b4734.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/PrepareStrm.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/func_020b5118.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/NNSi_SndArcStrmMain.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/func_020b52d8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/func_020b5324.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/auto/func_020232e0.c 2.0/sp1p5 -O4,s
+src/auto/func_02044e20.c 2.0/sp1p5 -O4,s
