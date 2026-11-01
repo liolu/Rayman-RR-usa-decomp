@@ -1,2 +1,74 @@
     .text       start:0x01ff8000 end:0x01ffb294 kind:code align:32
     .bss        start:0x01ffb2a0 end:0x01ffb2a0 kind:bss align:32
+
+src/auto/func_01ff8878.c:
+    complete
+    .text       start:0x01ff8878 end:0x01ff88b4
+
+src/auto/func_01ff88b4.c:
+    complete
+    .text       start:0x01ff88b4 end:0x01ff88fc
+
+src/auto/func_01ff88fc.c:
+    complete
+    .text       start:0x01ff88fc end:0x01ff8914
+
+src/auto/func_01ff8914.c:
+    complete
+    .text       start:0x01ff8914 end:0x01ff8968
+
+src/auto/func_01ff837c.c:
+    complete
+    .text       start:0x01ff837c end:0x01ff83a8
+
+src/auto/func_01ff8498.c:
+    complete
+    .text       start:0x01ff8498 end:0x01ff84a0
+
+src/auto/func_01ff8778.c:
+    complete
+    .text       start:0x01ff8778 end:0x01ff87a0
+
+src/auto/func_01ff87a0.c:
+    complete
+    .text       start:0x01ff87a0 end:0x01ff87d0
+
+src/auto/func_01ff87d0.c:
+    complete
+    .text       start:0x01ff87d0 end:0x01ff87ec
+
+src/auto/func_01ff87ec.c:
+    complete
+    .text       start:0x01ff87ec end:0x01ff8814
+
+src/auto/func_01ff883c.c:
+    complete
+    .text       start:0x01ff883c end:0x01ff8858
+
+src/auto/func_01ff8858.c:
+    complete
+    .text       start:0x01ff8858 end:0x01ff8878
+
+src/auto/MIi_DmaSetParams.c:
+    complete
+    .text       start:0x01ff82c0 end:0x01ff8310
+
+src/auto/func_01ff8214.c:
+    complete
+    .text       start:0x01ff8214 end:0x01ff824c
+
+src/auto/func_01ff8a2c.c:
+    complete
+    .text       start:0x01ff8a2c end:0x01ff8a84
+
+src/auto/func_01ff8ae8.c:
+    complete
+    .text       start:0x01ff8ae8 end:0x01ff8b24
+
+src/auto/func_01ff8b24.c:
+    complete
+    .text       start:0x01ff8b24 end:0x01ff8b6c
+
+src/auto/func_01ff83a8.c:
+    complete
+    .text       start:0x01ff83a8 end:0x01ff8404

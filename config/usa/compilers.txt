@@ -462,3 +462,19 @@ src/donor/func_020b52d8.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/donor/func_020b5324.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
 src/auto/func_020232e0.c 2.0/sp1p5 -O4,s
 src/auto/func_02044e20.c 2.0/sp1p5 -O4,s
+src/auto/FindContainHeap.c 1.2/sp2p3
+src/auto/MIi_DmaSetParams.c 1.2/sp2p3
+src/auto/func_020525b8.c 2.0/sp1p5 -O2,p
+src/auto/func_01ff8214.c 1.2/sp2p3
+src/auto/func_020869ec.c 2.0/sp1p5 -O2,p
+src/auto/func_02086c74.c 2.0/sp1p5 -O2,p
+src/auto/func_02085dac.c 2.0/sp1p5 -O2,p
+src/auto/func_0204a174.c 2.0/sp1p5 -O2,p
+src/auto/CARDi_ReadRomIDCore.c 1.2/sp2p3
+src/auto/CTRDGi_LockByProcessor.c 1.2/sp2p3
+src/auto/OS_InitException.c 1.2/sp2p3
+src/auto/OS_RescheduleThread.c 1.2/sp2p3
+src/auto/func_0201e4a0.c 1.2/sp3
+src/auto/FSi_ReadRomCallback.c 1.2/sp2p3
+src/auto/func_0200c384.c 1.2/sp2p3
+src/auto/func_0205da34.c 2.0/sp1p5 -O2,p
