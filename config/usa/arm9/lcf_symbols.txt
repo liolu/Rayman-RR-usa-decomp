@@ -1,0 +1,8 @@
+data_020bca49 = 0x020bca49;
+data_020bca4d = 0x020bca4d;
+data_020bd49d = 0x020bd49d;
+data_020bd8c7 = 0x020bd8c7;
+data_020be0d1 = 0x020be0d1;
+data_020be0d2 = 0x020be0d2;
+data_020be0d3 = 0x020be0d3;
+data_027e0021 = 0x027e0021;
