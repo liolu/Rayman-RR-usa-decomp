@@ -478,3 +478,7 @@ src/auto/func_0201e4a0.c 1.2/sp3
 src/auto/FSi_ReadRomCallback.c 1.2/sp2p3
 src/auto/func_0200c384.c 1.2/sp2p3
 src/auto/func_0205da34.c 2.0/sp1p5 -O2,p
+src/donor/__pformatter.c 2.0/sp1p5 -O4,p -lang c99 -ipa file -inline on,noauto
+src/donor/FSi_GetPathCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/FSi_FindPathCommand.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
+src/donor/MakeWaveData.c 1.2/sp2p3 -O4,p -lang c99 -inline on,noauto
