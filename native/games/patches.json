@@ -1,1 +1,6 @@
-{}
+{
+ "AR5E": {
+  "arm_stack": true,
+  "lift_parts": 4
+ }
+}
